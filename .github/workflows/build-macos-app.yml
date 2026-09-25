@@ -1,0 +1,50 @@
+name: Build macOS App
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: "App bundle name"
+        required: true
+        default: "FinalTrade-V1.0"
+  push:
+    branches:
+      - main
+    paths:
+      - "build-mac.sh"
+      - ".github/workflows/build-macos-app.yml"
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build app bundle
+        run: |
+          chmod +x ./build-mac.sh
+          APP_NAME="${{ github.event.inputs.app_name }}"
+          if [ -z "${APP_NAME}" ]; then
+            APP_NAME="FinalTrade-V1.0"
+          fi
+          ./build-mac.sh --name "${APP_NAME}" --clean
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.app_name || 'FinalTrade-V1.0' }}-macOS
+          path: |
+            dist/${{ github.event.inputs.app_name || 'FinalTrade-V1.0' }}.app
+            dist/${{ github.event.inputs.app_name || 'FinalTrade-V1.0' }}-macOS.zip
+          if-no-files-found: error

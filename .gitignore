@@ -1,0 +1,47 @@
+# System
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# Env
+.env
+.venv/
+venv/
+backend/.test-state/
+backend/.local-tmp/
+runtime-logs/
+
+# Packaging temp artifacts
+backend/build/
+backend/dist/
+backend/*.spec
+backend/*.log
+
+# Frontend build output
+frontend/dist/
+journal-frontend/dist/
+data/
+data_location.txt
+frontend/test-results/
+
+# Local data / debug artifacts
+backend/scripts/*.json
+backend/scripts/*.log
+backend/scripts/*stdout*.txt
+backend/scripts/*stderr*.txt
+
+# Packaged release binaries (use GitHub Releases instead)
+dist/*.exe
+dist/*.app
+dist/*.zip
