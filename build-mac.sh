@@ -46,6 +46,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+NAME_PATTERN='^[A-Za-z0-9][A-Za-z0-9._ -]{0,79}$'
+if [[ ! "${NAME}" =~ ${NAME_PATTERN} ]]; then
+  echo "App name must not contain directory separators." >&2
+  exit 1
+fi
+
 if [[ "$(uname -s)" != "Darwin" ]]; then
   echo "This script must run on macOS." >&2
   exit 1
@@ -88,9 +94,7 @@ echo "Installing backend dependencies..."
 
 echo "Building frontend..."
 pushd "${FRONTEND_DIR}" >/dev/null
-if [[ ! -d "${FRONTEND_DIR}/node_modules" ]]; then
-  "${NPM_BIN}" install
-fi
+"${NPM_BIN}" ci
 "${NPM_BIN}" run build
 popd >/dev/null
 
@@ -101,9 +105,7 @@ fi
 
 echo "Building journal frontend..."
 pushd "${JOURNAL_FRONTEND_DIR}" >/dev/null
-if [[ ! -d "${JOURNAL_FRONTEND_DIR}/node_modules" ]]; then
-  "${NPM_BIN}" install
-fi
+"${NPM_BIN}" ci
 "${NPM_BIN}" run build
 popd >/dev/null
 if [[ ! -f "${JOURNAL_FRONTEND_DIST}/index.html" ]]; then
@@ -112,7 +114,9 @@ if [[ ! -f "${JOURNAL_FRONTEND_DIST}/index.html" ]]; then
 fi
 
 if [[ "${CLEAN}" -eq 1 ]]; then
-  rm -rf "${BACKEND_DIST}" "${BACKEND_BUILD}" "${REPO_DIST}" "${SPEC_FILE}"
+  rm -rf "${BACKEND_DIST}/${NAME}.app" "${BACKEND_DIST}/${NAME}" \
+    "${BACKEND_BUILD}/${NAME}" "${REPO_DIST}/${NAME}.app" \
+    "${REPO_DIST}/${NAME}-macOS.zip" "${SPEC_FILE}"
 fi
 
 echo "Packaging .app with PyInstaller..."

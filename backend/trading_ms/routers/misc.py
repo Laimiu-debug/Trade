@@ -7,7 +7,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -20,6 +20,7 @@ from ..services import ai as ai_svc
 from ..services import backup as backup_svc
 from ..services import capital_estimate as capital_est_svc
 from ..services import folder_dialog
+from ..services.storage import copy_data_directory, publish_location
 from ..services import market as market_svc
 from ..services import netvalue, pdf_export as pdf_export_svc, rounds as rounds_svc, settings as settings_svc, stats
 
@@ -37,14 +38,20 @@ DATA_SUBDIR = "TradingMS-data"
 
 def _resolve_migration_target(raw: str) -> tuple[Path, str]:
     """解析迁移目标：空目录直接用，非空目录自动使用子文件夹。"""
-    base = Path(raw).expanduser().resolve()
-    if base == DATA_DIR.resolve():
-        raise HTTPException(400, "目标目录与当前数据目录相同")
+    supplied = Path(raw).expanduser()
+    if not supplied.is_absolute() or '\x00' in raw:
+        raise HTTPException(400, '目标目录必须是有效绝对路径')
+    base = supplied.resolve()
+    source = DATA_DIR.resolve()
+    if base == source or base in source.parents or source in base.parents or base == Path(base.anchor):
+        raise HTTPException(400, "请使用原目录之外的独立目录，不能选择父目录、子目录或根目录")
     if base == ROOT_DIR.resolve():
         raise HTTPException(400, "不能使用程序根目录作为数据目录")
 
     if not base.exists():
         return base, "将创建新目录"
+    if not base.is_dir():
+        raise HTTPException(400, '目标路径不是目录')
 
     if not any(base.iterdir()):
         return base, "使用所选空目录"
@@ -86,27 +93,27 @@ def preview_data_dir(body: MoveDataIn):
 
 
 @router.post("/system/move-data")
-def move_data(body: MoveDataIn):
-    """把数据目录迁移到新位置，写入 data_location.txt，需重启生效。"""
+def move_data(body: MoveDataIn, request: Request):
+    """Copy a consistent snapshot; keep the source alive until an explicit restart."""
     target, _note = _resolve_migration_target(body.target_dir)
-    target.mkdir(parents=True, exist_ok=True)
-    if any(target.iterdir()):
-        raise HTTPException(400, "目标目录非空，无法迁移")
-
-    # 关闭数据库连接，确保 SQLite 文件落盘可移动
-    engine.dispose()
-
+    state = request.app.state
+    with state.storage_lock:
+        if state.storage_copying or state.data_switch_pending or state.active_writes > 1:
+            raise HTTPException(409, '仍有操作正在保存，请完成后再复制目录')
+        state.storage_copying = True
     try:
-        # 移动 data 目录下的所有内容
-        for item in DATA_DIR.iterdir():
-            shutil.move(str(item), str(target / item.name))
-    except Exception as e:  # noqa: BLE001
-        raise HTTPException(500, f"迁移失败：{e}") from e
-
-    # 写入新位置记录
-    (ROOT_DIR / "data_location.txt").write_text(str(target), encoding="utf-8")
-
-    return {"ok": True, "new_dir": str(target), "need_restart": True}
+        copy_data_directory(DATA_DIR, target)
+        publish_location(ROOT_DIR / 'data_location.txt', target)
+        with state.storage_lock:
+            state.data_switch_pending = True
+    except (OSError, ValueError) as exc:
+        raise HTTPException(400 if isinstance(exc, ValueError) else 503,
+                            '目录复制未完成，原数据仍可使用；请检查目标路径、权限和空间后重试') from exc
+    finally:
+        with state.storage_lock:
+            state.storage_copying = False
+    return {'ok': True, 'new_dir': str(target), 'active_dir': str(DATA_DIR), 'need_restart': True,
+            'restart_required': True, 'disposition': 'copied_restart_required'}
 
 
 # ---------- 闪记卡片 ----------
@@ -412,25 +419,7 @@ def export_pdf(body: PdfExportIn, db: Session = Depends(get_db)):
 
 @router.get("/export/json")
 def export_json(db: Session = Depends(get_db)):
-    def rows(model):
-        return [
-            {c.name: (v.isoformat() if hasattr(v := getattr(r, c.name), "isoformat") else v)
-             for c in model.__table__.columns}
-            for r in db.query(model).all()
-        ]
-
-    payload = {
-        "exported_at": date.today().isoformat(),
-        "capital_flows": rows(CapitalFlow),
-        "snapshots": rows(Snapshot),
-        "trades": rows(Trade),
-        "pending_trades": rows(PendingTrade),
-        "daily_reviews": rows(DailyReview),
-        "weekly_reviews": rows(WeeklyReview),
-        "monthly_reviews": rows(MonthlyReview),
-        "flash_cards": rows(FlashCard),
-        "settings": rows(Setting),
-    }
+    payload = backup_svc.export_backup(db)
     return JSONResponse(
         payload,
         headers={"Content-Disposition": f"attachment; filename=tradingms-backup-{date.today().isoformat()}.json"},

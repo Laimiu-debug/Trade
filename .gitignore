@@ -30,6 +30,11 @@ backend/*.log
 
 # Frontend build output
 frontend/dist/
+frontend/dist-rebuild/
+.release-dist/
+.release-build/
+.tmp-rebuild-smoke/
+.tmp-rebuild-*/
 journal-frontend/dist/
 data/
 data_location.txt
@@ -45,3 +50,6 @@ backend/scripts/*stderr*.txt
 dist/*.exe
 dist/*.app
 dist/*.zip
+
+# Local verification exports and lint output
+/tmp/

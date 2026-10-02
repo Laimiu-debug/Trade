@@ -4,8 +4,10 @@ from datetime import date
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from starlette.concurrency import run_in_threadpool
 
 from ..database import get_db
+from ..services.uploads import read_screenshot
 from ..models import CapitalFlow, Snapshot
 from ..services import ai as ai_svc
 from ..services import capital_estimate as capital_est_svc
@@ -228,54 +230,60 @@ def estimate_assets(day: date = Query(..., alias="date"), db: Session = Depends(
     return capital_est_svc.estimate_snapshot(db, day)
 
 
+def _process_account_screenshot(bind, content: bytes, mime: str):
+    with Session(bind=bind, autoflush=False, expire_on_commit=False) as db:
+        try:
+            parsed = ai_svc.parse_account_screenshot(db, content, mime)
+        except ai_svc.AIUnavailable as exc:
+            raise HTTPException(400, str(exc)) from exc
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(502, '识别请求失败，请检查模型配置、网络和返回内容') from exc
+
+        if not isinstance(parsed, dict):
+            raise HTTPException(502, '识别返回内容格式无效')
+
+        snap_date = parsed.get("snap_date")
+        if isinstance(snap_date, str) and snap_date:
+            try:
+                snap_day = date.fromisoformat(snap_date[:10])
+            except ValueError:
+                snap_day = date.today()
+        else:
+            snap_day = date.today()
+
+        total_assets = _parse_money(parsed.get("total_assets"))
+        available_cash = _parse_money(parsed.get("available_cash"))
+
+        raw_positions = parsed.get("positions") or []
+        positions = [_normalize_position(p, db, snap_day, use_market_match=True) for p in raw_positions if isinstance(p, dict)]
+        positions = [p for p in positions if p.get("code") or p.get("name")]
+
+        position_value = round(
+            sum(p["market_value"] for p in positions if p.get("market_value") is not None),
+            2,
+        )
+
+        if total_assets is None and positions:
+            mv_sum = position_value
+            if available_cash is not None:
+                mv_sum = round(mv_sum + available_cash, 2)
+            if mv_sum > 0:
+                total_assets = mv_sum
+
+        return {
+            "snap_date": snap_day.isoformat(),
+            "total_assets": total_assets,
+            "available_cash": available_cash,
+            "position_value": position_value if position_value > 0 else None,
+            "positions": positions,
+            "recognized": len(positions) + (1 if total_assets is not None else 0),
+        }
+
+
 @router.post("/import/screenshot")
 async def import_account_screenshot(file: UploadFile = File(...), db: Session = Depends(get_db)):
-    """识别持仓/资产截图，返回总资产与持仓明细供确认。"""
-    content = await file.read()
-    mime = file.content_type or "image/png"
-    try:
-        parsed = ai_svc.parse_account_screenshot(db, content, mime)
-    except ai_svc.AIUnavailable as exc:
-        raise HTTPException(400, str(exc)) from exc
-    except Exception as exc:  # noqa: BLE001
-        raise HTTPException(502, f"识别失败: {exc}") from exc
-
-    snap_date = parsed.get("snap_date")
-    if isinstance(snap_date, str) and snap_date:
-        try:
-            snap_day = date.fromisoformat(snap_date[:10])
-        except ValueError:
-            snap_day = date.today()
-    else:
-        snap_day = date.today()
-
-    total_assets = _parse_money(parsed.get("total_assets"))
-    available_cash = _parse_money(parsed.get("available_cash"))
-
-    raw_positions = parsed.get("positions") or []
-    positions = [_normalize_position(p, db, snap_day, use_market_match=True) for p in raw_positions if isinstance(p, dict)]
-    positions = [p for p in positions if p.get("code") or p.get("name")]
-
-    position_value = round(
-        sum(p["market_value"] for p in positions if p.get("market_value") is not None),
-        2,
-    )
-
-    if total_assets is None and positions:
-        mv_sum = position_value
-        if available_cash is not None:
-            mv_sum = round(mv_sum + available_cash, 2)
-        if mv_sum > 0:
-            total_assets = mv_sum
-
-    return {
-        "snap_date": snap_day.isoformat(),
-        "total_assets": total_assets,
-        "available_cash": available_cash,
-        "position_value": position_value if position_value > 0 else None,
-        "positions": positions,
-        "recognized": len(positions) + (1 if total_assets is not None else 0),
-    }
+    content, mime = await read_screenshot(file)
+    return await run_in_threadpool(_process_account_screenshot, db.get_bind(), content, mime)
 
 
 @router.get("/nav")

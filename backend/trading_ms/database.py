@@ -1,4 +1,5 @@
 import sys
+import os
 from pathlib import Path
 
 from sqlalchemy import create_engine, text
@@ -66,6 +67,9 @@ def _pick_data_dir(default: Path, legacy: Path | None) -> Path:
 
 
 def _resolve_data_dir() -> Path:
+    configured = os.environ.get('TRADING_MS_DATA_DIR', '').strip()
+    if configured:
+        return Path(configured).expanduser().resolve()
     target = _read_location_file(_LOCATION_FILE)
     if target:
         return target

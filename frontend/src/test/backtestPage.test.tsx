@@ -380,7 +380,7 @@ describe('BacktestPage', () => {
     })
   }, 60_000)
 
-  it.skip('loads imported report with effective run_id and re-exports that snapshot', async () => {
+  it('loads imported report with effective run_id and re-exports that snapshot', async () => {
     window.localStorage.setItem(
       'tdx-trend-backtest-collapsed-modules-v1',
       JSON.stringify({ report_share: false }),

@@ -1,0 +1,18 @@
+# Export these variables only on the server. Public origin must use HTTPS.
+# Every path, including static assets, health and session bootstrap, requires login.
+{$TRADE_PUBLIC_ORIGIN} {
+    basic_auth {
+        {$TRADE_LOGIN_USER} {$TRADE_LOGIN_PASSWORD_HASH}
+    }
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+    }
+    reverse_proxy 127.0.0.1:8011 {
+        # Replace user-supplied proxy headers after successful authentication.
+        header_up X-Trade-Proxy-Token {$TRADE_PROXY_TOKEN}
+        header_up X-Forwarded-Proto https
+        header_up -Authorization
+        flush_interval -1
+    }
+}

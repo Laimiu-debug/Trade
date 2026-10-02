@@ -1,0 +1,38 @@
+import { chromium } from '@playwright/test'
+
+const browser = await chromium.launch({ headless: true, channel: 'msedge' })
+try {
+  const page = await browser.newPage({ viewport: { width: 1365, height: 900 } })
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.goto('http://127.0.0.1:8011/rebuild.html')
+  await page.getByRole('heading', { name: '创建第一个账户' }).waitFor()
+  await page.getByRole('textbox', { name: '账户名称' }).fill('日复盘栏目测试')
+  await page.getByRole('button', { name: '创建实盘账户' }).click()
+  await page.getByRole('button', { name: '每日复盘' }).click()
+  const review = page.locator('section.card').filter({ has: page.getByRole('heading', { name: '每日复盘' }) })
+  await review.getByLabel('复盘日期').fill('2025-01-06')
+  await review.getByLabel('标题').fill('周一复盘')
+  await review.getByLabel('当日总述').fill('保持耐心')
+  await review.getByLabel('通用反思').fill('控制频率')
+  await review.getByLabel('复盘标签（逗号分隔）').fill('纪律，突破')
+  await review.getByLabel('大盘预判').fill('震荡')
+  await review.getByRole('button', { name: '添加关注股' }).click()
+  await review.getByLabel('代码').fill('600000')
+  await review.getByLabel('触发条件').fill('突破十日高点')
+  await review.getByRole('button', { name: '添加预演持仓' }).click()
+  await review.getByLabel('代码').last().fill('600000')
+  await review.getByLabel('预演数量').fill('100')
+  await review.getByRole('button', { name: '立即保存' }).click()
+  await review.getByText('已保存', { exact: true }).waitFor({ timeout: 10000 })
+  await page.reload()
+  await page.getByRole('button', { name: '每日复盘' }).click()
+  await page.getByRole('button', { name: '2025-01-06' }).click()
+  await review.getByLabel('当日总述').waitFor()
+  if (await review.getByLabel('当日总述').inputValue() !== '保持耐心') throw new Error('日复盘总述未恢复')
+  if (await review.getByLabel('触发条件').inputValue() !== '突破十日高点') throw new Error('关注股未恢复')
+  if (errors.length) throw new Error(errors.join('\n'))
+  console.log('browser smoke: daily review sections, plan, watchlist, rehearsal and history')
+} finally {
+  await browser.close()
+}

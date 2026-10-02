@@ -7,18 +7,29 @@ export function useAutosave(
   deps: unknown[],
   delayMs = 2000,
 ) {
-  const saveRef = useRef(save);
-  saveRef.current = save;
-  const skipFirst = useRef(true);
+  const pending = useRef<{ save: () => Promise<void>; timer: number } | null>(null);
+  // This cleanup must precede the scheduling effect's cleanup: an internal
+  // route change flushes its last committed editor, not a newer scope's save.
+  useEffect(() => () => {
+    const operation = pending.current;
+    if (!operation) return;
+    pending.current = null;
+    window.clearTimeout(operation.timer);
+    void operation.save().catch(() => { /* The editor reports save failures. */ });
+  }, []);
   useEffect(() => {
     if (!enabled) return;
-    if (skipFirst.current) {
-      skipFirst.current = false;
-      return;
-    }
-    const t = window.setTimeout(() => { void saveRef.current(); }, delayMs);
-    return () => window.clearTimeout(t);
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+    const operation = { save, timer: 0 };
+    operation.timer = window.setTimeout(() => {
+      if (pending.current === operation) pending.current = null;
+      void operation.save().catch(() => { /* The editor reports save failures. */ });
+    }, delayMs);
+    pending.current = operation;
+    return () => {
+      window.clearTimeout(operation.timer);
+      if (pending.current === operation) pending.current = null;
+    };
+  }, [enabled, delayMs, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 export function useDirtyGuard(dirty: boolean) {

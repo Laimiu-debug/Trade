@@ -1,0 +1,2189 @@
+{
+  "recorded_at": "2026-09-26T16:40:53+0800",
+  "directory": "C:\\Users\\25647\\AppData\\Local\\Temp\\trade-interactive-benchmark-jk8ww2y9",
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "logical_cpus": 20,
+    "physical_cpus": 20,
+    "ram_bytes": 33592324096,
+    "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+    "disk_path": "C:\\Users\\25647\\AppData\\Local\\Temp\\trade-interactive-benchmark-jk8ww2y9",
+    "disk_free_bytes": 30452891648
+  },
+  "dataset": {
+    "trades": 100000,
+    "daily_reviews": 5000,
+    "event_summary_rows": 10000,
+    "market_symbols": 1,
+    "bars_per_symbol": 1200,
+    "event_rows_are_explicit_metadata_fixtures": true
+  },
+  "load": {
+    "backtest_strategy": "wyckoff_trend_v1",
+    "queued_backtests": 3,
+    "cpu_workers": 1,
+    "slow_provider": "local HTTP fixture; no public provider network",
+    "provider_delay_seconds": 0.6,
+    "sync_symbols": 50,
+    "provider_completed_requests": 24,
+    "actual_backtest_child_pids": [
+      29812,
+      33552
+    ]
+  },
+  "samples": 100,
+  "overlapping_samples": 87,
+  "errors": [],
+  "all_samples": {
+    "pagination": {
+      "count": 100,
+      "p50_ms": 30.563899999833666,
+      "p95_ms": 42.85869999148417,
+      "max_ms": 46.60400000284426
+    },
+    "save": {
+      "count": 100,
+      "p50_ms": 14.037000000826083,
+      "p95_ms": 23.499899994931184,
+      "max_ms": 29.66099999321159
+    }
+  },
+  "backtest_and_sync_overlap": {
+    "pagination": {
+      "count": 87,
+      "p50_ms": 30.789700002060272,
+      "p95_ms": 42.99129999708384,
+      "max_ms": 46.60400000284426
+    },
+    "save": {
+      "count": 87,
+      "p50_ms": 19.696299990755506,
+      "p95_ms": 23.45449999847915,
+      "max_ms": 29.66099999321159
+    }
+  },
+  "enqueue": [
+    {
+      "id": "e2b32003b3b73361a34c853932e53c979103cba5230aafea610862e503a7735b",
+      "elapsed_ms": 40.25779999210499
+    },
+    {
+      "id": "c91b12da7bd3454fcc71db516db19e36e76ffcfd7bafb3706dc2b27be0612e6b",
+      "elapsed_ms": 15.171699997154064
+    },
+    {
+      "id": "e33501bfbc27e9c39d4962ae18ac5394849b893607ce567f77c4b653c240eb2b",
+      "elapsed_ms": 28.9871000131825
+    }
+  ],
+  "peak_application_process_tree_rss_bytes": 242798592,
+  "elapsed_seconds": 18.610999299999094,
+  "backtest_states_before_cleanup": [
+    {
+      "id": "e2b32003b3b73361a34c853932e53c979103cba5230aafea610862e503a7735b",
+      "state": "succeeded",
+      "error": null
+    },
+    {
+      "id": "c91b12da7bd3454fcc71db516db19e36e76ffcfd7bafb3706dc2b27be0612e6b",
+      "state": "running",
+      "error": null
+    },
+    {
+      "id": "e33501bfbc27e9c39d4962ae18ac5394849b893607ce567f77c4b653c240eb2b",
+      "state": "queued",
+      "error": null
+    }
+  ],
+  "sync_before_cleanup": {
+    "id": "f3f7a3fbb8714306ba9717fd22c74443",
+    "state": "running",
+    "provider": "baostock",
+    "mode": "full",
+    "start_date": "2025-01-01",
+    "end_date": "2025-01-02",
+    "symbols": [
+      "sh600001",
+      "sh600002",
+      "sh600003",
+      "sh600004",
+      "sh600005",
+      "sh600006",
+      "sh600007",
+      "sh600008",
+      "sh600009",
+      "sh600010",
+      "sh600011",
+      "sh600012",
+      "sh600013",
+      "sh600014",
+      "sh600015",
+      "sh600016",
+      "sh600017",
+      "sh600018",
+      "sh600019",
+      "sh600020",
+      "sh600021",
+      "sh600022",
+      "sh600023",
+      "sh600024",
+      "sh600025",
+      "sh600026",
+      "sh600027",
+      "sh600028",
+      "sh600029",
+      "sh600030",
+      "sh600031",
+      "sh600032",
+      "sh600033",
+      "sh600034",
+      "sh600035",
+      "sh600036",
+      "sh600037",
+      "sh600038",
+      "sh600039",
+      "sh600040",
+      "sh600041",
+      "sh600042",
+      "sh600043",
+      "sh600044",
+      "sh600045",
+      "sh600046",
+      "sh600047",
+      "sh600048",
+      "sh600049",
+      "sh600050"
+    ],
+    "total": 50,
+    "completed": 23,
+    "results": [
+      {
+        "symbol": "sh600001",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600002",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600003",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600004",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600005",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600006",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600007",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600008",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600009",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600010",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600011",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600012",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600013",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600014",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600015",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600016",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600017",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600018",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600019",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600020",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600021",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600022",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      },
+      {
+        "symbol": "sh600023",
+        "state": "failed",
+        "errors": [
+          {
+            "provider": "baostock",
+            "code": "INVALID_BAR_COUNT"
+          }
+        ]
+      }
+    ],
+    "created_at": "2026-09-26T08:40:38.372316+00:00",
+    "updated_at": "2026-09-26T08:40:52.763681+00:00"
+  },
+  "rows": [
+    {
+      "index": 0,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        1
+      ],
+      "pagination_ms": 33.788700005970895,
+      "save_ms": 12.279199989279732,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        1
+      ]
+    },
+    {
+      "index": 1,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        1
+      ],
+      "pagination_ms": 23.560799992992543,
+      "save_ms": 21.805199998198077,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        1
+      ]
+    },
+    {
+      "index": 2,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        1
+      ],
+      "pagination_ms": 23.854600003687665,
+      "save_ms": 21.129599990672432,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        1
+      ]
+    },
+    {
+      "index": 3,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        1
+      ],
+      "pagination_ms": 21.394700001110323,
+      "save_ms": 11.052999994717538,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        2
+      ]
+    },
+    {
+      "index": 4,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        2
+      ],
+      "pagination_ms": 32.303400003002025,
+      "save_ms": 22.3005000007106,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        2
+      ]
+    },
+    {
+      "index": 5,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        2
+      ],
+      "pagination_ms": 28.15470000496134,
+      "save_ms": 10.505699989153072,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        2
+      ]
+    },
+    {
+      "index": 6,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        2
+      ],
+      "pagination_ms": 40.65270000137389,
+      "save_ms": 11.187299998709932,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        2
+      ]
+    },
+    {
+      "index": 7,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        2
+      ],
+      "pagination_ms": 40.28440000547562,
+      "save_ms": 22.223699997994117,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        2
+      ]
+    },
+    {
+      "index": 8,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        3
+      ],
+      "pagination_ms": 28.513199998997152,
+      "save_ms": 19.696299990755506,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        3
+      ]
+    },
+    {
+      "index": 9,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        3
+      ],
+      "pagination_ms": 32.56169999076519,
+      "save_ms": 21.72009999048896,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        3
+      ]
+    },
+    {
+      "index": 10,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        3
+      ],
+      "pagination_ms": 18.860800002585165,
+      "save_ms": 10.305200004950166,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        3
+      ]
+    },
+    {
+      "index": 11,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        3
+      ],
+      "pagination_ms": 21.858399995835498,
+      "save_ms": 11.48770000145305,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        3
+      ]
+    },
+    {
+      "index": 12,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "queued",
+      "provider_requests_before": [],
+      "pagination_ms": 20.66769999510143,
+      "save_ms": 11.129500009701587,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        4
+      ]
+    },
+    {
+      "index": 13,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        4
+      ],
+      "pagination_ms": 20.29059999040328,
+      "save_ms": 23.590500000864267,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        4
+      ]
+    },
+    {
+      "index": 14,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        4
+      ],
+      "pagination_ms": 37.09139999409672,
+      "save_ms": 11.974499997450039,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        4
+      ]
+    },
+    {
+      "index": 15,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        4
+      ],
+      "pagination_ms": 27.59939999668859,
+      "save_ms": 23.016500010271557,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        4
+      ]
+    },
+    {
+      "index": 16,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        4
+      ],
+      "pagination_ms": 39.84529999434017,
+      "save_ms": 13.001899991650134,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        4
+      ]
+    },
+    {
+      "index": 17,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        5
+      ],
+      "pagination_ms": 34.01580000354443,
+      "save_ms": 21.931900002527982,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        5
+      ]
+    },
+    {
+      "index": 18,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        5
+      ],
+      "pagination_ms": 37.062899995362386,
+      "save_ms": 22.94949999486562,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        5
+      ]
+    },
+    {
+      "index": 19,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        5
+      ],
+      "pagination_ms": 28.90530000149738,
+      "save_ms": 14.037000000826083,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        5
+      ]
+    },
+    {
+      "index": 20,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        5
+      ],
+      "pagination_ms": 20.005800004582852,
+      "save_ms": 21.654599986504763,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        5
+      ]
+    },
+    {
+      "index": 21,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        6
+      ],
+      "pagination_ms": 29.993999996804632,
+      "save_ms": 20.3579999943031,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        6
+      ]
+    },
+    {
+      "index": 22,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        6
+      ],
+      "pagination_ms": 21.936300006927922,
+      "save_ms": 21.93299999635201,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        6
+      ]
+    },
+    {
+      "index": 23,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        6
+      ],
+      "pagination_ms": 30.789700002060272,
+      "save_ms": 11.576299992157146,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        6
+      ]
+    },
+    {
+      "index": 24,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        6
+      ],
+      "pagination_ms": 38.76490000402555,
+      "save_ms": 16.375200008042157,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        6
+      ]
+    },
+    {
+      "index": 25,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        6
+      ],
+      "pagination_ms": 28.335399998468347,
+      "save_ms": 23.758499999530613,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        7
+      ]
+    },
+    {
+      "index": 26,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        7
+      ],
+      "pagination_ms": 28.969000006327406,
+      "save_ms": 20.845699997153133,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        7
+      ]
+    },
+    {
+      "index": 27,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        7
+      ],
+      "pagination_ms": 27.866100004757755,
+      "save_ms": 22.320999996736646,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        7
+      ]
+    },
+    {
+      "index": 28,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        7
+      ],
+      "pagination_ms": 42.85869999148417,
+      "save_ms": 22.377599991159514,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        7
+      ]
+    },
+    {
+      "index": 29,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        7
+      ],
+      "pagination_ms": 41.14930001378525,
+      "save_ms": 12.688999995589256,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        8
+      ]
+    },
+    {
+      "index": 30,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        8
+      ],
+      "pagination_ms": 31.413599994266406,
+      "save_ms": 11.338900003465824,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        8
+      ]
+    },
+    {
+      "index": 31,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        8
+      ],
+      "pagination_ms": 20.799000005354173,
+      "save_ms": 11.195400002179667,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        8
+      ]
+    },
+    {
+      "index": 32,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        8
+      ],
+      "pagination_ms": 21.13649999955669,
+      "save_ms": 10.849500002223067,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        8
+      ]
+    },
+    {
+      "index": 33,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        8
+      ],
+      "pagination_ms": 21.292500008712523,
+      "save_ms": 10.20819999394007,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        8
+      ]
+    },
+    {
+      "index": 34,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        8
+      ],
+      "pagination_ms": 33.64789999614004,
+      "save_ms": 12.74320000084117,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        9
+      ]
+    },
+    {
+      "index": 35,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        9
+      ],
+      "pagination_ms": 40.92820000369102,
+      "save_ms": 11.488000003737397,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        9
+      ]
+    },
+    {
+      "index": 36,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        9
+      ],
+      "pagination_ms": 39.20660000585485,
+      "save_ms": 11.786200004280545,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        9
+      ]
+    },
+    {
+      "index": 37,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        9
+      ],
+      "pagination_ms": 28.04360000300221,
+      "save_ms": 12.267800004337914,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        9
+      ]
+    },
+    {
+      "index": 38,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        9
+      ],
+      "pagination_ms": 30.943300007493235,
+      "save_ms": 13.100099997245707,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        9
+      ]
+    },
+    {
+      "index": 39,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        10
+      ],
+      "pagination_ms": 29.310800004168414,
+      "save_ms": 13.177800006815232,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        10
+      ]
+    },
+    {
+      "index": 40,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        10
+      ],
+      "pagination_ms": 30.182000002241693,
+      "save_ms": 22.086199998739175,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        10
+      ]
+    },
+    {
+      "index": 41,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        10
+      ],
+      "pagination_ms": 20.45580001140479,
+      "save_ms": 21.549600001890212,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        10
+      ]
+    },
+    {
+      "index": 42,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        10
+      ],
+      "pagination_ms": 34.2298000032315,
+      "save_ms": 20.73630000813864,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        10
+      ]
+    },
+    {
+      "index": 43,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "queued",
+      "provider_requests_before": [],
+      "pagination_ms": 23.157999996328726,
+      "save_ms": 22.599399992031977,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        11
+      ]
+    },
+    {
+      "index": 44,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        11
+      ],
+      "pagination_ms": 39.20059998927172,
+      "save_ms": 11.46829999925103,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        11
+      ]
+    },
+    {
+      "index": 45,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        11
+      ],
+      "pagination_ms": 29.792699991958216,
+      "save_ms": 11.253300006501377,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        11
+      ]
+    },
+    {
+      "index": 46,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        11
+      ],
+      "pagination_ms": 39.66589999618009,
+      "save_ms": 13.34099999803584,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        11
+      ]
+    },
+    {
+      "index": 47,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        11
+      ],
+      "pagination_ms": 37.42049999709707,
+      "save_ms": 11.208199997781776,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        12
+      ]
+    },
+    {
+      "index": 48,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        12
+      ],
+      "pagination_ms": 33.021200011717156,
+      "save_ms": 23.086700006388128,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        12
+      ]
+    },
+    {
+      "index": 49,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        12
+      ],
+      "pagination_ms": 36.10599999956321,
+      "save_ms": 22.509899994474836,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        12
+      ]
+    },
+    {
+      "index": 50,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        12
+      ],
+      "pagination_ms": 20.942199989804067,
+      "save_ms": 12.491900008171797,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        12
+      ]
+    },
+    {
+      "index": 51,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        12
+      ],
+      "pagination_ms": 31.411699994350784,
+      "save_ms": 12.716800003545359,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        12
+      ]
+    },
+    {
+      "index": 52,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        13
+      ],
+      "pagination_ms": 22.111900005256757,
+      "save_ms": 12.33209999918472,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        13
+      ]
+    },
+    {
+      "index": 53,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        13
+      ],
+      "pagination_ms": 32.526399998459965,
+      "save_ms": 12.379499996313825,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        13
+      ]
+    },
+    {
+      "index": 54,
+      "active_backtest_pids": [
+        29812
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        13
+      ],
+      "pagination_ms": 39.151199991465546,
+      "save_ms": 11.287899993476458,
+      "backtest_pids_after": [
+        29812
+      ],
+      "provider_requests_after": [
+        13
+      ]
+    },
+    {
+      "index": 55,
+      "active_backtest_pids": [],
+      "sync_state": "running",
+      "provider_requests_before": [
+        13
+      ],
+      "pagination_ms": 28.688799997325987,
+      "save_ms": 24.81779998925049,
+      "backtest_pids_after": [],
+      "provider_requests_after": [
+        13
+      ]
+    },
+    {
+      "index": 56,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "queued",
+      "provider_requests_before": [],
+      "pagination_ms": 28.996599998208694,
+      "save_ms": 10.531299994909205,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        14
+      ]
+    },
+    {
+      "index": 57,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        14
+      ],
+      "pagination_ms": 29.36270000645891,
+      "save_ms": 11.837600002763793,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        14
+      ]
+    },
+    {
+      "index": 58,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        14
+      ],
+      "pagination_ms": 28.85740000056103,
+      "save_ms": 21.360099999583326,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        14
+      ]
+    },
+    {
+      "index": 59,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        14
+      ],
+      "pagination_ms": 42.99129999708384,
+      "save_ms": 21.958199999062344,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        14
+      ]
+    },
+    {
+      "index": 60,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        14
+      ],
+      "pagination_ms": 19.922099992982112,
+      "save_ms": 23.898799991002306,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        14
+      ]
+    },
+    {
+      "index": 61,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        15
+      ],
+      "pagination_ms": 23.735400012810715,
+      "save_ms": 22.979699991992675,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        15
+      ]
+    },
+    {
+      "index": 62,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        15
+      ],
+      "pagination_ms": 22.44570000038948,
+      "save_ms": 11.03119998879265,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        15
+      ]
+    },
+    {
+      "index": 63,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        15
+      ],
+      "pagination_ms": 25.896799998008646,
+      "save_ms": 11.622200006968342,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        15
+      ]
+    },
+    {
+      "index": 64,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        15
+      ],
+      "pagination_ms": 41.2748999951873,
+      "save_ms": 20.966099997167476,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        15
+      ]
+    },
+    {
+      "index": 65,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "queued",
+      "provider_requests_before": [],
+      "pagination_ms": 37.95379999792203,
+      "save_ms": 12.209399996208958,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        16
+      ]
+    },
+    {
+      "index": 66,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        16
+      ],
+      "pagination_ms": 44.8191999894334,
+      "save_ms": 22.114899998996407,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        16
+      ]
+    },
+    {
+      "index": 67,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        16
+      ],
+      "pagination_ms": 37.74449999036733,
+      "save_ms": 23.45449999847915,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        16
+      ]
+    },
+    {
+      "index": 68,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        16
+      ],
+      "pagination_ms": 32.75500000745524,
+      "save_ms": 12.780799996107817,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        16
+      ]
+    },
+    {
+      "index": 69,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        17
+      ],
+      "pagination_ms": 32.16309999697842,
+      "save_ms": 22.954899992328137,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        17
+      ]
+    },
+    {
+      "index": 70,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        17
+      ],
+      "pagination_ms": 22.949699996388517,
+      "save_ms": 21.10539999557659,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        17
+      ]
+    },
+    {
+      "index": 71,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        17
+      ],
+      "pagination_ms": 22.90250000078231,
+      "save_ms": 22.217699995962903,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        17
+      ]
+    },
+    {
+      "index": 72,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        17
+      ],
+      "pagination_ms": 21.387300002970733,
+      "save_ms": 12.192399997729808,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        17
+      ]
+    },
+    {
+      "index": 73,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        17
+      ],
+      "pagination_ms": 24.46780000173021,
+      "save_ms": 22.945100005017594,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        18
+      ]
+    },
+    {
+      "index": 74,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        18
+      ],
+      "pagination_ms": 46.60400000284426,
+      "save_ms": 20.80309999291785,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        18
+      ]
+    },
+    {
+      "index": 75,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        18
+      ],
+      "pagination_ms": 40.65460000128951,
+      "save_ms": 12.887300006696023,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        18
+      ]
+    },
+    {
+      "index": 76,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        18
+      ],
+      "pagination_ms": 37.086800002725795,
+      "save_ms": 11.253699994995259,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        18
+      ]
+    },
+    {
+      "index": 77,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        18
+      ],
+      "pagination_ms": 40.99129998940043,
+      "save_ms": 20.704499998828396,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        19
+      ]
+    },
+    {
+      "index": 78,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        19
+      ],
+      "pagination_ms": 28.545100009068847,
+      "save_ms": 11.24829999753274,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        19
+      ]
+    },
+    {
+      "index": 79,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        19
+      ],
+      "pagination_ms": 40.619100007461384,
+      "save_ms": 23.05319999868516,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        19
+      ]
+    },
+    {
+      "index": 80,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        19
+      ],
+      "pagination_ms": 30.112499996903352,
+      "save_ms": 29.66099999321159,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        19
+      ]
+    },
+    {
+      "index": 81,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        19
+      ],
+      "pagination_ms": 23.96860001317691,
+      "save_ms": 23.499899994931184,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        19
+      ]
+    },
+    {
+      "index": 82,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        20
+      ],
+      "pagination_ms": 20.567199986544438,
+      "save_ms": 11.405600002035499,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        20
+      ]
+    },
+    {
+      "index": 83,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        20
+      ],
+      "pagination_ms": 30.563899999833666,
+      "save_ms": 21.83060000243131,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        20
+      ]
+    },
+    {
+      "index": 84,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        20
+      ],
+      "pagination_ms": 44.92509999545291,
+      "save_ms": 11.873399998876266,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        20
+      ]
+    },
+    {
+      "index": 85,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        20
+      ],
+      "pagination_ms": 41.218100013793446,
+      "save_ms": 10.80609999189619,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        20
+      ]
+    },
+    {
+      "index": 86,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        21
+      ],
+      "pagination_ms": 32.083300000522286,
+      "save_ms": 11.9698999915272,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        21
+      ]
+    },
+    {
+      "index": 87,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        21
+      ],
+      "pagination_ms": 34.580699997604825,
+      "save_ms": 22.894200010341592,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        21
+      ]
+    },
+    {
+      "index": 88,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        21
+      ],
+      "pagination_ms": 31.132400006754324,
+      "save_ms": 22.828200002550147,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        21
+      ]
+    },
+    {
+      "index": 89,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        21
+      ],
+      "pagination_ms": 44.75230000389274,
+      "save_ms": 11.856999990413897,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        21
+      ]
+    },
+    {
+      "index": 90,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "queued",
+      "provider_requests_before": [],
+      "pagination_ms": 31.09309999854304,
+      "save_ms": 11.399199996958487,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        22
+      ]
+    },
+    {
+      "index": 91,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        22
+      ],
+      "pagination_ms": 21.568800002569333,
+      "save_ms": 22.701999987475574,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        22
+      ]
+    },
+    {
+      "index": 92,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        22
+      ],
+      "pagination_ms": 20.23919999192003,
+      "save_ms": 21.960500002023764,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        22
+      ]
+    },
+    {
+      "index": 93,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        22
+      ],
+      "pagination_ms": 20.191400006297044,
+      "save_ms": 11.813799996161833,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        22
+      ]
+    },
+    {
+      "index": 94,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        22
+      ],
+      "pagination_ms": 29.42550000443589,
+      "save_ms": 21.285900002112612,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        22
+      ]
+    },
+    {
+      "index": 95,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        23
+      ],
+      "pagination_ms": 35.62160000728909,
+      "save_ms": 11.537500002305023,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        23
+      ]
+    },
+    {
+      "index": 96,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        23
+      ],
+      "pagination_ms": 39.46370001358446,
+      "save_ms": 20.921399991493672,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        23
+      ]
+    },
+    {
+      "index": 97,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        23
+      ],
+      "pagination_ms": 33.91569999803323,
+      "save_ms": 21.611899996059947,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        23
+      ]
+    },
+    {
+      "index": 98,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        23
+      ],
+      "pagination_ms": 34.12180001032539,
+      "save_ms": 11.1276999959955,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        23
+      ]
+    },
+    {
+      "index": 99,
+      "active_backtest_pids": [
+        33552
+      ],
+      "sync_state": "running",
+      "provider_requests_before": [
+        24
+      ],
+      "pagination_ms": 30.432800005655736,
+      "save_ms": 22.677599990856834,
+      "backtest_pids_after": [
+        33552
+      ],
+      "provider_requests_after": [
+        24
+      ]
+    }
+  ],
+  "limitations": [
+    "Not a 5000-symbol x 1000-day market-scale benchmark",
+    "HTTP loopback excludes browser rendering latency",
+    "Full transaction durability retained (SQLite WAL synchronous FULL)",
+    "Fixture metadata pagination is event-store summaries, not a claimed account-trade pagination API"
+  ]
+}

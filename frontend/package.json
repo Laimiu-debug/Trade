@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:rebuild": "python ../scripts/generate_rebuild_tokens.py && vite --config vite.rebuild.config.ts",
+    "icons:rebuild": "node scripts/generate-trade-icons.mjs",
+    "build:rebuild": "python ../scripts/generate_rebuild_tokens.py && tsc -p tsconfig.rebuild.json && vite build --config vite.rebuild.config.ts",
     "dev:host": "vite --host 127.0.0.1 --port 4173",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b",
@@ -59,5 +62,8 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   }
 }

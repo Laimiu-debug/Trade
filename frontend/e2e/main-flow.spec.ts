@@ -12,7 +12,7 @@ test('main flow: screener -> chart -> signals', async ({ page }) => {
   await expect(page.getByText(/第3步运行完成/)).toBeVisible()
   await page.getByRole('button', { name: '运行第4步' }).click()
   await expect(page.getByText(/第4步运行完成/)).toBeVisible()
-  await expect(page.getByText('第4步通过')).toBeVisible()
+  await expect(page.getByText('第4步通过', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: '看图标注' }).first()).toBeVisible()
 
   await page.getByRole('button', { name: '看图标注' }).first().click()

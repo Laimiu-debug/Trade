@@ -29,6 +29,10 @@ export default function Settings() {
   const [targetDir, setTargetDir] = useState('');
   const [targetNote, setTargetNote] = useState('');
   const [moving, setMoving] = useState(false);
+  const moveLock = useRef(false);
+  const previewSequence = useRef(0);
+  const verifiedParent = useRef('');
+  const [restartNotice, setRestartNotice] = useState<{ active_dir: string; new_dir: string } | null>(null);
   const [picking, setPicking] = useState(false);
   const [pdfPickDir, setPdfPickDir] = useState('');
   const [pickingPdf, setPickingPdf] = useState(false);
@@ -45,6 +49,7 @@ export default function Settings() {
   useEffect(reloadFlows, [reloadFlows]);
 
   const refreshTargetPreview = useCallback(async (dir: string) => {
+    const sequence = ++previewSequence.current;
     const trimmed = dir.trim();
     if (!trimmed) {
       setTargetDir('');
@@ -53,13 +58,25 @@ export default function Settings() {
     }
     try {
       const r = await api.post<{ target_dir: string; note: string }>('/api/system/preview-data-dir', { target_dir: trimmed });
+      if (sequence !== previewSequence.current) return;
+      verifiedParent.current = trimmed;
       setTargetDir(r.target_dir);
       setTargetNote(r.note);
     } catch (e) {
+      if (sequence !== previewSequence.current) return;
+      verifiedParent.current = '';
       setTargetDir('');
       setTargetNote(String(e).replace(/^Error:\s*/, ''));
     }
   }, []);
+
+  const changePickDir = useCallback((value: string) => {
+    previewSequence.current += 1;
+    verifiedParent.current = '';
+    setTargetDir(''); setTargetNote(''); setPickDir(value);
+  }, []);
+
+  useEffect(() => () => { previewSequence.current += 1; }, []);
 
   useEffect(() => {
     const t = window.setTimeout(() => { refreshTargetPreview(pickDir); }, 300);
@@ -114,7 +131,7 @@ export default function Settings() {
     try {
       const r = await api.get<{ path: string | null; cancelled: boolean }>('/api/system/pick-folder');
       if (r.cancelled || !r.path) return;
-      setPickDir(r.path);
+      changePickDir(r.path);
     } catch (e) {
       toast(String(e).replace(/^Error:\s*/, ''));
     } finally {
@@ -123,16 +140,21 @@ export default function Settings() {
   };
 
   const moveData = async () => {
+    if (moveLock.current || restartNotice) return;
     const parent = pickDir.trim();
     if (!parent) { toast('请先选择目标文件夹'); return; }
     if (!targetDir) { toast(targetNote || '目标路径无效'); return; }
-    if (!window.confirm(`将把数据迁移到：\n${targetDir}\n\n迁移后需重启程序生效，确认继续？`)) return;
+    if (verifiedParent.current !== parent) { toast('目标位置正在校验，请稍候'); return; }
+    if (!window.confirm(`将把数据复制到：\n${targetDir}\n\n原数据保留；复制完成后暂停写入，请完全退出并重新启动程序以使用目标目录。确认继续？`)) return;
+    moveLock.current = true;
     setMoving(true);
     try {
-      const r = await api.post<{ new_dir: string }>('/api/system/move-data', { target_dir: parent });
-      toast(`迁移完成：${r.new_dir}，程序即将退出，请重新启动`);
-      setTimeout(() => window.location.reload(), 1800);
-    } catch (e) { toast(String(e)); } finally { setMoving(false); }
+      const r = await api.post<{ new_dir: string; active_dir?: string; restart_required?: boolean; need_restart?: boolean }>('/api/system/move-data', { target_dir: parent });
+      const active = r.active_dir || dataDir;
+      setDataDir(active);
+      setRestartNotice({ active_dir: active, new_dir: r.new_dir });
+      toast('数据已复制，当前目录保持不变。请完全退出并重新启动程序以使用新目录。');
+    } catch (e) { toast(String(e)); } finally { moveLock.current = false; setMoving(false); }
   };
 
   const testAI = async (kind: 'score' | 'ocr') => {
@@ -191,8 +213,10 @@ export default function Settings() {
           <h2 className="page-title">设置</h2>
           <div className="page-sub">费率、出入金、行情源与 AI 配置</div>
         </div>
-        <button className="primary" onClick={save}>保存全部设置</button>
+        <button className="primary" onClick={save} disabled={moving || Boolean(restartNotice)}>保存全部设置</button>
       </div>
+
+      {restartNotice && <div className="card" role="status" style={{ marginBottom: 18 }}><h3>目录复制完成，等待重启</h3><p>当前读取目录：{restartNotice.active_dir}</p><p>下次启动目录：{restartNotice.new_dir}</p><p>原数据仍保留，服务已暂停写入。请从托盘完全退出程序，再重新打开；刷新页面不会切换数据目录。</p></div>}
 
       <div className="card" style={{ marginBottom: 18 }}>
         <h3 className="card-title">出入金流水</h3>
@@ -403,13 +427,14 @@ export default function Settings() {
                 placeholder="点击「浏览…」选择，或手动粘贴路径"
                 style={{ flex: 1, minWidth: 240 }}
                 value={pickDir}
-                onChange={e => setPickDir(e.target.value)}
+                disabled={moving || Boolean(restartNotice)}
+                onChange={e => changePickDir(e.target.value)}
               />
-              <button type="button" onClick={pickFolder} disabled={picking || moving}>
+              <button type="button" onClick={pickFolder} disabled={picking || moving || Boolean(restartNotice)}>
                 {picking ? '选择中…' : '浏览…'}
               </button>
-              <button className="primary" onClick={moveData} disabled={moving || !targetDir}>
-                {moving ? '迁移中…' : '迁移并重启'}
+              <button className="primary" onClick={moveData} disabled={moving || !targetDir || Boolean(restartNotice)}>
+                {moving ? '复制中…' : restartNotice ? '等待完全退出并重启' : '复制数据并准备重启'}
               </button>
             </div>
             {targetDir && targetDir !== pickDir && (

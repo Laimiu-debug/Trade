@@ -3,8 +3,10 @@ from datetime import date
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from starlette.concurrency import run_in_threadpool
 
 from ..database import get_db
+from ..services.uploads import read_screenshot
 from ..models import PendingTrade, Trade
 from ..services import ai as ai_svc
 from ..services import capital_estimate as capital_est_svc
@@ -140,42 +142,49 @@ def ai_round_review(code: str, start_date: date, db: Session = Depends(get_db)):
 
 # ---------- 截图导入 ----------
 
+def _process_trade_screenshot(bind, content: bytes, mime: str):
+    with Session(bind=bind, autoflush=False, expire_on_commit=False) as db:
+        try:
+            items = ai_svc.parse_screenshot(db, content, mime)
+        except ai_svc.AIUnavailable as exc:
+            raise HTTPException(400, str(exc)) from exc
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(502, '识别请求失败，请检查模型配置、网络和返回内容') from exc
+
+        if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
+            raise HTTPException(502, '识别返回内容格式无效')
+
+        created = 0
+        for item in items:
+            side = _normalize_side(str(item.get("side", "")))
+            if side not in ("buy", "sell"):
+                continue  # 持仓行(hold)不能直接变成交易
+            try:
+                code, name = market_svc.resolve_stock(
+                    str(item.get("code", "")).strip(),
+                    str(item.get("name", "")).strip(),
+                )
+                row = PendingTrade(
+                    trade_date=date.fromisoformat(item["date"]) if item.get("date") else date.today(),
+                    code=code,
+                    name=name,
+                    side=side,
+                    price=float(item.get("price", 0)),
+                    qty=int(item.get("qty", 0)),
+                    raw_text=str(item),
+                )
+            except (ValueError, TypeError):
+                continue
+            db.add(row)
+            created += 1
+        db.commit()
+        return {"recognized": len(items), "pending_created": created}
+
+
 @router.post("/import/screenshot")
 async def import_screenshot(file: UploadFile = File(...), db: Session = Depends(get_db)):
-    content = await file.read()
-    mime = file.content_type or "image/png"
-    try:
-        items = ai_svc.parse_screenshot(db, content, mime)
-    except ai_svc.AIUnavailable as exc:
-        raise HTTPException(400, str(exc)) from exc
-    except Exception as exc:  # noqa: BLE001
-        raise HTTPException(502, f"识别失败: {exc}") from exc
-
-    created = 0
-    for item in items:
-        side = _normalize_side(str(item.get("side", "")))
-        if side not in ("buy", "sell"):
-            continue  # 持仓行(hold)不能直接变成交易
-        try:
-            code, name = market_svc.resolve_stock(
-                str(item.get("code", "")).strip(),
-                str(item.get("name", "")).strip(),
-            )
-            row = PendingTrade(
-                trade_date=date.fromisoformat(item["date"]) if item.get("date") else date.today(),
-                code=code,
-                name=name,
-                side=side,
-                price=float(item.get("price", 0)),
-                qty=int(item.get("qty", 0)),
-                raw_text=str(item),
-            )
-        except (ValueError, TypeError):
-            continue
-        db.add(row)
-        created += 1
-    db.commit()
-    return {"recognized": len(items), "pending_created": created}
+    content, mime = await read_screenshot(file)
+    return await run_in_threadpool(_process_trade_screenshot, db.get_bind(), content, mime)
 
 
 @router.get("/pending")

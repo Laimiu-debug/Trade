@@ -1,0 +1,36 @@
+import { chromium } from '@playwright/test'
+
+const browser = await chromium.launch({ headless: true, channel: 'msedge' })
+try {
+  const page = await browser.newPage({ viewport: { width: 1365, height: 900 } })
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.goto('http://127.0.0.1:8011/rebuild.html')
+  await page.getByRole('heading', { name: '创建第一个账户' }).waitFor()
+  await page.getByRole('textbox', { name: '账户名称' }).fill('回合摘要浏览器测试')
+  await page.getByRole('button', { name: '创建实盘账户' }).click()
+  await page.getByRole('button', { name: '交易流水', exact: true }).click()
+  const trade = page.locator('section.card').filter({ has: page.getByRole('heading', { name: '新增交易' }) })
+  await trade.getByLabel('交易日期').fill('2025-01-02')
+  await trade.getByLabel('证券代码').fill('600000')
+  await trade.getByLabel('价格').fill('10')
+  await trade.getByRole('button', { name: '新增交易' }).click()
+  await page.getByRole('button', { name: '统计分析', exact: true }).click()
+  const rounds = page.locator('section.card').filter({ has: page.getByRole('heading', { name: '交易回合' }) })
+  await rounds.getByRole('button', { name: /600000/ }).click()
+  await rounds.getByLabel('人工回合摘要').fill('保持纪律，继续观察')
+  await rounds.getByRole('button', { name: '保存回合摘要' }).click()
+  await rounds.getByText('回合摘要已保存').waitFor()
+  await page.getByRole('button', { name: '交易流水', exact: true }).click()
+  await trade.getByLabel('交易日期').fill('2025-01-02')
+  await trade.getByLabel('证券代码').fill('600000')
+  await trade.getByLabel('价格').fill('11')
+  await trade.getByRole('button', { name: '新增交易' }).click()
+  await page.getByRole('button', { name: '统计分析', exact: true }).click()
+  await rounds.getByRole('button', { name: /600000/ }).click()
+  await rounds.getByText('交易修订改变了该回合的关联成交').waitFor({ timeout: 10000 })
+  if (errors.length) throw new Error(errors.join('\n'))
+  console.log('browser smoke: round note and association change warning')
+} finally {
+  await browser.close()
+}

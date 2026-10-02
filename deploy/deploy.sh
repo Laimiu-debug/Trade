@@ -8,7 +8,7 @@
 #   → 后端以 tdx_only 模式读取
 #=============================================
 
-set -e
+set -euo pipefail
 
 # ---------- 配置区 ----------
 PROJECT_NAME="final-trade"
@@ -16,7 +16,7 @@ INSTALL_DIR="/opt/final-trade"          # 项目安装目录
 TDX_DATA_DIR="${INSTALL_DIR}/tdx-data"  # TDX 数据存放目录
 NGINX_CONF="/etc/nginx/sites-available/final-trade"
 PYTHON_VERSION="python3.12"
-NODE_VERSION="20"
+NODE_VERSION="22"
 BACKEND_PORT=8000
 FRONTEND_PORT=80
 DOMAIN=""                               # 填入你的域名，如 trade.example.com（留空则用 IP）
@@ -46,6 +46,7 @@ if ! command -v node &>/dev/null; then
 fi
 echo "  Node.js: $(node -v)"
 echo "  npm:     $(npm -v)"
+node -e 'const [a,b]=process.versions.node.split(".").map(Number);if(!((a===20&&b>=19)||(a===22&&b>=12)||a>22)){console.error("Node.js ^20.19.0 or >=22.12.0 is required");process.exit(1)}'
 
 # 安装 Python
 if ! command -v ${PYTHON_VERSION} &>/dev/null; then
@@ -78,7 +79,7 @@ if [ ! -f "${INSTALL_DIR}/backend/app/main.py" ]; then
     echo "    请先将项目上传到 ${INSTALL_DIR}"
     echo ""
     echo "    推荐上传方式（在本地执行）:"
-    echo "    scp -r ./backend ./frontend deploy/ ${USER}@<服务器IP>:/tmp/final-trade/"
+    echo "    scp -r ./backend ./frontend ./journal-frontend deploy/ ${USER}@<服务器IP>:/tmp/final-trade/"
     echo "    sudo mv /tmp/final-trade /opt/final-trade"
     echo ""
     exit 1
@@ -124,14 +125,14 @@ echo "[4/5] 构建前端..."
 
 cd "${INSTALL_DIR}/frontend"
 
-# 安装依赖
-if [ ! -d "node_modules" ]; then
-    echo "  安装前端依赖..."
-    npm install
-fi
+npm ci
 
 # 构建生产版本
 echo "  构建生产版本..."
+npm run build
+
+cd "${INSTALL_DIR}/journal-frontend"
+npm ci
 npm run build
 
 echo "  ✓ 前端构建完成 (dist/)"
@@ -186,6 +187,16 @@ server {
         proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_read_timeout 120s;
         proxy_connect_timeout 10s;
+    }
+
+    # Journal HTML, API and uploads are mounted together in the backend.
+    location /journal-app/ {
+        proxy_pass http://127.0.0.1:${BACKEND_PORT};
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_read_timeout 120s;
     }
 
     # SPA 路由 fallback

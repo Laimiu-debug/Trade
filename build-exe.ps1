@@ -22,30 +22,32 @@ $repoDist = Join-Path $repoRoot "dist"
 $resolvedIconPath = ""
 $defaultIconPath = Join-Path $repoRoot "assets\\finaltrade.ico"
 
-# Optional runtime deps — keep out of the EXE (sync via separate scripts / local cache).
+# Bundle configured providers and their runtime dependencies.
 $excludeModules = @(
-  "akshare",
-  "baostock",
   "pyarrow",
-  "lxml",
-  "aiohttp",
-  "google",
-  "google.auth",
-  "cryptography",
   "matplotlib",
-  "tqdm",
-  "paramiko",
-  "werkzeug",
-  "html5lib",
-  "fsspec",
-  "openpyxl"
+  "torch",
+  "tensorflow",
+  "IPython",
+  "notebook",
+  "pytest"
 )
 
-$forbiddenPipPackages = @(
-  "akshare",
-  "baostock",
-  "pyarrow"
-)
+function Invoke-BuildCommand {
+  param([string]$FilePath, [string[]]$Arguments)
+  & $FilePath @Arguments
+  if ($LASTEXITCODE -ne 0) { throw "Build command failed ($LASTEXITCODE): $FilePath" }
+}
+
+function Remove-BuildArtifact {
+  param([string]$Path, [string]$AllowedRoot)
+  $absolute = [IO.Path]::GetFullPath($Path)
+  $boundary = [IO.Path]::GetFullPath($AllowedRoot).TrimEnd('\') + '\'
+  if (-not $absolute.StartsWith($boundary, [StringComparison]::OrdinalIgnoreCase)) {
+    throw "Build cleanup escaped its expected directory: $absolute"
+  }
+  if (Test-Path -LiteralPath $absolute) { Remove-Item -LiteralPath $absolute -Recurse -Force }
+}
 
 if (-not $Name -or $Name.Trim().Length -le 0) {
   $normalizedVersion = $Version.Trim()
@@ -55,6 +57,9 @@ if (-not $Name -or $Name.Trim().Length -le 0) {
   $Name = "FinalTrade-V$normalizedVersion"
 }
 
+if ($Name -notmatch '^[A-Za-z0-9][A-Za-z0-9._ -]{0,79}$') {
+  throw 'Name must be a simple artifact name without directory separators.'
+}
 $backendSpec = Join-Path $backendDir ("{0}.spec" -f $Name)
 
 if ($IconPath -and $IconPath.Trim().Length -gt 0) {
@@ -69,35 +74,24 @@ elseif (Test-Path $defaultIconPath) {
 
 if ($RecreateVenv -and (Test-Path $backendVenv)) {
   Write-Host "Recreating backend virtual environment (-RecreateVenv)..."
-  Remove-Item $backendVenv -Recurse -Force
+  Remove-BuildArtifact $backendVenv $backendDir
 }
 
 if (-not (Test-Path $backendPython)) {
   Write-Host "Creating backend virtual environment..."
-  python -m venv $backendVenv
+  Invoke-BuildCommand 'python' @('-m', 'venv', $backendVenv)
 }
 
 Write-Host "Installing backend dependencies..."
-& $backendPython -m pip install --upgrade pip
-& $backendPython -m pip install -r (Join-Path $backendDir "requirements.txt")
-& $backendPython -m pip install pyinstaller
-
-$installedNames = @(
-  & $backendPython -m pip list --format=json | ConvertFrom-Json | ForEach-Object { $_.name.ToLower() }
-)
-foreach ($pkg in $forbiddenPipPackages) {
-  if ($installedNames -contains $pkg.ToLower()) {
-    throw "Build venv must not include '$pkg'. Run with -RecreateVenv or: pip uninstall $pkg"
-  }
-}
+Invoke-BuildCommand $backendPython @('-m', 'pip', 'install', '--upgrade', 'pip')
+Invoke-BuildCommand $backendPython @('-m', 'pip', 'install', '-r', (Join-Path $backendDir 'requirements.txt'))
+Invoke-BuildCommand $backendPython @('-m', 'pip', 'install', 'pyinstaller==6.19.0')
 
 Write-Host "Building frontend..."
 Push-Location $frontendDir
 try {
-  if (-not (Test-Path (Join-Path $frontendDir "node_modules"))) {
-    npm install
-  }
-  npm run build
+  Invoke-BuildCommand 'npm.cmd' @('ci')
+  Invoke-BuildCommand 'npm.cmd' @('run', 'build')
 }
 finally {
   Pop-Location
@@ -110,10 +104,8 @@ if (-not (Test-Path (Join-Path $frontendDist "index.html"))) {
 Write-Host "Building journal frontend..."
 Push-Location $journalFrontendDir
 try {
-  if (-not (Test-Path (Join-Path $journalFrontendDir "node_modules"))) {
-    npm install
-  }
-  npm run build
+  Invoke-BuildCommand 'npm.cmd' @('ci')
+  Invoke-BuildCommand 'npm.cmd' @('run', 'build')
 }
 finally {
   Pop-Location
@@ -123,10 +115,10 @@ if (-not (Test-Path (Join-Path $journalFrontendDist "index.html"))) {
 }
 
 if ($Clean) {
-  Remove-Item (Join-Path $backendDist ("{0}.exe" -f $Name)) -Force -ErrorAction SilentlyContinue
-  Remove-Item (Join-Path $backendBuild $Name) -Recurse -Force -ErrorAction SilentlyContinue
-  Remove-Item $backendSpec -Force -ErrorAction SilentlyContinue
-  Remove-Item (Join-Path $repoDist ("{0}.exe" -f $Name)) -Force -ErrorAction SilentlyContinue
+  Remove-BuildArtifact (Join-Path $backendDist ("{0}.exe" -f $Name)) $backendDist
+  Remove-BuildArtifact (Join-Path $backendBuild $Name) $backendBuild
+  Remove-BuildArtifact $backendSpec $backendDir
+  Remove-BuildArtifact (Join-Path $repoDist ("{0}.exe" -f $Name)) $repoDist
 }
 
 Write-Host "Packaging exe with PyInstaller..."
@@ -155,7 +147,7 @@ if ($resolvedIconPath) {
 
 Push-Location $backendDir
 try {
-  & $backendPython -m PyInstaller @pyiArgs
+  Invoke-BuildCommand $backendPython (@('-m', 'PyInstaller') + $pyiArgs)
 }
 finally {
   Pop-Location

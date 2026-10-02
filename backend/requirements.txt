@@ -6,4 +6,9 @@ python-multipart==0.0.20
 numpy==2.3.2
 pandas==2.3.2
 sqlalchemy>=2.0,<3.0
+Pillow>=11,<12
+reportlab>=4.4,<5
+openpyxl>=3.1,<4
 akshare>=1.14
+baostock>=0.9,<1
+tzdata

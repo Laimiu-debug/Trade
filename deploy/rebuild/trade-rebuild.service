@@ -1,0 +1,29 @@
+[Unit]
+Description=Trade rebuilt application (loopback API)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=trade
+Group=trade
+WorkingDirectory=/opt/trade/backend
+EnvironmentFile=/etc/trade/rebuild.env
+Environment=TRADE_REBUILD_PORT=8011
+Environment=TRADE_REBUILD_DATA_DIR=/var/lib/trade-rebuild
+Environment=PYTHONUNBUFFERED=1
+# Keep the actual peer visible. Trust only the explicit proxy token in the app.
+ExecStart=/opt/trade/.venv/bin/python -m uvicorn trade_app.main:app --host 127.0.0.1 --port 8011 --no-proxy-headers
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=150
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/trade-rebuild
+
+[Install]
+WantedBy=multi-user.target

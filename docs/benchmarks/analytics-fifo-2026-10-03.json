@@ -1,0 +1,20 @@
+{
+  "input_trades": 24000,
+  "lot_count": 12000,
+  "before_seconds": [
+    1.3056661999871721,
+    1.3235161999909906,
+    1.3025809000100708
+  ],
+  "after_seconds": [
+    0.047553800002788194,
+    0.046908199990866706,
+    0.049933800008147955
+  ],
+  "before_median_seconds": 1.3056661999871721,
+  "after_median_seconds": 0.047553800002788194,
+  "speedup": 27.456611246853413,
+  "payload_equal": true,
+  "round_id": "round:b000000",
+  "payload_sha256": "66c8f87e348f30da6e55bcea129ae9486f7ff9e2f72a7132762e1126d69f342f"
+}

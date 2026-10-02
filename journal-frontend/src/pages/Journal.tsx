@@ -478,7 +478,14 @@ export default function Journal() {
   const { setBusy } = useAiBusy();
   const [searchParams] = useSearchParams();
   const [day, setDay] = useState(() => searchParams.get('day') || today());
+  const activeDay = useRef(day);
+  const editScope = useRef(0);
+  const mounted = useRef(true);
+  const saveOperations = useRef(new Map<string, { snapshot: string; promise: Promise<boolean> }>());
+  const rehearsalRequests = useRef(new Map<number, symbol>());
+  const rehearsalRevision = useRef(0);
   const [data, setData] = useState<DailyReview | null>(null);
+  const latestData = useRef<DailyReview | null>(null);
   const [savedSnapshot, setSavedSnapshot] = useState('');
   const [scoringId, setScoringId] = useState<number | 'all' | 'batch' | 't-group' | null>(null);
   const [focusedTradeId, setFocusedTradeId] = useState<number | null>(null);
@@ -497,6 +504,19 @@ export default function Journal() {
   const [autoSavedAt, setAutoSavedAt] = useState<number | null>(null);
   const imgRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    mounted.current = true;
+    const requests = rehearsalRequests.current;
+    return () => { mounted.current = false; loadSeqRef.current += 1; requests.clear(); };
+  }, []);
+
+  useEffect(() => { latestData.current = data; }, [data]);
+
+  const captureScope = () => {
+    const scope = editScope.current;
+    return () => mounted.current && activeDay.current === day && editScope.current === scope;
+  };
+
   const currentSnapshot = useMemo(
     () => (data?.review_date === day && data ? journalSaveSnapshot(data) : ''),
     [data, day],
@@ -507,6 +527,13 @@ export default function Journal() {
   const requestDayChange = (next: string) => {
     if (next === day) return;
     if (!confirmDiscard(dirty)) return;
+    activeDay.current = next;
+    editScope.current += 1;
+    rehearsalRequests.current.clear();
+    rehearsalRevision.current += 1;
+    setRehearsalCloseLoading(null);
+    setCopyingRehearsal(false);
+    setSaving(false);
     setSavedSnapshot('');
     setDay(next);
   };
@@ -515,6 +542,7 @@ export default function Journal() {
     const seq = ++loadSeqRef.current;
     return api.get<DailyReview>(`/api/reviews/daily/${d}`).then(res => {
       if (seq !== loadSeqRef.current) return;
+      if (!mounted.current || activeDay.current !== d) return;
       if (res.review_date !== d) return;
       const normalized: DailyReview = {
         ...res,
@@ -557,13 +585,15 @@ export default function Journal() {
         focusAfterLoadRef.current = null;
       }
     }).catch(e => {
-      if (seq === loadSeqRef.current) toast(String(e));
+      if (mounted.current && activeDay.current === d && seq === loadSeqRef.current) toast(String(e));
       throw e;
     });
   }, [toast]);
 
   useEffect(() => {
-    api.get<{ pdf_username?: string }>('/api/settings').then(v => setUsername(v.pdf_username ?? '')).catch(() => {});
+    let current = true;
+    api.get<{ pdf_username?: string }>('/api/settings').then(v => { if (current) setUsername(v.pdf_username ?? ''); }).catch(() => {});
+    return () => { current = false; };
   }, []);
 
   useEffect(() => {
@@ -572,12 +602,14 @@ export default function Journal() {
   }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    let current = true;
     setData(null);
     setLoading(true);
     setFocusedTradeId(null);
     setFocusedGroupId(null);
     setSelectedTradeIds([]);
-    load(day).finally(() => setLoading(false));
+    load(day).catch(() => {}).finally(() => { if (current) setLoading(false); });
+    return () => { current = false; loadSeqRef.current += 1; };
   }, [day, load]);
 
   const patch = (p: Partial<DailyReview>) => {
@@ -592,11 +624,17 @@ export default function Journal() {
   };
 
   const applyScoreResult = (result: ScoreApiResult) => {
-    patch({
+    const previous = latestData.current;
+    if (!previous || previous.review_date !== day) return null;
+    const next = {
+      ...previous,
       trade_scores: result.trade_scores,
       scores: result.scores,
       ai_summary: result.summary,
-    });
+    };
+    latestData.current = next;
+    setData(next);
+    return next;
   };
 
   const saveTextsForAi = async () => {
@@ -617,6 +655,8 @@ export default function Journal() {
     keep?: { tradeId?: number | null; groupId?: string | null },
     result?: ScoreApiResult,
   ) => {
+    const current = captureScope();
+    if (!current()) return;
     if (keep?.groupId) {
       setFocusedGroupId(keep.groupId);
       setFocusedTradeId(null);
@@ -625,40 +665,54 @@ export default function Journal() {
       setFocusedGroupId(null);
     }
     if (result) {
-      applyScoreResult(result);
-      await save(true);
+      const updated = applyScoreResult(result);
+      if (updated) await save(true, updated);
     } else {
       await load(day);
     }
-    toast(message);
+    if (current()) toast(message);
   };
 
-  const save = async (silent = false) => {
-    if (!data) return false;
-    setSaving(true);
-    try {
+  const save = async (silent = false, value = data) => {
+    if (!value || value.review_date !== day) return false;
+    const scope = editScope.current;
+    const snapshot = journalSaveSnapshot(value);
+    const current = () => mounted.current && activeDay.current === day && editScope.current === scope;
+    // A route-unmount flush may contain edits made while an earlier save was
+    // still in flight. Serialize that newer snapshot instead of dropping it.
+    while (saveOperations.current.has(day)) {
+      const previous = saveOperations.current.get(day)!;
+      if (previous.snapshot === snapshot) return previous.promise;
+      await previous.promise;
+    }
+    if (current()) setSaving(true);
+    const promise = Promise.resolve().then(async () => { try {
       await api.put(`/api/reviews/daily/${day}`, {
-        market_observation: data.market_observation,
-        decision_review: data.decision_review,
-        mistakes: data.mistakes,
-        scores: data.scores,
-        trade_scores: data.trade_scores ?? {},
-        next_market_forecast: data.next_market_forecast,
-        next_watchlist: data.next_watchlist,
-        next_position_plan: data.next_position_plan,
-        next_risk_plan: data.next_risk_plan,
-        next_position_rehearsal: data.next_position_rehearsal ?? [],
-        rehearsal_ai_analysis: data.rehearsal_ai_analysis ?? '',
+        market_observation: value.market_observation,
+        decision_review: value.decision_review,
+        mistakes: value.mistakes,
+        scores: value.scores,
+        trade_scores: value.trade_scores ?? {},
+        next_market_forecast: value.next_market_forecast,
+        next_watchlist: value.next_watchlist,
+        next_position_plan: value.next_position_plan,
+        next_risk_plan: value.next_risk_plan,
+        next_position_rehearsal: value.next_position_rehearsal ?? [],
+        rehearsal_ai_analysis: value.rehearsal_ai_analysis ?? '',
       });
-      setSavedSnapshot(journalSaveSnapshot(data));
-      if (silent) setAutoSavedAt(Date.now());
-      else toast('复盘已保存');
+      if (current()) {
+        setSavedSnapshot(snapshot);
+        if (silent) setAutoSavedAt(Date.now());
+        else toast('复盘已保存');
+      }
       return true;
-    } catch (e) { toast(String(e)); return false; } finally { setSaving(false); }
+    } catch (e) { if (current()) toast(String(e)); return false; } finally { saveOperations.current.delete(day); if (current()) setSaving(false); } });
+    saveOperations.current.set(day, { snapshot, promise });
+    return promise;
   };
 
   useAutosave(
-    !!data && dirty && !saving && scoringId === null && !reviewing && !rehearsalReviewing,
+    !!data && dirty && scoringId === null && !reviewing && !rehearsalReviewing,
     async () => { await save(true); },
     [currentSnapshot],
   );
@@ -689,11 +743,13 @@ export default function Journal() {
   const aiScoreAll = async () => {
     if (!data?.trades.length) { toast('当日无交易，无法打分'); return; }
     if (scoreLockRef.current) return;
+    const current = captureScope();
     scoreLockRef.current = true;
     setScoringId('all');
     setBusy(true, 'AI 交易分析中…');
     try {
       await saveTextsForAi();
+      if (!current()) return;
       const unscored = data.trades.filter(t => !tradeHasAnalysis(data.trade_scores?.[String(t.id)] ?? {}));
       const targets = unscored.length > 0 ? unscored : data.trades;
       focusTrade(targets[0]?.id ?? data.trades[0].id);
@@ -701,6 +757,7 @@ export default function Journal() {
         `/api/reviews/daily/${day}/ai-score/batch`,
         { trade_ids: targets.map(t => t.id) },
       );
+      if (!current()) return;
       if (result.merged_count === 0) {
         toast('AI 未返回有效评分，请重试');
         return;
@@ -710,7 +767,7 @@ export default function Journal() {
         { tradeId: targets[0]?.id ?? null },
         result,
       );
-    } catch (e) { toast(String(e)); } finally {
+    } catch (e) { if (current()) toast(String(e)); } finally {
       scoreLockRef.current = false;
       setScoringId(null);
       setBusy(false);
@@ -719,19 +776,22 @@ export default function Journal() {
 
   const aiScoreOne = async (tradeId: number) => {
     if (scoreLockRef.current || scoringId !== null) return;
+    const current = captureScope();
     scoreLockRef.current = true;
     setScoringId(tradeId);
     focusTrade(tradeId);
     setBusy(true, 'AI 分析此笔交易…');
     try {
       await saveTextsForAi();
+      if (!current()) return;
       const result = await api.post<ScoreApiResult>(`/api/reviews/daily/${day}/ai-score/${tradeId}`);
+      if (!current()) return;
       if (result.merged_count === 0) {
         toast('AI 未返回有效评分，请重试');
         return;
       }
       await persistAndRefresh('此笔交易 AI 分析完成，已自动保存', { tradeId }, result);
-    } catch (e) { toast(String(e)); } finally {
+    } catch (e) { if (current()) toast(String(e)); } finally {
       scoreLockRef.current = false;
       setScoringId(null);
       setBusy(false);
@@ -741,16 +801,19 @@ export default function Journal() {
   const aiScoreSelected = async () => {
     if (!data || selectedTradeIds.length === 0) { toast('请先勾选要分析的交易'); return; }
     if (scoreLockRef.current || scoringId !== null) return;
+    const current = captureScope();
     scoreLockRef.current = true;
     setScoringId('batch');
     focusTrade(selectedTradeIds[0]);
     setBusy(true, 'AI 批量分析中…');
     try {
       await saveTextsForAi();
+      if (!current()) return;
       const result = await api.post<ScoreApiResult>(
         `/api/reviews/daily/${day}/ai-score/batch`,
         { trade_ids: selectedTradeIds },
       );
+      if (!current()) return;
       if (result.merged_count === 0) {
         toast('AI 未返回有效评分，请重试');
         return;
@@ -760,7 +823,7 @@ export default function Journal() {
         { tradeId: selectedTradeIds[0] },
         result,
       );
-    } catch (e) { toast(String(e)); } finally {
+    } catch (e) { if (current()) toast(String(e)); } finally {
       scoreLockRef.current = false;
       setScoringId(null);
       setBusy(false);
@@ -769,18 +832,21 @@ export default function Journal() {
 
   const aiScoreTGroup = async (group: TGroup) => {
     if (scoreLockRef.current || scoringId !== null) return;
+    const current = captureScope();
     scoreLockRef.current = true;
     setScoringId('t-group');
     focusGroup(group.id);
     setBusy(true, 'AI 做T 分析中…');
     try {
       await saveTextsForAi();
+      if (!current()) return;
       const result = await api.post<ScoreApiResult>(`/api/reviews/daily/${day}/ai-score/t-group`, {
         code: group.code,
         trade_ids: group.trade_ids,
       });
+      if (!current()) return;
       await persistAndRefresh(`「${group.name}」做T 分析完成，已自动保存`, { groupId: group.id }, result);
-    } catch (e) { toast(String(e)); } finally {
+    } catch (e) { if (current()) toast(String(e)); } finally {
       scoreLockRef.current = false;
       setScoringId(null);
       setBusy(false);
@@ -788,11 +854,14 @@ export default function Journal() {
   };
 
   const aiReview = async () => {
+    const current = captureScope();
     await save(true);
+    if (!current()) return;
     setReviewing(true);
     setBusy(true, 'AI 复盘生成中…');
     try {
       const result = await api.post<Partial<DailyReview>>(`/api/reviews/daily/${day}/ai-review`);
+      if (!current()) return;
       patch({
         market_observation: result.market_observation ?? data?.market_observation ?? '',
         decision_review: result.decision_review ?? data?.decision_review ?? '',
@@ -802,7 +871,7 @@ export default function Journal() {
         next_risk_plan: result.next_risk_plan ?? data?.next_risk_plan ?? '',
       });
       toast('AI 复盘草稿已生成，请核对后保存');
-    } catch (e) { toast(String(e)); } finally {
+    } catch (e) { if (current()) toast(String(e)); } finally {
       setReviewing(false);
       setBusy(false);
     }
@@ -810,6 +879,7 @@ export default function Journal() {
 
   const aiRehearsal = async () => {
     if (!data || !(data.next_position_rehearsal?.length)) { toast('请先填写明日操作预演'); return; }
+    const current = captureScope();
     setRehearsalReviewing(true);
     setBusy(true, 'AI 预演分析中…');
     try {
@@ -824,9 +894,10 @@ export default function Journal() {
         mistakes: data.mistakes ?? '',
         ai_summary: data.ai_summary ?? '',
       });
+      if (!current()) return;
       patch({ rehearsal_ai_analysis: result.rehearsal_ai_analysis ?? '' });
       toast('AI 预演分析已生成');
-    } catch (e) { toast(String(e)); } finally {
+    } catch (e) { if (current()) toast(String(e)); } finally {
       setRehearsalReviewing(false);
       setBusy(false);
     }
@@ -870,14 +941,23 @@ export default function Journal() {
     patch({ next_watchlist: next });
   };
 
-  const rehearsal = data?.next_position_rehearsal ?? [];
-  const setRehearsal = (next: PositionRehearsal[]) => patch({ next_position_rehearsal: next });
-  const setRehearsalRow = (i: number, p: Partial<PositionRehearsal>) => {
-    setRehearsal(rehearsal.map((r, idx) => (idx === i ? { ...r, ...p } : r)));
-  };
+  const rehearsal = useMemo(() => data?.next_position_rehearsal ?? [], [data?.next_position_rehearsal]);
+  const setRehearsal = useCallback((next: PositionRehearsal[]) => {
+    rehearsalRequests.current.clear();
+    rehearsalRevision.current += 1;
+    setRehearsalCloseLoading(null);
+    setData(current => current?.review_date === day ? { ...current, next_position_rehearsal: next } : current);
+  }, [day]);
+  const setRehearsalRow = useCallback((i: number, p: Partial<PositionRehearsal>) => {
+    rehearsalRevision.current += 1;
+    setData(current => current?.review_date === day ? { ...current, next_position_rehearsal: current.next_position_rehearsal.map((row, index) => index === i ? { ...row, ...p } : row) } : current);
+  }, [day]);
 
   const copyTodayToRehearsal = async () => {
     if (!data) return;
+    const scope = editScope.current;
+    const revision = rehearsalRevision.current;
+    const current = () => mounted.current && activeDay.current === day && editScope.current === scope && rehearsalRevision.current === revision;
     const all = data.today_positions ?? [];
     const skipped = all.filter(p => !p.code && (p.qty ?? 0) > 0);
     const filtered = all.filter(p => p.code && (p.qty ?? 0) > 0);
@@ -899,6 +979,7 @@ export default function Journal() {
           };
         }),
       );
+      if (!current()) return;
       setRehearsal(base);
       if (skipped.length > 0) {
         toast(`有 ${skipped.length} 条持仓缺少代码未复制，请先在资金账本编辑补全`);
@@ -906,23 +987,35 @@ export default function Journal() {
         toast('已从今日持仓复制（收盘价取自行情），可调整数量（0=清仓）');
       }
     } catch (e) {
-      toast(String(e));
+      if (current()) toast(String(e));
     } finally {
-      setCopyingRehearsal(false);
+      if (mounted.current && activeDay.current === day && editScope.current === scope) setCopyingRehearsal(false);
     }
   };
 
   const pickRehearsalStock = async (i: number, code: string, name: string) => {
+    const scope = editScope.current;
+    const token = Symbol();
+    const current = () => mounted.current && activeDay.current === day && editScope.current === scope && rehearsalRequests.current.get(i) === token;
     const fromToday = data?.today_positions?.find(p => p.code === code);
     let close = fromToday ? positionClose(fromToday) : null;
     setRehearsalRow(i, { code, name, close: close ?? undefined });
-    if (close != null) return;
+    rehearsalRequests.current.set(i, token);
+    if (close != null) { setRehearsalCloseLoading(null); return; }
     setRehearsalCloseLoading(i);
     try {
       close = await fetchCloseOnDay(code, day);
-      if (close != null) setRehearsalRow(i, { close });
+      if (close != null && current()) {
+        const resolvedClose = close;
+        setData(previous => previous?.review_date === day && previous.next_position_rehearsal[i]?.code === code && current() ? {
+          ...previous,
+          next_position_rehearsal: previous.next_position_rehearsal.map((row, index) => index === i ? { ...row, close: resolvedClose } : row),
+        } : previous);
+      }
+    } catch (error) {
+      if (current()) toast(String(error));
     } finally {
-      setRehearsalCloseLoading(null);
+      if (current()) setRehearsalCloseLoading(null);
     }
   };
 

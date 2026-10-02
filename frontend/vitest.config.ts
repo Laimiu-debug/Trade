@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    // Cross-workspace journal regressions must share the test renderer's React/router.
+    dedupe: ['react', 'react-dom', 'react-router-dom'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
@@ -14,6 +16,8 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     css: true,
     globals: true,
+    // Bound full-page renderer memory and lazy-import contention in full runs.
+    maxWorkers: 4,
     // backtest/settings 等测试涉及完整页面渲染与 mock 数据处理,
     // 本地 ~3-8s,CI runner 慢 3-4 倍需 20-30s。统一放宽避免 CI 误报。
     testTimeout: 30_000,

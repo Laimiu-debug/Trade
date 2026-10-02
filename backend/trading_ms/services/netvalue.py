@@ -59,6 +59,8 @@ def build_series(db: Session) -> list[NavPoint]:
 
     for day in all_days:
         for f in flows_by_day.get(day, []):
+            if nav <= 0:
+                raise ValueError('净值已归零，后续资金流无法折算份额，请先核对资产快照')
             signed = f.amount if f.kind in ("initial", "deposit") else -f.amount
             shares += signed / nav
         snap = snap_by_day.get(day)
@@ -109,7 +111,7 @@ def current_state(
         leg = (last.nav - prev_threshold) / (threshold - prev_threshold) * 100
         state["next_level"] = next_level
         state["next_threshold"] = threshold
-        state["next_gap_pct"] = (threshold / last.nav - 1) * 100
+        state["next_gap_pct"] = (threshold / last.nav - 1) * 100 if last.nav > 0 else None
         state["next_assets_target"] = threshold * last.shares
         state["leg_progress_pct"] = max(0.0, min(100.0, leg))
     else:

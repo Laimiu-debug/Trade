@@ -1,0 +1,1 @@
+ALTER TABLE backtest_runs ADD COLUMN code_sha256 TEXT NOT NULL DEFAULT '';

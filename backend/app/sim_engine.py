@@ -74,15 +74,29 @@ class SimAccountEngine:
         try:
             content = self._state_path.read_text(encoding="utf-8")
             raw = json.loads(content)
-            if not isinstance(raw, dict):
+            if not isinstance(raw, dict) or not isinstance(raw.get('account'), dict):
                 raise ValueError("invalid state format")
+            account = raw['account']
+            if not {'cash', 'initial_capital', 'as_of_date'} <= set(account):
+                raise ValueError('incomplete state account')
+            for key in ('cash', 'initial_capital'):
+                if isinstance(account[key], bool) or not math.isfinite(float(account[key])):
+                    raise ValueError('invalid state amount')
+            version = raw.get('schema_version', 1)
+            if type(version) is not int or version != self._SCHEMA_VERSION:
+                raise ValueError('unsupported state version')
+            for key in ('orders', 'fills', 'lots', 'closed_trades'):
+                if key in raw and not isinstance(raw[key], list):
+                    raise ValueError('invalid state collection')
+            if 'config' in raw and not isinstance(raw['config'], dict):
+                raise ValueError('invalid state config')
             state = self._migrate_state(raw)
-            self._write_state(state)
-            return state
-        except Exception:
-            state = self._default_state()
-            self._write_state(state)
-            return state
+        except (OSError, ValueError, TypeError, OverflowError) as exc:
+            raise SimEngineError('SIM_STATE_INVALID',
+                '模拟账户文件无法读取或校验失败，原文件已保留；请检查权限或从备份恢复，未初始化新账户') from exc
+        # A persistence failure must also propagate instead of replacing loaded data.
+        self._write_state(state)
+        return state
 
     def _default_state(self) -> dict[str, object]:
         today = self._now_date()

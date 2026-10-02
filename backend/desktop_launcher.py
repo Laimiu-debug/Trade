@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import argparse
 import os
-import signal
 import socket
-import subprocess
 import sys
 import threading
 import time
@@ -91,46 +89,6 @@ def _attach_frontend_routes(frontend_dist: Path) -> None:
         return FileResponse(index_file)
 
 
-def _kill_port_process(port: int) -> None:
-    """Kill any process listening on the given TCP port (Windows only)."""
-    if os.name != "nt":
-        return
-    try:
-        result = subprocess.run(
-            ["netstat", "-ano"],
-            capture_output=True, text=True, timeout=5,
-        )
-    except Exception:
-        return
-
-    pids: set[int] = set()
-    for line in result.stdout.splitlines():
-        parts = line.split()
-        if len(parts) < 5:
-            continue
-        local_addr = parts[1]
-        state = parts[3] if len(parts) >= 5 else ""
-        # Match lines where local address ends with :<port> and state is LISTENING
-        if f":{port}" in local_addr and state == "LISTENING":
-            try:
-                pids.add(int(parts[4]))
-            except ValueError:
-                continue
-
-    current_pid = os.getpid()
-    for pid in pids:
-        if pid == current_pid:
-            continue
-        try:
-            subprocess.run(
-                ["taskkill", "/F", "/PID", str(pid)],
-                capture_output=True, timeout=5,
-            )
-            print(f"Killed process {pid} occupying port {port}.")
-        except Exception as exc:
-            print(f"Failed to kill process {pid}: {exc}")
-
-
 def _is_port_available(host: str, port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         if os.name == "nt" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
@@ -143,10 +101,12 @@ def _is_port_available(host: str, port: int) -> bool:
 
 
 def _find_port(host: str, preferred: int, span: int = 20) -> int:
+    if not 1 <= preferred <= 65535:
+        raise ValueError("port must be between 1 and 65535")
     if _is_port_available(host, preferred):
         return preferred
 
-    for port in range(preferred + 1, preferred + span + 1):
+    for port in range(preferred + 1, min(65535, preferred + span) + 1):
         if _is_port_available(host, port):
             return port
 
@@ -156,8 +116,7 @@ def _find_port(host: str, preferred: int, span: int = 20) -> int:
             if _is_port_available(host, port):
                 return port
 
-    print(f"Warning: could not find a free port, falling back to {preferred}")
-    return preferred
+    raise RuntimeError("No free local port is available in the requested ranges")
 
 
 def _open_browser_when_ready(url: str, health_url: str, timeout_sec: int = 30) -> None:
@@ -189,10 +148,6 @@ def main() -> None:
         _attach_frontend_routes(frontend_dist)
 
     host = args.host
-    if not _is_port_available(host, args.port):
-        print(f"Port {args.port} is occupied, attempting to free it...")
-        _kill_port_process(args.port)
-
     selected_port = _find_port(host, args.port)
     if selected_port != args.port:
         print(f"Port {args.port} is busy, fallback to {selected_port}.")

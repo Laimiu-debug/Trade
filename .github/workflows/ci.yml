@@ -42,7 +42,15 @@ jobs:
           TDX_TREND_WYCKOFF_STORE_PATH: ${{ github.workspace }}/backend/.test-state/wyckoff_events.sqlite
           TDX_TREND_WYCKOFF_STORE_ENABLED: "1"
           TDX_TREND_WYCKOFF_STORE_READ_ONLY: "0"
+          TRADING_MS_DATA_DIR: ${{ github.workspace }}/backend/.test-state/journal
         run: python -m pytest tests/ -q
+
+      - name: Rebuild architecture and design tokens
+        run: |
+          python ../scripts/check_project_sources.py
+          python ../scripts/check_rebuild_architecture.py
+          python ../scripts/generate_rebuild_tokens.py --check
+          python ../scripts/generate_rebuild_contracts.py --check
 
   frontend:
     name: Frontend (typecheck + test + lint)
@@ -55,21 +63,59 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Install journal dependencies for cross-workspace regressions
+        working-directory: journal-frontend
+        run: npm ci
+
       - name: Typecheck
         run: npm run typecheck
+
+      - name: Build legacy frontend
+        run: npm run build
+
+      - name: Build unified rebuild
+        run: npm run build:rebuild
 
       - name: Test
         run: npm run test
 
       - name: Lint
         run: npm run lint
+
+      - name: Install smoke browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser main flow with isolated mocks
+        run: npm run test:e2e
+
+
+  journal:
+    name: Journal frontend (build + lint)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: journal-frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: journal-frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint

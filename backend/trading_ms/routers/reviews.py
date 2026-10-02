@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from starlette.concurrency import run_in_threadpool
 
 from ..database import UPLOAD_DIR, get_db
 from ..models import DailyReview, MonthlyReview, Snapshot, Trade, WeeklyReview
@@ -13,6 +14,7 @@ from ..services import market as market_svc
 from ..services import capital_estimate as capital_est_svc
 from ..services import position_util
 from ..services import netvalue, rounds as rounds_svc, stats
+from ..services.uploads import attachment_name, attachment_url, read_review_image
 
 router = APIRouter(prefix="/api/reviews", tags=["reviews"])
 
@@ -523,7 +525,7 @@ def _daily_dict(r: DailyReview) -> dict:
         "market_observation": _daily_text(r.market_observation),
         "decision_review": _daily_text(r.decision_review),
         "mistakes": _daily_text(r.mistakes),
-        "images": json.loads(r.images or "[]"),
+        "images": [attachment_url(url) for url in json.loads(r.images or "[]")],
         "scores": json.loads(r.scores or "{}"),
         "trade_scores": json.loads(getattr(r, "trade_scores", None) or "{}"),
         "ai_summary": _daily_text(r.ai_summary),
@@ -627,31 +629,48 @@ def save_daily(day: date, body: DailyIn, db: Session = Depends(get_db)):
     return {"ok": True}
 
 
+def _save_review_image(bind, day: date, contents: bytes, ext: str):
+    fname = f"{day.isoformat()}-{uuid.uuid4().hex[:8]}.{ext}"
+    path = UPLOAD_DIR / fname
+    created = False
+    try:
+        with path.open('xb') as output:
+            created = True
+            output.write(contents)
+        with Session(bind=bind, autoflush=False, expire_on_commit=False) as db:
+            row = _get_or_create_daily(db, day)
+            images = json.loads(row.images or "[]")
+            images.append(f"/journal-app/uploads/{fname}")
+            row.images = json.dumps(images)
+            db.commit()
+    except Exception:
+        if created:
+            path.unlink(missing_ok=True)
+        raise
+    return {"url": f"/journal-app/uploads/{fname}"}
+
+
 @router.post("/daily/{day}/images")
 async def upload_image(day: date, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    ext = (file.filename or "img.png").rsplit(".", 1)[-1].lower()
-    if ext not in ("png", "jpg", "jpeg", "gif", "webp"):
-        raise HTTPException(400, "仅支持图片文件")
-    fname = f"{day.isoformat()}-{uuid.uuid4().hex[:8]}.{ext}"
-    (UPLOAD_DIR / fname).write_bytes(await file.read())
-    row = _get_or_create_daily(db, day)
-    images = json.loads(row.images or "[]")
-    images.append(f"/journal-app/uploads/{fname}")
-    row.images = json.dumps(images)
-    db.commit()
-    return {"url": f"/journal-app/uploads/{fname}"}
+    contents, ext = await read_review_image(file)
+    return await run_in_threadpool(_save_review_image, db.get_bind(), day, contents, ext)
 
 
 @router.delete("/daily/{day}/images")
 def remove_image(day: date, url: str, db: Session = Depends(get_db)):
     row = _get_or_create_daily(db, day)
     images = json.loads(row.images or "[]")
-    if url in images:
-        images.remove(url)
+    stored = next((item for item in images if attachment_url(item) == attachment_url(url)), None)
+    if stored is not None:
+        images.remove(stored)
         row.images = json.dumps(images)
         db.commit()
-        target = UPLOAD_DIR / url.split("/")[-1]
-        if target.exists():
+        name = attachment_name(stored)
+        target = (UPLOAD_DIR / name).resolve() if name else None
+        still_referenced = any(attachment_name(item) == name
+                               for review in db.query(DailyReview).all()
+                               for item in json.loads(review.images or '[]')) if name else True
+        if target and target.parent == UPLOAD_DIR.resolve() and target.is_file() and not still_referenced:
             target.unlink()
     return {"ok": True}
 

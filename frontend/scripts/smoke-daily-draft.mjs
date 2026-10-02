@@ -1,0 +1,43 @@
+import { chromium, expect } from '@playwright/test'
+
+const browser = await chromium.launch({ headless: true, channel: 'msedge' })
+try {
+  const page = await browser.newPage({ viewport: { width: 1365, height: 900 } })
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  page.on('dialog', dialog => dialog.accept())
+  await page.goto('http://127.0.0.1:8011/rebuild.html')
+  await page.getByRole('heading', { name: '创建第一个账户' }).waitFor()
+  await page.getByRole('textbox', { name: '账户名称' }).fill('复盘草稿测试')
+  await page.getByRole('button', { name: '创建实盘账户' }).click()
+  await page.getByRole('button', { name: '交易流水' }).click()
+  const trade = page.locator('section.card').filter({ has: page.getByRole('heading', { name: '新增交易' }) })
+  await trade.getByLabel('交易日期').fill('2025-01-02')
+  await trade.getByLabel('证券代码').fill('600000')
+  await trade.getByLabel('价格').fill('10')
+  await trade.getByRole('button', { name: '新增交易' }).click()
+  await page.getByRole('button', { name: '每日复盘' }).click()
+  await page.getByText('2025-01-02').last().waitFor()
+  await page.getByRole('button', { name: '填写' }).click()
+  await page.route('**/api/v1/accounts/*/daily-reviews/*', route => {
+    if (route.request().method() === 'PUT') route.abort('failed')
+    else route.continue()
+  })
+  await page.getByLabel('标题').fill('断网期间的复盘内容')
+  await page.getByText('保存失败，草稿仍保存在本机').waitFor({ timeout: 10000 })
+  await page.getByRole('button', { name: '总览' }).click()
+  await page.getByRole('button', { name: '每日复盘' }).click()
+  await page.getByLabel('复盘日期').fill('2025-01-02')
+  await expect(page.getByLabel('标题')).toHaveValue('断网期间的复盘内容')
+  await page.unrouteAll()
+  await page.getByRole('button', { name: '立即保存' }).click()
+  await page.getByText('已保存', { exact: true }).waitFor({ timeout: 10000 })
+  await page.reload()
+  await page.getByRole('button', { name: '每日复盘' }).click()
+  await page.getByLabel('复盘日期').fill('2025-01-02')
+  await expect(page.getByLabel('标题')).toHaveValue('断网期间的复盘内容')
+  if (errors.length) throw new Error(errors.join('\n'))
+  console.log('browser smoke: review reminder, failed autosave, local recovery, manual save')
+} finally {
+  await browser.close()
+}

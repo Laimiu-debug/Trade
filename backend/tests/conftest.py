@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+import os
+import tempfile
 from typing import Any
 
 import httpx
@@ -93,6 +95,9 @@ class CompatClient:
 
 
 def pytest_configure() -> None:
+    # Importing the mounted legacy app opens its database; never use user data in tests.
+    if not os.environ.get('TRADING_MS_DATA_DIR', '').strip():
+        os.environ['TRADING_MS_DATA_DIR'] = tempfile.mkdtemp(prefix='trade-legacy-pytest-')
     if "app" in inspect.signature(httpx.Client.__init__).parameters:
         return
     import fastapi.testclient as fastapi_testclient
