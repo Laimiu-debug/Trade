@@ -28,6 +28,9 @@ import { GlobalAILauncher, type AIActivity } from './ai-launcher'
 const PeriodEditor = React.lazy(() => import('./period-editor').then(module => ({ default: module.PeriodEditor })))
 import './tokens.generated.css'
 import './style.css'
+import './workspace.css'
+import { WorkspaceIcon } from './workspace-icons'
+import { designTokens } from '../shared/theme/design-tokens.generated'
 
 const NavChart = React.lazy(() => import('./nav-chart'))
 
@@ -96,7 +99,7 @@ export function App() {
     return saved === 'dark' || saved === 'system' ? saved : 'light'
   })
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  const [density, setDensity] = useState<'comfortable' | 'compact'>(() => localStorage.getItem('trade-list-density') === 'compact' ? 'compact' : 'comfortable')
+  const [density, setDensity] = useState<'comfortable' | 'compact'>(() => localStorage.getItem('trade-list-density') === 'comfortable' ? 'comfortable' : 'compact')
   const selectedAccount = accounts.find(row => row.id === accountId)
 
   const setAccountId = useCallback((value: React.SetStateAction<string>) => {
@@ -245,13 +248,14 @@ export function App() {
   }
   const current = analytics?.result?.nav.current
   const points = analytics?.result?.nav.points || []
+  const chartColors = designTokens.themes[theme].color
   const chart = {
-    tooltip: { trigger: 'axis' },
+    tooltip: { trigger: 'axis', backgroundColor: chartColors['bg.surface'], borderColor: chartColors['border.subtle'], textStyle: { color: chartColors['text.primary'] } },
     grid: { top: 24, left: 58, right: 24, bottom: 35 },
-    xAxis: { type: 'category', data: points.map(row => row.date), axisLabel: { color: 'var(--text-muted)' } },
-    yAxis: { type: 'value', scale: true, axisLabel: { color: 'var(--text-muted)' } },
+    xAxis: { type: 'category', data: points.map(row => row.date), axisLabel: { color: chartColors['chart.axis'] }, axisLine: { lineStyle: { color: chartColors['chart.grid'] } } },
+    yAxis: { type: 'value', scale: true, axisLabel: { color: chartColors['chart.axis'] }, splitLine: { lineStyle: { color: chartColors['chart.grid'] } } },
     series: [{ type: 'line', name: '单位净值', smooth: true, showSymbol: false,
-      lineStyle: { width: 3, color: theme === 'dark' ? '#71d8b8' : '#0a6b54' },
+      lineStyle: { width: 2, color: designTokens.themes[theme].color['chart.series1'] },
       data: points.map(row => row.nav === null ? null : Number(row.nav)) }],
   }
   const navigation: Array<[Page, string]> = selectedAccount?.kind === 'sim'
@@ -279,15 +283,15 @@ export function App() {
 
   return <div className="shell">
     <aside className="sidebar">
-      <div className="brand"><img className="brand-mark" src="/trade-mark.svg" alt="" width="36" height="36" /><span>Trade<span className="brand-sub">复盘工作台</span></span></div>
-      <div className="side-caption">工作空间</div>
+      <div className="brand"><img className="brand-mark" src="/trade-mark.svg" alt="" width="36" height="36" /><span>Trade<span className="brand-sub">交易与复盘工作台</span></span></div>
+      <div className="side-caption">WORKSPACE</div>
       <nav aria-label="主导航">{navigationGroups.map(([title, keys]) => <div className="nav-group" key={title}><div className="nav-group-label">{title}</div>{navigation.filter(([key]) => keys.includes(key)).map(([key, label]) =>
-        <button key={key} className={page === key ? 'nav-item active' : 'nav-item'} aria-current={page === key ? 'page' : undefined} onClick={() => { if (key === 'market') setMarketTarget(null); if (key === 'research' || key === 'backtest') { setResearchTarget(null); setResearchRoute({ view: key === 'backtest' ? 'backtest' : 'catalog' }) }; setPage(key) }}>{label}</button>)}</div>)}</nav>
-      <div className="sidebar-foot">重构版 · 本地数据</div>
+        <button key={key} className={page === key ? 'nav-item active' : 'nav-item'} aria-current={page === key ? 'page' : undefined} onClick={() => { if (key === 'market') setMarketTarget(null); if (key === 'research' || key === 'backtest') { setResearchTarget(null); setResearchRoute({ view: key === 'backtest' ? 'backtest' : 'catalog' }) }; setPage(key) }}><WorkspaceIcon name={key} /><span>{label}</span></button>)}</div>)}</nav>
+      <div className="sidebar-foot"><span className="workspace-dot" />专注记录，持续复盘</div>
     </aside>
     <main className="main">
       <header className="topbar">
-        <div className="breadcrumb">工作空间 <span>/</span> {navigation.find(([key]) => key === page)?.[1]}</div>
+        <div className="breadcrumb">工作空间 <span>/</span><strong>{navigation.find(([key]) => key === page)?.[1]}</strong></div>
         <div className="toolbar">
           <label className="account-select"><span>账户</span><select value={accountId} disabled={aiActivity.running} title={aiActivity.running ? 'AI 生成结束或停止后可切换账户' : undefined} onChange={event => setAccountId(event.target.value)}>{accounts.map(row => <option key={row.id} value={row.id}>{row.name}{row.kind === 'sim' ? row.frozen ? '（模拟·恢复点）' : '（模拟）' : '（实盘）'}</option>)}</select></label>
           {ready && accountId && <button className="button ghost" disabled={aiActivity.running || saving} onClick={() => { const name = window.prompt('新实盘账户名称'); if (name?.trim()) mutate('账户已创建', async isCurrent => { const created = await api<Account>('/accounts', 'POST', { name: name.trim() }); if (!isCurrent()) return; await refreshAccounts(); if (isCurrent()) { setNotice('账户已创建'); setAccountId(created.id) } }) }}>新增实盘</button>}
@@ -320,9 +324,9 @@ export function App() {
         {ready && accountId && page === 'insights' && <InspirationEditor />}
         {ready && accountId && selectedAccount?.kind === 'real' && page !== 'market' && page !== 'research' && page !== 'backtest' && page !== 'insights' && page !== 'ai' && page !== 'tasks' && <>
           {page === 'overview' && <>
-            <ReviewReminders accountId={accountId} revision={selectedAccount.input_revision} onReview={day => { setReviewDate(day); setPage('review') }} onSnapshot={openSnapshot} />
             <div className="metrics"><Metric label="最新资产" value={current?.assets ? `¥ ${current.assets}` : '—'} note={current?.date || '待确认'} /><Metric label="单位净值" value={current?.nav ? Number(current.nav).toFixed(4) : '—'} note={current?.quality === 'confirmed' ? '资产快照已确认' : '按历史数据结转'} /><Metric label="已点亮节点" value={String(current?.lit_count ?? 0)} note={`每级 × ${analytics?.result?.nav.target_config?.multiplier ?? '1.30'}`} /><Metric label="交易笔数" value={String(analytics?.result?.trade_stats.trade_count ?? 0)} note={`已完成 ${analytics?.result?.trade_stats.closed_rounds ?? 0} 轮`} /></div>
             <section className="card"><div className="section-heading"><div><h2>净值走势</h2><p>资金进出按份额调整，资产快照确认当日净值。</p></div></div>{points.length ? <React.Suspense fallback={<div className="empty-chart">正在加载图表…</div>}><NavChart option={chart} /></React.Suspense> : <div className="empty-chart">先录入初始资金和资产快照，即可看到净值走势</div>}</section>
+            <ReviewReminders accountId={accountId} revision={selectedAccount.input_revision} onReview={day => { setReviewDate(day); setPage('review') }} onSnapshot={openSnapshot} />
             <TargetNodes accountId={accountId} nav={analytics?.result?.nav ?? null} onChanged={() => refresh(accountId)} />
             <div className="form-actions"><button className="button secondary" onClick={() => setPage('statistics')}>查看统计分析与交易回合</button><button className="button secondary" onClick={() => setPage('review')}>填写每日复盘</button></div>
             <DailyInspiration />

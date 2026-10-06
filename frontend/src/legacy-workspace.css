@@ -1,0 +1,31 @@
+/* Ant Design workspaces share the same surface, typography and density roles. */
+.legacy-shell > .ant-layout-sider { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.legacy-brand { display: flex; align-items: center; gap: 12px; padding: 28px 24px 26px; }
+.legacy-brand h4 { font-size: 23px; letter-spacing: -.04em; }
+.legacy-brand .ant-typography-secondary { font-size: 10px; }
+.legacy-shell .ant-menu { padding: 0 12px 20px; border-inline-end: 0; background: transparent; }
+.legacy-shell .ant-menu-title-content { font-size: 13px; }
+.legacy-topbar { height: auto; min-height: var(--sizePx-header); padding: 12px var(--sizePx-pagePadding); line-height: 1.5; flex-wrap: wrap; gap: 12px; }
+.legacy-header-actions { font-size: 12px; }
+.legacy-content { width: 100%; max-width: 1600px; margin-inline: auto; padding: 32px var(--sizePx-pagePadding) 56px; }
+.legacy-content :where(.ant-space, .ant-space-item, .ant-col, .ant-card-body) { min-width: 0; max-width: 100%; }
+.legacy-content .ant-table-container { max-width: 100%; overflow-x: auto; }
+.page-title { font-size: var(--font-sizePx-page); font-weight: 600; letter-spacing: -.03em; }
+.page-subtitle { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+.page-stack { gap: 20px; }
+.glass-card { background: var(--bg-surface); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: var(--shadow-card); }
+.ant-statistic-content { font-variant-numeric: var(--font-numericVariant); letter-spacing: -.035em; }
+.ant-statistic-title, .ant-form-item-label > label { color: var(--text-secondary); font-size: 12px; }
+.ant-card-head-title { font-size: 16px; font-weight: 600; }
+.ant-table-container { border-radius: var(--radiusPx-control); }
+.ant-tabs-tab { font-size: 13px; }
+.text-muted, .text-sub, .text-hint { color: var(--text-muted); }
+.float-in { animation-duration: var(--motion-normalMs); }
+@media (max-width: 991px) { .legacy-content { padding: 24px 16px 40px; }.legacy-topbar { padding-inline: 16px; }.page-title { font-size: 24px; } }
+@media (max-width: 600px) {
+  .legacy-content .ant-space-horizontal { flex-wrap: wrap; }
+  .legacy-content :where(.ant-input, .ant-input-number, .ant-select, .ant-picker) { max-width: 100%; }
+  .legacy-content .ant-space-item { overflow-wrap: anywhere; }
+}
+@media (max-width: 600px) { .legacy-header-actions { gap: 8px !important; }.legacy-header-actions a { font-size: 11px; }.legacy-topbar { gap: 8px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; } }

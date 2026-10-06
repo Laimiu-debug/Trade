@@ -5,7 +5,7 @@ from contextlib import closing
 import sqlite3
 
 from sqlalchemy import create_engine, event, text
-from sqlalchemy.engine import Engine
+from sqlalchemy.engine import Engine, URL
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from trade_app.platform.schema import MIGRATION_TABLE_SQL, validate_schema
@@ -27,7 +27,8 @@ def open_database(data_dir: Path) -> tuple[Engine, sessionmaker]:
                 validate_schema(existing)
         except sqlite3.DatabaseError as exc:
             raise ValueError('数据库结构校验失败，原数据未修改') from exc
-    engine = create_engine(f"sqlite:///{db_path.as_posix()}", connect_args={"check_same_thread": False})
+    engine = create_engine(URL.create('sqlite', database=str(db_path)),
+                           connect_args={"check_same_thread": False})
 
     @event.listens_for(engine, "connect")
     def configure_connection(dbapi_connection, _connection_record) -> None:

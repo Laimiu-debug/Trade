@@ -1,8 +1,8 @@
 """Run one owned Python compute child with bounded JSON pipes and resources.
 
 The worker receives no database handle or ambient application credentials. On
-Windows an owned Job Object enforces a private-memory ceiling and kills its
-process on close; on Linux the worker applies RLIMIT_AS and the parent samples
+Windows an owned Job Object enforces a process-tree memory ceiling and kills its
+processes on close; on Linux the worker applies RLIMIT_AS and the parent samples
 RSS. Only processes created here are terminated by timeout/cancellation.
 """
 from __future__ import annotations
@@ -52,8 +52,8 @@ class ComputeResult:
 
 
 class _WindowsJob:
-    """A handle-scoped Job Object, attached before sending any compute payload."""
-    def __init__(self, pid: int, memory_bytes: int):
+    """Attach resource limits while the child's primary thread is suspended."""
+    def __init__(self, pid: int, memory_bytes: int, *, process_limit: int = 1):
         from ctypes import wintypes
 
         class Basic(ctypes.Structure):
@@ -91,9 +91,11 @@ class _WindowsJob:
             if not self.handle:
                 raise ctypes.WinError(ctypes.get_last_error())
             limits = Extended()
-            limits.BasicLimitInformation.LimitFlags = 0x2000 | 0x100 | 0x8  # kill on close, memory, one process
-            limits.BasicLimitInformation.ActiveProcessLimit = 1
+            # A Windows venv redirector and its interpreter share one budget.
+            limits.BasicLimitInformation.LimitFlags = 0x2000 | 0x100 | 0x200 | 0x8
+            limits.BasicLimitInformation.ActiveProcessLimit = process_limit
             limits.ProcessMemoryLimit = memory_bytes
+            limits.JobMemoryLimit = memory_bytes
             if not self.kernel.SetInformationJobObject(self.handle, 9, ctypes.byref(limits), ctypes.sizeof(limits)):
                 raise ctypes.WinError(ctypes.get_last_error())
             process_handle = self.kernel.OpenProcess(0x100 | 0x1, False, pid)  # set quota + terminate
@@ -109,13 +111,63 @@ class _WindowsJob:
     def peak_memory(self) -> int:
         info = self.info_type()
         if self.handle and self.kernel.QueryInformationJobObject(self.handle, 9, ctypes.byref(info), ctypes.sizeof(info), None):
-            return int(info.PeakProcessMemoryUsed)
+            return int(info.PeakJobMemoryUsed)
         return 0
 
     def close(self):
         if self.handle:
             self.kernel.CloseHandle(self.handle)
             self.handle = None
+
+
+def _resume_windows_process(pid: int) -> None:
+    """Resume the primary thread after Job assignment (Popen closes its handle)."""
+    from ctypes import wintypes
+
+    class ThreadEntry(ctypes.Structure):
+        _fields_ = [('dwSize', wintypes.DWORD), ('cntUsage', wintypes.DWORD),
+                    ('th32ThreadID', wintypes.DWORD), ('th32OwnerProcessID', wintypes.DWORD),
+                    ('tpBasePri', wintypes.LONG), ('tpDeltaPri', wintypes.LONG),
+                    ('dwFlags', wintypes.DWORD)]
+
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    for name in ('Thread32First', 'Thread32Next'):
+        function = getattr(kernel, name)
+        function.argtypes = [wintypes.HANDLE, ctypes.POINTER(ThreadEntry)]
+        function.restype = wintypes.BOOL
+    kernel.OpenThread.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenThread.restype = wintypes.HANDLE
+    kernel.ResumeThread.argtypes = [wintypes.HANDLE]
+    kernel.ResumeThread.restype = wintypes.DWORD
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.CloseHandle.restype = wintypes.BOOL
+    snapshot = kernel.CreateToolhelp32Snapshot(0x4, 0)  # TH32CS_SNAPTHREAD
+    if snapshot == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        entry = ThreadEntry(dwSize=ctypes.sizeof(ThreadEntry))
+        available = kernel.Thread32First(snapshot, ctypes.byref(entry))
+        while available:
+            if entry.th32OwnerProcessID == pid:
+                handle = kernel.OpenThread(0x2, False, entry.th32ThreadID)  # THREAD_SUSPEND_RESUME
+                if not handle:
+                    raise ctypes.WinError(ctypes.get_last_error())
+                try:
+                    previous = kernel.ResumeThread(handle)
+                    if previous == 0xffffffff:
+                        raise ctypes.WinError(ctypes.get_last_error())
+                    if previous != 1:
+                        raise OSError(f'Compute thread suspend count was {previous}, expected 1')
+                    return
+                finally:
+                    kernel.CloseHandle(handle)
+            entry.dwSize = ctypes.sizeof(ThreadEntry)
+            available = kernel.Thread32Next(snapshot, ctypes.byref(entry))
+        raise OSError('Suspended compute thread was not found')
+    finally:
+        kernel.CloseHandle(snapshot)
 
 
 def apply_worker_memory_limit() -> None:
@@ -158,9 +210,11 @@ def run_json_process(module: str, payload: dict, *, budget: ComputeBudget = DEFA
                         'PYTHONUTF8': '1', 'PYTHONIOENCODING': 'utf-8',
                         'TRADE_COMPUTE_MEMORY_BYTES': str(budget.memory_bytes)})
     started = time.monotonic()
-    process = subprocess.Popen(module_command(module), stdin=subprocess.PIPE,
+    command = module_command(module)
+    # CREATE_SUSPENDED (0x4) prevents startup from racing Job assignment.
+    process = subprocess.Popen(command, stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=backend, env=environment,
-                               creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0) if os.name == 'nt' else 0,
+                               creationflags=(subprocess.CREATE_NO_WINDOW | 0x4) if os.name == 'nt' else 0,
                                start_new_session=os.name != 'nt')
     job = None
     peak_memory = 0
@@ -204,7 +258,13 @@ def run_json_process(module: str, payload: dict, *, budget: ComputeBudget = DEFA
     try:
         if os.name == 'nt':
             try:
-                job = _WindowsJob(process.pid, budget.memory_bytes)
+                # Source venv python.exe is a redirector that creates one actual
+                # interpreter. Frozen EXEs and base interpreters still get one slot.
+                venv_redirector = ('--trade-module' not in command
+                                   and (Path(command[0]).parent.parent / 'pyvenv.cfg').is_file())
+                job = _WindowsJob(process.pid, budget.memory_bytes,
+                                  process_limit=2 if venv_redirector else 1)
+                _resume_windows_process(process.pid)
             except OSError as exc:
                 raise ComputeProcessError('COMPUTE_LIMIT_SETUP_FAILED', '无法设置计算进程资源限制') from exc
         for name, cap in (('stdout', budget.output_bytes), ('stderr', budget.stderr_bytes)):

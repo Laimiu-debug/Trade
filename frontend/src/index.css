@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+@import "./rebuild/tokens.generated.css";
 
 :root {
-  --bg-main: #f3f7f4;
-  --bg-panel: rgba(255, 255, 255, 0.72);
-  --ink-900: #1f3130;
-  --ink-700: #375553;
-  --line-soft: rgba(31, 49, 48, 0.14);
-  --brand-500: #0f8b6f;
-  --brand-700: #0a6b54;
-  --danger-500: #c4473d;
-  --warning-500: #b86f1c;
-  --ok-500: #19744f;
+  --bg-main: var(--bg-canvas);
+  --bg-panel: var(--bg-surface);
+  --ink-900: var(--text-primary);
+  --ink-700: var(--text-secondary);
+  --line-soft: var(--border-subtle);
+  --brand-500: var(--brand-accent);
+  --brand-700: var(--action-primary);
+  --danger-500: var(--status-danger);
+  --warning-500: var(--status-warning);
+  --ok-500: var(--status-success);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -26,11 +26,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   color: var(--ink-900);
-  font-family: 'Space Grotesk', 'Noto Sans SC', 'Segoe UI', sans-serif;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(15, 139, 111, 0.16), transparent 38%),
-    radial-gradient(circle at 90% 0%, rgba(240, 168, 76, 0.15), transparent 32%),
-    linear-gradient(165deg, #f8fbf9 0%, #eef5f1 52%, #edf2ef 100%);
+  font-family: var(--font-family-ui);
+  background: var(--bg-canvas);
 }
 
 #root {
@@ -53,8 +50,7 @@ body {
 .glass-card {
   border: 1px solid var(--line-soft);
   background: var(--bg-panel);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-card);
 }
 
 @keyframes cardFloatIn {
@@ -105,11 +101,11 @@ body {
 .w-full { width: 100%; }
 .vis-hidden { display: none; }
 .ul-list { margin: 0; padding-inline-start: 18px; }
-.text-hint { font-size: 12px; color: #888; }
+.text-hint { font-size: 12px; color: var(--text-muted); }
 .text-muted { font-size: 12px; color: rgba(0, 0, 0, 0.45); }
-.text-sub { font-size: 12px; color: #64748b; }
-.text-pnl-pos { color: #c4473d; }
-.text-pnl-neg { color: #19744f; }
+.text-sub { font-size: 12px; color: var(--text-muted); }
+.text-pnl-pos { color: var(--market-up); }
+.text-pnl-neg { color: var(--market-down); }
 .loading-center { padding: 24px 0; text-align: center; }
 .loading-center .spin-text { margin-top: 8px; }
 .mb-12 { margin-bottom: 12px; }

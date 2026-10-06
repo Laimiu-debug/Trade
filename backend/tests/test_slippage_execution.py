@@ -56,3 +56,52 @@ def test_simulation_freezes_order_slippage_obeys_limit_and_manual_price(tmp_path
         manual = data(write(client, root + '/orders/' + limited['id'] + '/fill',
                             {'expected_revision': limited['revision'], 'fill_date': '2025-01-03', 'fill_price': '10.02'}))
         assert Decimal(manual['fill']['fill_price']) == Decimal('10.02')
+
+
+@pytest.mark.parametrize('side', ['buy', 'sell'])
+@pytest.mark.parametrize('batch', [False, True])
+def test_zero_volume_open_preserves_pending_order_and_reservations_until_trading_resumes(tmp_path, side, batch):
+    with client_for(tmp_path) as client:
+        sample = dataset(client, [
+            {'event_date': day, 'open': '10', 'high': '10', 'low': '10', 'close': '10', 'volume': volume}
+            for day, volume in [('2025-01-01', 1000), ('2025-01-02', 1000),
+                                ('2025-01-03', 0), ('2025-01-06', 1000)]])
+        sim = data(write(client, '/sim-accounts', {'name': '零成交量回归', 'initial_capital': '10000',
+                                                'start_date': '2025-01-01'}))
+        root = '/sim-accounts/' + sim['id']
+        if side == 'sell':
+            purchase = data(write(client, root + '/orders', {'symbol': sample['symbol'], 'side': 'buy',
+                'quantity': 100, 'limit_price': '10', 'signal_date': '2025-01-01', 'submit_date': '2025-01-01'}))
+            data(write(client, root + '/orders/' + purchase['id'] + '/fill', {
+                'expected_revision': 1, 'fill_date': '2025-01-01', 'fill_price': '10'}))
+        data(write(client, root + '/settle', {'to_date': '2025-01-02'}))
+        order = data(write(client, root + '/orders', {'symbol': sample['symbol'], 'side': side, 'quantity': 100,
+            'limit_price': '11' if side == 'buy' else '9', 'signal_date': '2025-01-02', 'submit_date': '2025-01-02'}))
+        before = data(client.get('/api/v1' + root + '/portfolio'))
+
+        def match(day):
+            if batch:
+                wallet = data(client.get('/api/v1' + root + '/portfolio'))
+                result = data(write(client, root + '/advance-market-day', {
+                    'expected_wallet_revision': wallet['wallet_revision'], 'to_date': day,
+                    'datasets': {sample['symbol']: sample['id']}}))
+                return result['outcomes'][0]
+            data(write(client, root + '/settle', {'to_date': day}))
+            return data(write(client, root + '/orders/' + order['id'] + '/match-open', {
+                'expected_revision': order['revision'], 'dataset_id': sample['id']}))
+
+        blocked = match('2025-01-03')
+        assert blocked['status'] == 'no_volume' and blocked['fill'] is None
+        assert blocked['order'] == order  # No revision/status/reservation change.
+        after = data(client.get('/api/v1' + root + '/portfolio'))
+        assert {key: after[key] for key in ('cash', 'reserved_cash', 'positions')} == {
+            key: before[key] for key in ('cash', 'reserved_cash', 'positions')}
+        assert len(data(client.get('/api/v1' + root + '/fills'))) == (0 if side == 'buy' else 1)
+        filled = match('2025-01-06')
+        assert filled['status'] == 'filled' and filled['order']['status'] == 'filled'
+        final = data(client.get('/api/v1' + root + '/portfolio'))
+        assert final['reserved_cash'] == '0.00'
+        if side == 'buy':
+            assert final['positions'][0]['quantity'] == 100
+        else:
+            assert final['positions'] == []

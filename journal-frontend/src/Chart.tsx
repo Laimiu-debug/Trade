@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import * as echarts from 'echarts/core';
 import { LineChart, BarChart } from 'echarts/charts';
 import {
@@ -6,26 +6,25 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { EChartsCoreOption } from 'echarts/core';
+import { designTokens } from './design-tokens.generated';
+import { readTheme, ThemeContext } from './theme';
 
 echarts.use([
   LineChart, BarChart, GridComponent, TooltipComponent,
   MarkLineComponent, DataZoomComponent, LegendComponent, CanvasRenderer,
 ]);
 
-// 默认浅色（无 data-theme 属性）；仅 data-theme="dark" 为深色
-const isLight = () => document.documentElement.dataset.theme !== 'dark';
+const colors = () => designTokens.themes[readTheme()].color;
 
-const lightColors = {
-  gold: '#e8a87c', goldSoft: 'rgba(232,168,124,0.2)',
-  up: '#ff6b6b', down: '#4ecdc4', text: '#7a6f5e', grid: '#e6dcc6',
+export const CHART_COLORS = {
+  get gold() { return colors()['chart.series1']; },
+  get goldSoft() { return colors()['bg.selected']; },
+  get up() { return colors()['market.up']; },
+  get down() { return colors()['market.down']; },
+  get downSoft() { return colors()['market.downBg']; },
+  get text() { return colors()['chart.axis']; },
+  get grid() { return colors()['chart.grid']; },
 };
-const darkColors = {
-  gold: '#e8a87c', goldSoft: 'rgba(232,168,124,0.18)',
-  up: '#ff6b6b', down: '#4ecdc4', text: '#b3a48c', grid: '#463829',
-};
-
-// 主题切换会触发页面 reload，因此模块加载时按当前主题取一次即可。
-export const CHART_COLORS = isLight() ? lightColors : darkColors;
 
 export function Chart({
   option,
@@ -37,6 +36,7 @@ export function Chart({
   onPointClick?: (index: number, date: string, value: number) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const theme = useContext(ThemeContext);
   const chartRef = useRef<echarts.ECharts | null>(null);
   const onPointClickRef = useRef(onPointClick);
   onPointClickRef.current = onPointClick;
@@ -68,28 +68,20 @@ export function Chart({
 
   useEffect(() => {
     chartRef.current?.setOption(option, true);
-  }, [option]);
+  }, [option, theme]);
 
   return <div ref={ref} style={{ width: '100%', height }} />;
 }
 
-// 主题切换会触发页面 reload，因此模块加载时按当前主题计算一次即可。
 export const baseAxis = {
-  axisLine: { lineStyle: { color: CHART_COLORS.grid } },
-  axisLabel: { color: CHART_COLORS.text, fontSize: 11 },
-  splitLine: { lineStyle: { color: CHART_COLORS.grid, opacity: 0.5 } },
+  get axisLine() { return { lineStyle: { color: CHART_COLORS.grid } }; },
+  get axisLabel() { return { color: CHART_COLORS.text, fontSize: 11 }; },
+  get splitLine() { return { lineStyle: { color: CHART_COLORS.grid, opacity: 0.5 } }; },
 };
 
-export const baseTooltip = isLight()
-  ? {
+export const baseTooltip = {
       trigger: 'axis' as const,
-      backgroundColor: '#ffffff',
-      borderColor: '#e6dcc6',
-      textStyle: { color: '#3a322a', fontSize: 12 },
-    }
-  : {
-      trigger: 'axis' as const,
-      backgroundColor: '#2c241d',
-      borderColor: '#5a4836',
-      textStyle: { color: '#f2ece0', fontSize: 12 },
+      get backgroundColor() { return colors()['bg.surface']; },
+      get borderColor() { return colors()['border.subtle']; },
+      get textStyle() { return { color: colors()['text.primary'], fontSize: designTokens.sizePx.chartTooltipFont }; },
     };

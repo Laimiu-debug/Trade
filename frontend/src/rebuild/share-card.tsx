@@ -1,3 +1,4 @@
+import { designTokens } from '../shared/theme/design-tokens.generated'
 import { sameMarketSymbol } from './market-symbols'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api } from './api'
@@ -84,30 +85,31 @@ export function ShareCardEditor() {
     context.font = '22px Microsoft YaHei, sans-serif'
     const noteLines = wrapLines(context, note.trim() || '无', 1060)
     canvas.height = Math.max(675, 530 + (noteLines.length - 1) * 32 + 120)
-    context.fillStyle = '#f3f8f6'; context.fillRect(0, 0, canvas.width, canvas.height)
-    context.fillStyle = '#0a6b54'; context.fillRect(0, 0, 1200, 14)
-    context.fillStyle = '#17352e'; context.font = 'bold 38px Microsoft YaHei, sans-serif'
+    const colors = designTokens.themes.light.color
+    context.fillStyle = colors['bg.canvas']; context.fillRect(0, 0, canvas.width, canvas.height)
+    context.fillStyle = colors['action.primary']; context.fillRect(0, 0, 1200, 14)
+    context.fillStyle = colors['text.primary']; context.font = 'bold 38px Microsoft YaHei, sans-serif'
     context.fillText(stock?.name || '未选择证券', 70, 82)
-    context.font = '23px Microsoft YaHei, sans-serif'; context.fillStyle = '#61746d'
+    context.font = '23px Microsoft YaHei, sans-serif'; context.fillStyle = colors['text.muted']
     context.fillText(stock?.prefixed_symbol || '无代码', 70, 122)
-    context.font = '26px Microsoft YaHei, sans-serif'; context.fillStyle = '#17352e'
+    context.font = '26px Microsoft YaHei, sans-serif'; context.fillStyle = colors['text.primary']
     context.fillText(latest ? `收盘 ¥${latest.close}` : '价格走势缺失', 70, 184)
     context.fillText(change === null ? '区间涨跌缺失' : `区间涨跌 ${change.toFixed(2)}%`, 450, 184)
-    context.fillStyle = '#61746d'; context.font = '17px Microsoft YaHei, sans-serif'
+    context.fillStyle = colors['text.muted']; context.font = '17px Microsoft YaHei, sans-serif'
     context.fillText(latest ? `${bars[0].event_date} 至 ${latest.event_date} · ${bars.length} 根日线` : '未选择有效行情区间', 70, 207)
-    context.fillStyle = '#ffffff'; context.fillRect(70, 215, 1060, 225)
+    context.fillStyle = colors['bg.surface']; context.fillRect(70, 215, 1060, 225)
     if (prices.length > 1) {
       const low = Math.min(...prices), high = Math.max(...prices), span = Math.max(high - low, 0.01)
-      context.beginPath(); context.strokeStyle = '#0f8b6f'; context.lineWidth = 4
+      context.beginPath(); context.strokeStyle = colors['chart.series1']; context.lineWidth = 4
       prices.forEach((price, index) => {
         const x = 100 + index / (prices.length - 1) * 1000
         const y = 405 - (price - low) / span * 155
         if (index === 0) context.moveTo(x, y); else context.lineTo(x, y)
       }); context.stroke()
-    } else { context.fillStyle = '#61746d'; context.font = '24px Microsoft YaHei, sans-serif'; context.fillText('无可用区间走势', 95, 335) }
-    context.fillStyle = '#17352e'; context.font = 'bold 25px Microsoft YaHei, sans-serif'; context.fillText('复盘附言', 70, 490)
+    } else { context.fillStyle = colors['text.muted']; context.font = '24px Microsoft YaHei, sans-serif'; context.fillText('无可用区间走势', 95, 335) }
+    context.fillStyle = colors['text.primary']; context.font = 'bold 25px Microsoft YaHei, sans-serif'; context.fillText('复盘附言', 70, 490)
     context.font = '22px Microsoft YaHei, sans-serif'; noteLines.forEach((line, index) => context.fillText(line, 70, 530 + index * 32))
-    context.fillStyle = '#61746d'; context.font = '17px Microsoft YaHei, sans-serif'
+    context.fillStyle = colors['text.muted']; context.font = '17px Microsoft YaHei, sans-serif'
     context.fillText(source.slice(0, 95), 70, canvas.height - 37)
     context.fillText(timestamp.toLocaleString('zh-CN'), 920, canvas.height - 37)
     const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'))

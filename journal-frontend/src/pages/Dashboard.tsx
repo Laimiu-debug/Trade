@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, fmtMoney, fmtPct, type DayDetail, type FlashCard, type NodeInfo, type Overview } from '../api';
 import { Chart, CHART_COLORS, baseAxis, baseTooltip } from '../Chart';
 import { Empty, SideTag, Stat, useToast } from '../components';
+import { ThemeContext } from '../theme';
 
 interface NodesResp {
   state: Overview['state'];
@@ -11,6 +12,7 @@ interface NodesResp {
 }
 
 export default function Dashboard() {
+  useContext(ThemeContext);
   const toast = useToast();
   const [overview, setOverview] = useState<Overview | null>(null);
   const [nodes, setNodes] = useState<NodesResp | null>(null);
@@ -39,9 +41,9 @@ export default function Dashboard() {
   return (
     <div className="fade-in">
       <div className="hero">
-        <img className="hero-logo" src="/journal-app/logo.png" alt="Trading MS" />
+        <img className="hero-logo" src="/journal-app/trade-mark.svg" alt="Trade" />
         <div className="hero-text">
-          <h2 className="hero-title">Trading MS</h2>
+          <h2 className="hero-title">复盘总览</h2>
           <div className="page-sub">{state?.day ? `数据截至 ${state.day}` : '尚未录入数据'}</div>
         </div>
         <Link className="btn" to="/journal">写今日复盘 →</Link>

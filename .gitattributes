@@ -1,0 +1,2 @@
+# Shell scripts uploaded from Windows must remain executable by Unix shells.
+*.sh text eol=lf

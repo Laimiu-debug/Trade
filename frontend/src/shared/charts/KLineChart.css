@@ -9,8 +9,8 @@
   gap: 8px;
   padding: 8px 10px;
   border-radius: 10px;
-  border: 1px solid rgba(31, 49, 48, 0.12);
-  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
 }
 
 .kline-legend-chip {
@@ -19,32 +19,32 @@
   gap: 6px;
   padding: 2px 8px;
   border-radius: 999px;
-  border: 1px solid rgba(31, 49, 48, 0.14);
-  color: #2f5452;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   font-size: 12px;
 }
 
 .kline-legend-chip--primary {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-surface);
 }
 
 .kline-legend-chip--ths {
-  background: rgba(255, 252, 230, 0.95);
+  background: var(--bg-subtle);
 }
 
 .kline-legend-chip--annotation {
-  background: rgba(248, 252, 250, 0.95);
+  background: var(--bg-subtle);
 }
 
 .kline-legend-chip--backtest {
-  background: rgba(240, 242, 255, 0.95);
+  background: var(--bg-subtle);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .kline-legend-chip--hidden {
-  color: #bfbfbf;
-  background: rgba(255, 255, 255, 0.5);
+  color: var(--text-disabled);
+  background: var(--bg-surface);
   opacity: 0.5;
   text-decoration: line-through;
   cursor: default;
@@ -54,9 +54,9 @@
   margin-top: 8px;
   padding: 8px 10px;
   border-radius: 10px;
-  border: 1px solid rgba(31, 49, 48, 0.12);
-  background: rgba(255, 255, 255, 0.62);
-  color: #2f5452;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -68,7 +68,7 @@
 
 .kline-signal-count {
   font-size: 10px;
-  color: #8c8c8c;
+  color: var(--text-muted);
 }
 
 /* Legend marker base */

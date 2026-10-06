@@ -1,4 +1,5 @@
-{
+// Generated from docs/design-tokens.json. Do not edit.
+export const designTokens = {
   "schemaVersion": 1,
   "name": "Trade / Clear Workspace",
   "status": "implemented",
@@ -214,4 +215,4 @@
     "titleSizePt": 18,
     "lineHeight": 1.5
   }
-}
+} as const

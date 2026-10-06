@@ -59,7 +59,9 @@ python scripts/build_trade_rebuild.py --onefile
 - 同一数据目录的重复双击先核对运行记录、回环地址健康状态和实例 ID，然后打开已运行页面。并发启动使用短期启动锁串行化；旧记录本身不能阻止重启，也不能指向外部网址。托盘版补充了无运行记录旧包的目录身份校验，更新程序仍应正常退出旧版。
 - `stdin` 启动握手覆盖进程归属绑定之前的窗口，持续管道作为父进程存活信号。Windows 的强制回收由 OS Job 提供；非 Windows 原生包仍须单独验收。
 
-机制依据：[Microsoft Job Objects](https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects) 与 [Nested Jobs](https://learn.microsoft.com/en-us/windows/win32/procthread/nested-jobs)。生命周期 Job 不增加计算额度；计算 worker 原有的内存和单进程限制保持有效。
+机制依据：[Microsoft Job Objects](https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects) 与 [Nested Jobs](https://learn.microsoft.com/en-us/windows/win32/procthread/nested-jobs)。生命周期 Job 不增加计算额度；计算 worker 的内存和进程限制由独立 Job 实施。
+
+Windows 源码虚拟环境的 `python.exe` 会转发启动基础解释器。计算进程以挂起状态创建，先绑定 Job 再恢复执行，防止解释器在绑定前脱离监管。检测到 `pyvenv.cfg` 时允许转发器和解释器共两个进程，共享同一份 Job 总内存预算；基础解释器和冻结包仍限制一个进程。取消、超时或关闭会回收整个计算进程树。`test_compute_process.py` 在真实 Windows venv 中验证计算、内存限制、实际解释器清理和绑定失败拒绝执行；CI 增加了同样的 venv 回归。
 
 回归：`backend/tests/test_launcher_cleanup.py` 包含真实 Windows 子孙进程清理、无关进程继续运行、并发双启动、只结束启动器后释放端口与数据锁、重新启动保留数据及归属绑定失败拒绝启动。`frontend/scripts/smoke-launcher-cleanup.mjs` 针对显式提供的单文件 EXE，在独立目录重复这些关键流程；不会使用默认 8011 或常用数据目录。
 

@@ -28,7 +28,7 @@ def child_environment(*, extra_allowed: tuple[str, ...] = ()) -> dict[str, str]:
 
     PyInstaller 6.19's documented private fields are copied verbatim, only from
     a frozen parent. Dropping them makes onefile workers unpack again and spawn
-    another bootloader, incompatible with the compute Job's one-process limit.
+    another bootloader, incompatible with a frozen compute Job's one-process limit.
     Do not forward arbitrary _PYI_* values or PYINSTALLER_RESET_ENVIRONMENT:
     these children share the supervising launcher's lifetime and extraction.
     """

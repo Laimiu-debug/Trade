@@ -33,6 +33,9 @@ def match_order_at_open(session: Session, data_dir: Path, account_id: str,
     if bar is None:
         return {'status': 'no_bar', 'order': order_data(row), 'fill': None,
                 'dataset_id': dataset['id'], 'execution_date': wallet.as_of_date}
+    if Decimal(str(bar['volume'])) <= 0:
+        return {'status': 'no_volume', 'order': order_data(row), 'fill': None,
+                'dataset_id': dataset['id'], 'execution_date': wallet.as_of_date}
     slippage = Decimal(json.loads(row.config_json).get('slippage_rate', '0'))
     adjusted = adverse_execution_price(Decimal(bar['open']), row.side, slippage)
     opening = match_open_limit(side=row.side, limit_units=row.limit_price_units,

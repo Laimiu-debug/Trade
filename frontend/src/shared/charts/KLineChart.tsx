@@ -1,3 +1,4 @@
+import { chartColor, useChartTheme } from './chart-theme'
 /* eslint-disable react-refresh/only-export-components */
 import ReactECharts from 'echarts-for-react'
 import type { BacktestStrategySignalPoint, BacktestStrategySignalStrategyInfo, CandlePoint, SignalResult, SignalType } from '@/types/contracts'
@@ -593,6 +594,7 @@ export function KLineChart({
   hiddenStrategyIds = new Set(),
   onToggleStrategy,
 }: KLineChartProps) {
+  const chartTheme = useChartTheme()
   const xData = candles.map((item) => item.time)
   const candleData = candles.map((item) => [item.open, item.close, item.low, item.high])
   const volumes = candles.map((item) => item.volume)
@@ -818,7 +820,7 @@ export function KLineChart({
           label: {
             show: false,
             formatter: phase,
-            color: '#2f5452',
+            color: chartColor('text.secondary'),
             fontSize: 11,
           },
         },
@@ -894,7 +896,7 @@ export function KLineChart({
     allowedCodes: CREEK_EVENT_CODES,
     anchor: 'high',
     lineName: '小溪线',
-    color: '#0f8b6f',
+    color: chartColor('chart.ma10'),
   })
   const iceLine = buildWyckoffBoundaryLine(eventPointDrafts, {
     allowedCodes: ICE_EVENT_CODES,
@@ -910,11 +912,11 @@ export function KLineChart({
     iceLine?.data,
   ].filter(Boolean)
   const primaryLegendItems: LegendItem[] = [
-    { label: '\u65e5K', color: '#ce5649', symbol: 'line' },
-    { label: 'MA5', color: '#e88e1a', symbol: 'line' },
-    { label: 'MA10', color: '#0f8b6f', symbol: 'line' },
-    { label: 'MA20', color: '#3160db', symbol: 'line' },
-    { label: '\u6210\u4ea4\u91cf', color: '#8ca9a7', symbol: 'bar' },
+    { label: '\u65e5K', color: chartColor('market.up'), symbol: 'line' },
+    { label: 'MA5', color: chartColor('chart.ma5'), symbol: 'line' },
+    { label: 'MA10', color: chartColor('chart.ma10'), symbol: 'line' },
+    { label: 'MA20', color: chartColor('chart.ma20'), symbol: 'line' },
+    { label: '\u6210\u4ea4\u91cf', color: chartColor('chart.volume'), symbol: 'bar' },
     { label: 'B\u4fe1\u53f7', color: '#eb8f34', symbol: 'triangle' },
     { label: 'A\u4fe1\u53f7', color: '#1677ff', symbol: 'diamond' },
     { label: 'C\u4fe1\u53f7', color: '#7f8c8d', symbol: 'circle' },
@@ -963,7 +965,7 @@ export function KLineChart({
     { label: '主力上升柱', color: '#ffd666', symbol: 'bar' },
     { label: '主力回落柱', color: '#b37feb', symbol: 'bar' },
     { label: '散户柱', color: '#52c41a', symbol: 'bar' },
-    { label: '主力线', color: '#f5f5f5', symbol: 'line' },
+    { label: '主力线', color: chartColor('text.primary'), symbol: 'line' },
     { label: '散户线', color: '#1f9d55', symbol: 'line' },
   ]
   if (goldenCrossMarkers.length > 0) {
@@ -1026,7 +1028,7 @@ export function KLineChart({
         volume5Avg /= Math.max(lookback, 1)
         const volumeRatio = volume5Avg > 0 ? candle.volume / volume5Avg : 0
 
-        const changeColor = change >= 0 ? '#ce5649' : '#1a8b66'
+        const changeColor = change >= 0 ? chartColor('market.up') : chartColor('market.down')
         const ma5Value = ma5[dataIndex]
         const ma10Value = ma10[dataIndex]
         const ma20Value = ma20[dataIndex]
@@ -1085,7 +1087,7 @@ export function KLineChart({
     axisPointer: {
       link: [{ xAxisIndex: [0, 1, 2, 3] }],
       label: {
-        backgroundColor: '#65706f',
+        backgroundColor: chartColor('text.muted'),
       },
     },
     grid: [
@@ -1134,7 +1136,7 @@ export function KLineChart({
       {
         scale: true,
         splitLine: {
-          lineStyle: { color: 'rgba(31,49,48,0.14)' },
+          lineStyle: { color: chartColor('chart.grid') },
         },
       },
       {
@@ -1166,7 +1168,7 @@ export function KLineChart({
           formatter: (value: number) => Number(value).toFixed(0),
         },
         splitLine: {
-          lineStyle: { color: 'rgba(31,49,48,0.14)' },
+          lineStyle: { color: chartColor('chart.grid') },
         },
       },
       {
@@ -1175,7 +1177,7 @@ export function KLineChart({
         data: backtestStrategies
           .filter((s) => s.signal_count > 0 && !hiddenStrategyIds.has(s.strategy_id))
           .map((s) => s.strategy_name || s.strategy_id),
-        axisLabel: { fontSize: 9, color: '#5a6c6a' },
+        axisLabel: { fontSize: 9, color: chartColor('chart.axis') },
         axisTick: { show: false },
         splitLine: { show: false },
       },
@@ -1190,10 +1192,10 @@ export function KLineChart({
         type: 'candlestick',
         data: candleData,
         itemStyle: {
-          color: '#ce5649',
-          color0: '#1a8b66',
-          borderColor: '#ce5649',
-          borderColor0: '#1a8b66',
+          color: chartColor('market.up'),
+          color0: chartColor('market.down'),
+          borderColor: chartColor('market.up'),
+          borderColor0: chartColor('market.down'),
         },
         markPoint: {
           symbolSize: 16,
@@ -1214,8 +1216,8 @@ export function KLineChart({
           symbol: ['none', 'none'],
           animation: false,
           label: {
-            color: '#2f5452',
-            backgroundColor: 'rgba(255,255,255,0.7)',
+            color: chartColor('text.secondary'),
+            backgroundColor: chartColor('bg.surface'),
             padding: [2, 6],
           },
           tooltip: {
@@ -1231,7 +1233,7 @@ export function KLineChart({
         data: ma5,
         smooth: true,
         showSymbol: false,
-        lineStyle: { width: 1.5, color: '#e88e1a' },
+        lineStyle: { width: 1.5, color: chartColor('chart.ma5') },
       },
       {
         name: 'MA10',
@@ -1239,7 +1241,7 @@ export function KLineChart({
         data: ma10,
         smooth: true,
         showSymbol: false,
-        lineStyle: { width: 1.5, color: '#0f8b6f' },
+        lineStyle: { width: 1.5, color: chartColor('chart.ma10') },
       },
       {
         name: 'MA20',
@@ -1247,7 +1249,7 @@ export function KLineChart({
         data: ma20,
         smooth: true,
         showSymbol: false,
-        lineStyle: { width: 1.5, color: '#3160db' },
+        lineStyle: { width: 1.5, color: chartColor('chart.ma20') },
       },
       {
         name: '\u6210\u4ea4\u91cf',
@@ -1256,7 +1258,7 @@ export function KLineChart({
         yAxisIndex: 2,
         data: volumes,
         itemStyle: {
-          color: '#8ca9a7',
+          color: chartColor('chart.volume'),
         },
       },
       {
@@ -1410,7 +1412,7 @@ export function KLineChart({
         data: mainForceLine,
         smooth: false,
         showSymbol: false,
-        lineStyle: { width: 1.8, color: '#334155' },
+        lineStyle: { width: 1.8, color: chartColor('text.primary') },
         z: 5,
       },
       {
@@ -1603,7 +1605,7 @@ export function KLineChart({
 
   return (
     <div className="kline-wrapper">
-      <ReactECharts option={option} style={{ width: '100%', height: 760 }} onEvents={onEvents} />
+      <ReactECharts theme={chartTheme} option={option} style={{ width: '100%', height: 760 }} onEvents={onEvents} />
       <div className="kline-legend-bar">
         {primaryLegendItems.map((item) => (
           <span

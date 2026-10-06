@@ -11,14 +11,14 @@
   height: 100%;
   min-height: 0;
   background:
-    linear-gradient(180deg, rgba(15, 139, 111, 0.08) 0%, rgba(255, 255, 255, 0) 28%),
-    #f8fbf9;
+    linear-gradient(180deg, color-mix(in srgb, var(--action-primary) 8%, transparent) 0%, rgba(255, 255, 255, 0) 28%),
+    var(--bg-subtle);
 }
 
 .header {
   padding: 16px 18px 12px;
-  border-bottom: 1px solid rgba(31, 49, 48, 0.08);
-  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid var(--bg-subtle);
+  background: var(--bg-surface);
   backdrop-filter: blur(8px);
 }
 
@@ -35,8 +35,8 @@
   border-radius: 10px;
   display: grid;
   place-items: center;
-  color: #fff;
-  background: linear-gradient(135deg, #0f8b6f, #0a6b54);
+  color: var(--text-onPrimary);
+  background: linear-gradient(135deg, var(--brand-accent), var(--action-primary));
   font-size: 16px;
 }
 
@@ -145,12 +145,12 @@
 }
 
 .avatarAssistant {
-  background: rgba(15, 139, 111, 0.14);
+  background: color-mix(in srgb, var(--action-primary) 14%, transparent);
   color: var(--brand-700);
 }
 
 .avatarUser {
-  background: rgba(31, 49, 48, 0.08);
+  background: var(--bg-subtle);
   color: var(--ink-900);
 }
 
@@ -165,14 +165,14 @@
 }
 
 .bubbleAssistant {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(31, 49, 48, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-subtle);
   border-top-left-radius: 4px;
 }
 
 .bubbleUser {
-  background: linear-gradient(135deg, #0f8b6f, #0a6b54);
-  color: #fff;
+  background: linear-gradient(135deg, var(--brand-accent), var(--action-primary));
+  color: var(--text-onPrimary);
   border-top-right-radius: 4px;
 }
 
@@ -183,8 +183,8 @@
 
 .composer {
   padding: 12px 18px 16px;
-  border-top: 1px solid rgba(31, 49, 48, 0.08);
-  background: rgba(255, 255, 255, 0.88);
+  border-top: 1px solid var(--bg-subtle);
+  background: var(--bg-surface);
   backdrop-filter: blur(8px);
 }
 
@@ -205,13 +205,13 @@
 }
 
 .launcher {
-  border-color: rgba(15, 139, 111, 0.35);
+  border-color: color-mix(in srgb, var(--action-primary) 35%, transparent);
   color: var(--brand-700);
-  background: rgba(15, 139, 111, 0.06);
+  background: color-mix(in srgb, var(--action-primary) 6%, transparent);
 }
 
 .launcher:hover {
-  color: #fff !important;
+  color: var(--text-onPrimary) !important;
   background: var(--brand-500) !important;
   border-color: var(--brand-500) !important;
 }

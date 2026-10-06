@@ -9,14 +9,8 @@ import Capital from './pages/Capital';
 import Stats from './pages/Stats';
 import Cards from './pages/Cards';
 import Settings from './pages/Settings';
+import { applyTheme, readTheme, ThemeContext, type Theme } from './theme';
 
-const THEME_KEY = 'lt-theme';
-type Theme = 'dark' | 'light';
-
-function applyTheme(t: Theme) {
-  if (t === 'dark') document.documentElement.dataset.theme = 'dark';
-  else delete document.documentElement.dataset.theme;
-}
 
 const NAV = [
   { to: '/', label: '总览', icon: 'M3 13h4v8H3zM10 8h4v13h-4zM17 3h4v18h-4z' },
@@ -32,25 +26,33 @@ const NAV = [
 
 export default function App() {
   const location = useLocation();
-  const [theme] = useState<Theme>(() => {
-    const saved = localStorage.getItem(THEME_KEY);
-    // 默认浅色（米色暖熊），仅显式选过 dark 才用深色
-    return saved === 'dark' ? 'dark' : 'light';
-  });
+  const [theme, setTheme] = useState<Theme>(readTheme);
   const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => { applyTheme(theme); }, [theme]);
+  // The workspace shell embeds this app in an iframe and shares the theme key.
+  useEffect(() => {
+    const update = () => setTheme(readTheme());
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+    window.addEventListener('storage', update);
+    media?.addEventListener('change', update);
+    return () => {
+      window.removeEventListener('storage', update);
+      media?.removeEventListener('change', update);
+    };
+  }, []);
   useEffect(() => { setNavOpen(false); }, [location.pathname]);
 
   const toggleTheme = () => {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem(THEME_KEY, next);
+    localStorage.setItem('trade-theme-mode', next);
+    localStorage.setItem('lt-theme', next);
     applyTheme(next);
-    // 图表颜色取自模块级常量，需重载页面才能刷新所有 echarts 实例
-    setTimeout(() => window.location.reload(), 30);
+    setTheme(next);
   };
 
   return (
+    <ThemeContext.Provider value={theme}>
     <div className={`app-shell${navOpen ? ' sidebar-open' : ''}`}>
       <button
         type="button"
@@ -61,10 +63,10 @@ export default function App() {
       <aside className="sidebar no-print">
         <div className="brand">
           <div className="brand-row">
-            <img className="brand-logo" src="/journal-app/logo.png" alt="logo" />
-            <h1 className="brand-title">Trading MS</h1>
+            <img className="brand-logo" src="/journal-app/trade-mark.svg" alt="Trade" />
+            <h1 className="brand-title">Trade</h1>
           </div>
-          <div className="brand-sub">波段复利 · 长期主义</div>
+          <div className="brand-sub">交易与复盘工作台</div>
         </div>
         {NAV.map(item => (
           <NavLink
@@ -81,7 +83,7 @@ export default function App() {
         ))}
         <div className="nav-footer">
           <button type="button" className="nav-theme no-print" onClick={toggleTheme} title="切换深色/浅色主题">
-            {theme === 'dark' ? '☀ 浅色' : '🌙 深色'}
+            {theme === 'dark' ? '浅色' : '深色'}
           </button>
           <button type="button" className="nav-quit no-print" onClick={() => { window.top?.location.assign('/screener'); }}>返回交易工作台</button>
         </div>
@@ -93,7 +95,7 @@ export default function App() {
               <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="muted">Trading MS</span>
+          <span className="muted">工作空间 / {NAV.find(item => item.to === location.pathname)?.label || '交易复盘'}</span>
         </div>
         <Routes>
           <Route path="/" element={<Dashboard />} />
@@ -109,5 +111,6 @@ export default function App() {
       </main>
 
     </div>
+    </ThemeContext.Provider>
   );
 }

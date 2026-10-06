@@ -1,4 +1,5 @@
-﻿import { useEffect, useMemo, useRef } from 'react'
+import { chartColor, useChartTheme } from './chart-theme'
+import { useEffect, useMemo, useRef } from 'react'
 import ReactECharts from 'echarts-for-react'
 import type { IntradayPoint } from '@/types/contracts'
 
@@ -31,6 +32,7 @@ function toSafeVolume(value: number) {
 }
 
 export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
+  const chartTheme = useChartTheme()
   const chartRef = useRef<ReactECharts>(null)
   const xData = useMemo(() => points.map((item) => item.time), [points])
   const priceData = useMemo(() => points.map((item) => item.price), [points])
@@ -80,7 +82,7 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
       animation: true,
       legend: {
         top: 2,
-        textStyle: { color: '#2f5452' },
+        textStyle: chartTheme.textStyle,
         data: ['分时价', '均价', '成交量'],
       },
       tooltip: {
@@ -139,7 +141,7 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
           axisLabel: {
             formatter: (value: number) => toSafePrice(Number(value)),
           },
-          splitLine: { lineStyle: { color: 'rgba(31,49,48,0.14)' } },
+          splitLine: { lineStyle: { color: chartColor('chart.grid') } },
         },
         {
           min: percentExtent.min,
@@ -169,7 +171,7 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
           data: priceData,
           showSymbol: false,
           smooth: true,
-          lineStyle: { width: 1.7, color: '#0f8b6f' },
+          lineStyle: { width: 1.7, color: chartColor('chart.series1') },
           markLine: basePrice > 0
             ? {
                 symbol: ['none', 'none'],
@@ -177,12 +179,12 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
                 label: {
                   show: true,
                   formatter: `昨收 ${toSafePrice(basePrice)} / 0.00%`,
-                  color: '#64748b',
-                  backgroundColor: 'rgba(255,255,255,0.85)',
+                  color: chartColor('chart.axis'),
+                  backgroundColor: chartColor('bg.surface'),
                   padding: [2, 6],
                 },
                 lineStyle: {
-                  color: '#94a3b8',
+                  color: chartColor('chart.volume'),
                   width: 1,
                   type: 'dashed',
                 },
@@ -196,7 +198,7 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
           data: avgPriceData,
           showSymbol: false,
           smooth: true,
-          lineStyle: { width: 1.4, color: '#e88e1a' },
+          lineStyle: { width: 1.4, color: chartColor('chart.ma5') },
         },
         {
           name: '成交量',
@@ -204,11 +206,11 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
           xAxisIndex: 1,
           yAxisIndex: 2,
           data: volumeData,
-          itemStyle: { color: '#8ca9a7' },
+          itemStyle: { color: chartColor('chart.volume') },
         },
       ],
     }),
-    [avgPriceData, basePrice, percentExtent.max, percentExtent.min, points, priceData, priceExtent.max, priceExtent.min, volumeData, xData],
+    [chartTheme, avgPriceData, basePrice, percentExtent.max, percentExtent.min, points, priceData, priceExtent.max, priceExtent.min, volumeData, xData],
   )
 
   useEffect(() => {
@@ -223,6 +225,7 @@ export function IntradayChart({ points, referencePrice }: IntradayChartProps) {
 
   return (
     <ReactECharts
+      theme={chartTheme}
       ref={chartRef}
       option={option}
       style={{ width: '100%', height: 420 }}

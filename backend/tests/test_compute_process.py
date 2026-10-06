@@ -21,6 +21,9 @@ apply_worker_memory_limit()
 body = json.load(sys.stdin)
 mode = body.get('mode')
 if mode == 'sleep':
+    if body.get('pid_file'):
+        from pathlib import Path
+        Path(body['pid_file']).write_text(str(os.getpid()))
     time.sleep(30)
 elif mode == 'stdout':
     sys.stdout.write('x' * 4096)
@@ -138,3 +141,51 @@ def test_hard_memory_ceiling_denies_oversized_allocation(child_module):
                        budget=replace(DEFAULT_COMPUTE_BUDGET, memory_bytes=64 * 1024 * 1024))
     assert result.value['allocated'] is False
     assert result.metrics['peak_memory_bytes'] < 64 * 1024 * 1024
+
+
+@pytest.mark.skipif(os.name != 'nt' or sys.prefix == sys.base_prefix, reason='Windows source venv only')
+def test_windows_venv_redirector_computes_and_cancellation_reaps_actual_interpreter(child_module):
+    import ctypes
+    from ctypes import wintypes
+    result = run_child(child_module, {'message': 'venv worker'})
+    assert result.value['pid'] != result.metrics['pid']  # The actual interpreter is a child of the redirector.
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+    kernel.WaitForSingleObject.restype = wintypes.DWORD
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.CloseHandle.restype = wintypes.BOOL
+    pid_file = child_module / 'actual-worker.pid'
+    handle = None
+
+    def cancel_running_interpreter():
+        nonlocal handle
+        if pid_file.exists():
+            handle = kernel.OpenProcess(0x100000, False, int(pid_file.read_text()))  # SYNCHRONIZE
+            assert handle
+            return 'cancelled'
+        return None
+
+    try:
+        with pytest.raises(ComputeProcessError) as failure:
+            run_child(child_module, {'mode': 'sleep', 'pid_file': str(pid_file)},
+                      stop_reason=cancel_running_interpreter)
+        assert failure.value.code == 'COMPUTE_CANCELLED'
+        assert kernel.WaitForSingleObject(handle, 2000) == 0  # The grandchild has exited too.
+    finally:
+        if handle:
+            kernel.CloseHandle(handle)
+
+
+@pytest.mark.skipif(os.name != 'nt', reason='Windows suspended startup only')
+def test_windows_job_setup_failure_never_executes_worker_payload(child_module, monkeypatch):
+    from trade_app.platform import compute_process
+    pid_file = child_module / 'must-not-start.pid'
+    def reject_job(*args, **kwargs):
+        raise OSError('Cannot assign compute job')
+    monkeypatch.setattr(compute_process, '_WindowsJob', reject_job)
+    with pytest.raises(ComputeProcessError) as failure:
+        run_child(child_module, {'mode': 'sleep', 'pid_file': str(pid_file)})
+    assert failure.value.code == 'COMPUTE_LIMIT_SETUP_FAILED'
+    assert not pid_file.exists()

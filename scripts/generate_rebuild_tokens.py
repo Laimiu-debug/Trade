@@ -1,6 +1,7 @@
 """Generate CSS variables from the single design-token source."""
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -48,6 +49,25 @@ for theme, selector in [('light', ':root, [data-theme="light"]'), ('dark', '[dat
     parts += [selector + ' {', *theme_variables(tokens['themes'][theme]), '}']
 parts += [':root {', *dimension_variables(),
           *supporting_variables({key: tokens[key] for key in ('font', 'motion', 'layer', 'print')}), '}']
-target.parent.mkdir(parents=True, exist_ok=True)
-target.write_text('\n'.join(parts) + '\n', encoding='utf-8')
-print(target)
+css = '\n'.join(parts) + '\n'
+typescript = '// Generated from docs/design-tokens.json. Do not edit.\nexport const designTokens = ' + json.dumps(tokens, ensure_ascii=False, indent=2) + ' as const\n'
+outputs = {
+    target: css,
+    root / 'journal-frontend/src/tokens.generated.css': css,
+    root / 'frontend/src/shared/theme/design-tokens.generated.ts': typescript,
+    root / 'journal-frontend/src/design-tokens.generated.ts': typescript,
+}
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--check', action='store_true')
+args = parser.parse_args()
+stale = []
+for path, contents in outputs.items():
+    if args.check:
+        if not path.exists() or path.read_text(encoding='utf-8') != contents:
+            stale.append(str(path.relative_to(root)))
+    else:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(contents, encoding='utf-8', newline='\n')
+if stale:
+    parser.exit(1, 'Stale design tokens: ' + ', '.join(stale) + '\n')
+print('Trade shared CSS / TypeScript tokens: ' + ('current' if args.check else 'generated'))

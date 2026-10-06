@@ -92,6 +92,7 @@ export function SimulationEditor({ accountId, accountName, frozen, onAccountSwit
         { expected_revision: order.revision, dataset_id: datasetId })
       setMessage(result.status === 'filled' ? '已按冻结行情的次日开盘价成交' :
         result.status === 'no_bar' ? '模拟日期没有对应的行情 K 线，委托保持待成交' :
+        result.status === 'no_volume' ? '模拟日期没有成交量，委托保持待成交' :
         '开盘价未达到限价，委托保持待成交')
       await refresh()
     } catch (err) { setError(err instanceof Error ? err.message : '开盘撮合失败') }

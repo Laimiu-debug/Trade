@@ -7,12 +7,12 @@
 }
 
 .cv-return-up {
-  color: #cf1322;
+  color: var(--market-up);
   font-weight: 600;
 }
 
 .cv-return-down {
-  color: #3f8600;
+  color: var(--market-down);
   font-weight: 600;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .cv-drawdown {
-  color: #3f8600;
+  color: var(--market-down);
 }
 
 .cv-date-tag {
@@ -39,7 +39,7 @@
 
 .cv-pool-card-active {
   cursor: pointer;
-  outline: 2px solid #1677ff;
+  outline: 2px solid var(--action-focus);
   outline-offset: -2px;
 }
 
@@ -49,7 +49,7 @@
 
 .cv-pool-card-all-active {
   cursor: pointer;
-  outline: 2px solid #1677ff;
+  outline: 2px solid var(--action-focus);
   outline-offset: -2px;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .cv-history-card:hover {
-  background: rgba(22, 119, 255, 0.04);
+  background: color-mix(in srgb, var(--action-primary) 4%, transparent);
 }
 
 .cv-history-header {

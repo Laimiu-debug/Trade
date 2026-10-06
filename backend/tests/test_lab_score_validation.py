@@ -41,7 +41,7 @@ def test_score_edges_partial_legs_and_open_cycles_do_not_fake_samples():
 
 
 def test_bucket_metrics_match_old_ratio_formula_with_explicit_undefined_pf_and_sample_gate():
-    source=Path(__file__).resolve().parents[3]/'final-trade/backend/scripts/backtest_chart_volume_swing.py'
+    source=Path(__file__).resolve().parents[1]/'scripts/backtest_chart_volume_swing.py'
     node=next(row for row in ast.parse(source.read_text(encoding='utf-8')).body if isinstance(row,ast.FunctionDef) and row.name=='summarize')
     scope={};exec(compile(ast.Module(body=[node],type_ignores=[]),str(source),'exec'),scope)
     rows=[{'pnl_net':'.30','hit_tp':True,'holding_days':2},{'pnl_net':'-.1','hit_tp':False,'holding_days':3},{'pnl_net':'.05','hit_tp':False,'holding_days':4}]

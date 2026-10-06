@@ -28,6 +28,7 @@ import {
 } from '@/shared/api/endpoints'
 import { PageHeader } from '@/shared/components/PageHeader'
 import type { EventJudgmentDimension, EventJudgmentRuleOption, EventJudgmentRuleValue } from '@/types/contracts'
+import './EventJudgmentPage.css'
 
 type Draft = {
   profile_id?: string
@@ -173,9 +174,9 @@ function changed(cur: number | boolean, base: number | boolean, opt: EventJudgme
 export function EventJudgmentPage() {
   const { message } = AntdApp.useApp()
   const query = useQuery({ queryKey: ['event-judgment-profiles'], queryFn: getEventJudgmentProfiles, staleTime: 60_000 })
-  const metricOptions = query.data?.metric_options ?? []
-  const ruleOptions = query.data?.rule_options ?? []
-  const profiles = query.data?.profiles ?? []
+  const metricOptions = useMemo(() => query.data?.metric_options ?? [], [query.data?.metric_options])
+  const ruleOptions = useMemo(() => query.data?.rule_options ?? [], [query.data?.rule_options])
+  const profiles = useMemo(() => query.data?.profiles ?? [], [query.data?.profiles])
   const activeProfileId = String(query.data?.active_profile_id || '').trim()
   const metricKeys = useMemo(() => metricOptions.map((m) => m.metric_key), [metricOptions])
   const metricDescMap = useMemo(
@@ -437,8 +438,8 @@ export function EventJudgmentPage() {
                               : { status: 'ok' as const, text: '当前值在推荐区间内。' }
                         )
                         return (
-                          <Row key={o.rule_key} gutter={[8, 8]} align="middle">
-                            <Col xs={24} md={11}>
+                          <div key={o.rule_key} className="event-rule-row">
+                            <div>
                               <Space wrap size={6}>
                                 <Typography.Text>{o.label}</Typography.Text>
                                 {isChanged ? <Tag color="processing">已修改</Tag> : <Tag>默认/基线</Tag>}
@@ -454,13 +455,13 @@ export function EventJudgmentPage() {
                                   <Typography.Text type={risk.status === 'ok' ? 'secondary' : 'warning'}>风险提示：{risk.text}</Typography.Text>
                                 </>
                               ) : null}
-                            </Col>
-                            <Col xs={24} md={7}>
+                            </div>
+                            <div>
                               <Typography.Text type="secondary">{o.rule_key}</Typography.Text>
                               <br />
                               <Typography.Text type="secondary">基线值：{o.value_type === 'boolean' ? (normalizeBool(base, normalizeBool(o.default_value, false)) ? '开启' : '关闭') : fmtNum(Number(base), o)}</Typography.Text>
-                            </Col>
-                            <Col xs={24} md={6}>
+                            </div>
+                            <div>
                               {o.value_type === 'boolean' ? (
                                 <Switch checked={normalizeBool(cur, normalizeBool(o.default_value, false))} onChange={(v) => updateRule(o.rule_key, v)} />
                               ) : (
@@ -473,8 +474,8 @@ export function EventJudgmentPage() {
                                   onChange={(v) => updateRule(o.rule_key, normalizeRuleValue(v ?? o.default_value, o))}
                                 />
                               )}
-                            </Col>
-                          </Row>
+                            </div>
+                          </div>
                         )
                       })}
                     </Space>

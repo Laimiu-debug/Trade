@@ -1,42 +1,53 @@
 import { theme, type ThemeConfig } from 'antd'
+import { designTokens } from './design-tokens.generated'
 
-export const appTheme: ThemeConfig = {
-  algorithm: theme.defaultAlgorithm,
+export function workspaceTheme(mode: 'light' | 'dark'): ThemeConfig {
+ const colors = designTokens.themes[mode].color
+ return {
+  algorithm: mode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
   token: {
-    colorPrimary: '#0f8b6f',
-    colorInfo: '#0f8b6f',
-    colorSuccess: '#19744f',
-    colorWarning: '#b86f1c',
-    colorError: '#c4473d',
-    colorBgContainer: 'rgba(255, 255, 255, 0.72)',
-    colorBorderSecondary: 'rgba(31, 49, 48, 0.14)',
-    borderRadius: 14,
-    fontFamily: '"Space Grotesk","Noto Sans SC","Segoe UI",sans-serif',
+    colorPrimary: colors['action.primary'], colorInfo: colors['status.info'],
+    colorSuccess: colors['status.success'], colorWarning: colors['status.warning'], colorError: colors['status.danger'],
+    colorBgBase: colors['bg.surface'], colorBgLayout: colors['bg.canvas'], colorBgContainer: colors['bg.surface'],
+    colorText: colors['text.primary'], colorTextSecondary: colors['text.secondary'], colorTextTertiary: colors['text.muted'],
+    colorBorder: colors['border.control'], colorBorderSecondary: colors['border.subtle'],
+    colorTextLightSolid: colors['text.onPrimary'],
+    borderRadius: designTokens.radiusPx.control, fontFamily: designTokens.font.family.ui,
+    fontSize: designTokens.font.sizePx.body, controlHeight: designTokens.sizePx.control,
+    boxShadowSecondary: designTokens.themes[mode].shadow.overlay,
   },
   components: {
     Layout: {
-      siderBg: 'rgba(244, 251, 248, 0.82)',
-      bodyBg: 'transparent',
-      headerBg: 'transparent',
+      siderBg: colors['nav.background'],
+      bodyBg: colors['bg.canvas'],
+      headerBg: colors['bg.surface'],
     },
     Card: {
-      borderRadiusLG: 18,
+      borderRadiusLG: designTokens.radiusPx.card, bodyPadding: designTokens.sizePx.cardPadding, headerFontSize: 16,
     },
     Menu: {
-      itemBorderRadius: 10,
-      itemSelectedBg: 'rgba(15, 139, 111, 0.14)',
-      itemSelectedColor: '#0a6b54',
-      itemColor: '#355553',
+      itemBorderRadius: designTokens.radiusPx.control,
+      itemSelectedBg: colors['nav.active'],
+      itemSelectedColor: colors['action.primary'],
+      itemColor: colors['nav.text'], itemHeight: 40, itemMarginBlock: 3,
     },
     Button: {
-      defaultBorderColor: 'rgba(31, 49, 48, 0.18)',
+      defaultBorderColor: colors['border.subtle'], fontWeight: 500, primaryShadow: 'none', primaryColor: colors['text.onPrimary'],
+    },
+    Alert: {
+      colorSuccessBg: colors['status.successBg'], colorWarningBg: colors['status.warningBg'],
+      colorErrorBg: colors['status.dangerBg'], colorInfoBg: colors['status.infoBg'],
+      colorSuccessBorder: colors['border.subtle'], colorWarningBorder: colors['border.subtle'],
+      colorErrorBorder: colors['border.subtle'], colorInfoBorder: colors['border.subtle'],
     },
     Table: {
-      headerBg: 'rgba(245, 252, 249, 0.88)',
+      headerBg: colors['bg.subtle'], headerColor: colors['text.secondary'], rowHoverBg: colors['bg.hover'], cellPaddingBlock: 9, cellPaddingInline: 14, fontSize: 13,
     },
     Tag: {
-      defaultColor: '#1f3130',
+      defaultColor: colors['text.secondary'], defaultBg: colors['bg.subtle'],
     },
   },
+ }
 }
+export const appTheme = workspaceTheme('light')
 

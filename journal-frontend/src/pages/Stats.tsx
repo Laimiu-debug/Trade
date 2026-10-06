@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { api, fmtMoney, type Overview } from '../api';
 import { Chart, CHART_COLORS, baseAxis, baseTooltip } from '../Chart';
 import { Empty, Stat } from '../components';
+import { ThemeContext } from '../theme';
 
 export default function Stats() {
+  useContext(ThemeContext);
   const [ov, setOv] = useState<Overview | null>(null);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function Stats() {
                 type: 'line', xAxisIndex: 1, yAxisIndex: 1,
                 data: ov.curve.map(p => p.drawdown_pct), showSymbol: false,
                 lineStyle: { color: CHART_COLORS.down, width: 1.5 },
-                areaStyle: { color: 'rgba(76,175,135,0.15)' },
+                areaStyle: { color: CHART_COLORS.downSoft },
               },
             ],
           }} />

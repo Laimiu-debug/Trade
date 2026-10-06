@@ -333,7 +333,8 @@ describe('BacktestPage', () => {
     const runButton = await screen.findByRole('button', { name: /开始回测/ })
     await userEvent.click(runButton)
 
-    expect(await screen.findByText('候选信号')).toBeInTheDocument()
+    // The task watcher polls every 1200 ms; allow the running -> succeeded poll.
+    expect(await screen.findByText('候选信号', {}, { timeout: 5000 })).toBeInTheDocument()
     expect(await screen.findByText('sz300750')).toBeInTheDocument()
     const chartLink = await screen.findByRole('link', { name: 'sz300750' })
     expect(chartLink.getAttribute('href')).toContain('/stocks/sz300750/chart')

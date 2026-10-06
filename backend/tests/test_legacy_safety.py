@@ -6,6 +6,8 @@ import io
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
+import sys
 import threading
 import time
 
@@ -94,6 +96,22 @@ def test_legacy_data_directory_explicit_override_never_uses_location_file(tmp_pa
     assert not target.exists()
 
 
+def test_legacy_database_preserves_literal_hash_and_percent_in_data_directory(tmp_path):
+    import os
+    target = tmp_path / 'journal#history%25'
+    result = subprocess.run([sys.executable, '-c',
+        'from trading_ms.main import app; from trading_ms.database import engine; '
+        'connection = engine.connect(); connection.exec_driver_sql("SELECT count(*) FROM flash_cards"); '
+        'connection.close(); engine.dispose()'],
+        cwd=Path(__file__).resolve().parents[1],
+        env={**os.environ, 'TRADING_MS_DATA_DIR': str(target), 'PYTHONUTF8': '1'},
+        capture_output=True, text=True, timeout=20,
+        creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    assert result.returncode == 0, result.stderr
+    assert (target / 'laimiutrade.db').is_file()
+    assert not (tmp_path / 'journal#history%').exists()
+
+
 @pytest.mark.parametrize('damage', ['partial', 'row_type', 'bad_date', 'duplicate', 'nonfinite'])
 def test_legacy_restore_validation_cannot_delete_existing_rows(legacy, damage):
     engine, _source = legacy
@@ -138,6 +156,20 @@ def test_legacy_http_rejects_hostile_origin_and_partial_restore(legacy):
     assert rejected.status_code == 403 and 'access-control-allow-origin' not in rejected.headers
     assert client.post('/api/import/json', json={'data': {'exported_at': '2026-01-05'}}).status_code == 400
     assert client.get('/api/cards').json()[0]['content'] == 'preserved'
+
+
+def test_explicit_remote_origin_can_write_without_trusting_other_host_origins(legacy, monkeypatch):
+    import trading_ms.main as main
+    monkeypatch.setattr(main, 'allowed_origins', [*main.allowed_origins, 'https://trade.example.com'])
+    client = TestClient(app, base_url='https://trade.example.com')
+    result = client.post('/api/cards', json={'content': 'remote saved', 'tags': ''},
+                         headers={'Origin': 'https://trade.example.com'})
+    assert result.status_code == 200, result.text
+    assert client.get('/api/cards').json()[0]['content'] == 'remote saved'
+    for origin in ('https://evil.example', 'http://trade.example.com', 'https://other.example.com'):
+        result = client.post('/api/cards', json={'content': 'blocked'}, headers={'Origin': origin})
+        assert result.status_code == 403
+    assert len(client.get('/api/cards').json()) == 1
 
 
 def test_old_nine_table_json_keeps_round_notes_and_does_not_import_credentials(legacy):

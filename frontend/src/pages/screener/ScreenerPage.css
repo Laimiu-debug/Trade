@@ -9,11 +9,11 @@
   padding-inline: 12px;
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgba(5, 5, 5, 0.12);
+  border: 1px solid var(--border-subtle);
   border-right: 0;
   border-radius: 8px 0 0 8px;
-  background: rgba(5, 5, 5, 0.04);
-  color: rgba(0, 0, 0, 0.72);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.2;
   white-space: normal;
@@ -117,17 +117,17 @@
   overflow: hidden;
 }
 .screener-pool-card--active {
-  border: 1px solid rgba(15, 139, 111, 0.55);
-  box-shadow: 0 0 0 2px rgba(15, 139, 111, 0.18) inset;
+  border: 1px solid color-mix(in srgb, var(--action-primary) 55%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--action-primary) 18%, transparent) inset;
 }
 .screener-pool-card--dragover {
-  border: 1px dashed rgba(15, 139, 111, 0.85);
-  box-shadow: 0 0 0 3px rgba(15, 139, 111, 0.22) inset;
+  border: 1px dashed color-mix(in srgb, var(--action-primary) 85%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 22%, transparent) inset;
 }
 
 /* ── Column drag row highlight ── */
 .screener-col-drag--over {
-  background: rgba(15, 139, 111, 0.08);
+  background: color-mix(in srgb, var(--action-primary) 8%, transparent);
 }
 
 /* ── Table row drag styles ── */
@@ -138,5 +138,5 @@
   cursor: grab;
 }
 .screener-table-row-dragover {
-  background: rgba(15, 139, 111, 0.08) !important;
+  background: color-mix(in srgb, var(--action-primary) 8%, transparent) !important;
 }

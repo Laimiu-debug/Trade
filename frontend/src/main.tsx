@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Typography } from 'antd'
 import { App } from '@/app/App'
 import './index.css'
+import './legacy-workspace.css'
 
 function disableTypographyEllipsis() {
   const typography = Typography as unknown as Record<string, unknown>

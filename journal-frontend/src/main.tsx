@@ -5,6 +5,7 @@ import App from './App';
 import { AiBusyProvider } from './AiBusy';
 import { ToastProvider } from './components';
 import './styles.css';
+import './workspace.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

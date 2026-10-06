@@ -7,8 +7,8 @@
 .formulaBanner {
   padding: 14px 18px;
   border-radius: 12px;
-  border: 1px dashed rgba(15, 139, 111, 0.35);
-  background: rgba(15, 139, 111, 0.06);
+  border: 1px dashed color-mix(in srgb, var(--action-primary) 35%, transparent);
+  background: color-mix(in srgb, var(--action-primary) 6%, transparent);
   font-size: 15px;
   font-weight: 600;
   color: var(--brand-700);
@@ -21,8 +21,8 @@
   gap: 8px;
   padding: 18px 20px;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(15, 139, 111, 0.12), rgba(255, 255, 255, 0.5));
-  border: 1px solid rgba(15, 139, 111, 0.18);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--action-primary) 12%, transparent), var(--bg-surface));
+  border: 1px solid color-mix(in srgb, var(--action-primary) 18%, transparent);
 }
 
 .resultHeroValue {
@@ -55,7 +55,7 @@
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid var(--line-soft);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--bg-surface);
 }
 
 .factorLabel {

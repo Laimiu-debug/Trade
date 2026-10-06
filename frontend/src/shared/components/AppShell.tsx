@@ -22,6 +22,7 @@ import { formatCrossValidateElapsed, useCrossValidateRunStore } from '@/state/cr
 import { formatTrendLeadersElapsed, useTrendLeadersRunStore } from '@/state/trendLeadersRunStore'
 import { AIAssistantDrawer, AIAssistantLauncher } from '@/shared/components/AIAssistantDrawer'
 import { useRouteAIContextSync } from '@/shared/ai/useRouteAIContextSync'
+import { ThemeButton } from '@/shared/theme/ThemeButton'
 
 const { Header, Content, Sider } = Layout
 const SCREENER_CACHE_KEY = 'tdx-trend-screener-cache-v4'
@@ -143,7 +144,7 @@ export function AppShell() {
   )
 
   return (
-    <Layout style={{ minHeight: '100vh', background: 'transparent' }}>
+    <Layout className="legacy-shell" style={{ minHeight: '100vh', background: 'transparent' }}>
       {isMobile ? (
         <Drawer
           title="导航"
@@ -156,44 +157,42 @@ export function AppShell() {
         </Drawer>
       ) : (
         <Sider
-          width={248}
+          width={232}
           style={{
-            background: 'rgba(251, 255, 252, 0.68)',
-            borderRight: '1px solid rgba(31,49,48,0.08)',
-            backdropFilter: 'blur(8px)',
+            background: 'var(--nav-background)',
+            borderRight: '1px solid var(--border-subtle)',
           }}
         >
-          <div style={{ padding: '20px 16px 12px' }}>
+          <div className="legacy-brand"><img src="/trade-mark.svg" width="34" height="34" alt="" /><div>
             <Typography.Title level={4} style={{ margin: 0 }}>
-              Final Trade
+              Trade
             </Typography.Title>
-            <Typography.Text type="secondary">交易工作台</Typography.Text>
-          </div>
+            <Typography.Text type="secondary">交易研究工作台</Typography.Text>
+          </div></div>
           {menu}
         </Sider>
       )}
 
       <Layout style={{ background: 'transparent' }}>
-        <Header
+        <Header className="legacy-topbar"
           style={{
-            background: 'transparent',
+            background: 'var(--bg-surface)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            borderBottom: '1px solid rgba(31,49,48,0.08)',
-            paddingInline: 16,
+            borderBottom: '1px solid var(--border-subtle)',
           }}
         >
           <Space size={12}>
             {isMobile ? (
-              <a onClick={() => setDrawerOpen(true)} style={{ cursor: 'pointer', color: '#0a6b54' }}>
+              <Button type="text" onClick={() => setDrawerOpen(true)} aria-label="打开导航">
                 导航
-              </a>
+              </Button>
             ) : null}
-            <Typography.Text strong>Final Trade</Typography.Text>
+            <Typography.Text type="secondary">交易工作台</Typography.Text>
           </Space>
 
-          <Space size={18}>
+          <Space size={14} wrap className="legacy-header-actions">
             <AIAssistantLauncher />
             <Link to="/screener">主流程</Link>
             <Link to="/strategy">策略中心</Link>
@@ -206,11 +205,12 @@ export function AppShell() {
             >
               使用说明
             </a>
-            <AreaChartOutlined style={{ color: '#0f8b6f' }} />
+            <ThemeButton />
+            <AreaChartOutlined style={{ color: 'var(--action-primary)' }} />
           </Space>
         </Header>
 
-        <Content style={{ padding: '18px 18px 24px' }}>
+        <Content className="legacy-content">
           {crossValidateRunning && !isOnCrossValidatePage ? (
             <Alert
               type="info"

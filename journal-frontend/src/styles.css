@@ -1,82 +1,18 @@
-/* ============ Design Tokens（默认：暖熊浅色，照搬 logo 配色） ============ */
+@import "./tokens.generated.css";
+/* Compatibility aliases map existing journal components to shared roles. */
 :root {
-  /* 色板：米色底 + 暖棕 + 金 + 红/青（A 股红涨绿跌） */
-  --bg: #f5f0e6;
-  --bg-deep: #ece5d6;
-  --surface: #ffffff;
-  --surface-2: #fbf7ef;
-  --surface-3: #f1e9da;
-  --border: #e6dcc6;
-  --border-strong: #d2c4a3;
-
-  --text: #3a322a;
-  --text-2: #7a6f5e;
-  --text-3: #a89c86;
-
-  /* gold 系列承载品牌主色（暖棕），名称沿用以兼容全项目引用 */
-  --gold: #e8a87c;
-  --gold-bright: #d98a52;
-  --gold-dim: rgba(232, 168, 124, 0.2);
-
-  /* 强调金（按钮高亮、进度条） */
-  --accent: #ffc93c;
-  --accent-soft: rgba(255, 201, 60, 0.22);
-
-  /* A 股习惯：红涨绿跌，取 logo 红与青 */
-  --up: #ff6b6b;
-  --up-dim: rgba(255, 107, 107, 0.14);
-  --down: #4ecdc4;
-  --down-dim: rgba(78, 205, 196, 0.14);
-
-  --danger: #ff6b6b;
-  --info: #4ecdc4;
-
-  --font-body: "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
-  --font-display: "Georgia", "Times New Roman", "STZhongsong", "SimSun", serif;
-  --font-mono: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
-
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-
-  --shadow-md: 0 4px 18px rgba(120, 90, 50, 0.12);
-  --dur: 180ms;
+  --bg: var(--bg-canvas); --bg-deep: var(--bg-surface);
+  --surface: var(--bg-surface); --surface-2: var(--bg-subtle); --surface-3: var(--bg-hover);
+  --border: var(--border-subtle); --border-strong: var(--border-control);
+  --text: var(--text-primary); --text-2: var(--text-secondary); --text-3: var(--text-muted);
+  --gold: var(--brand-accent); --gold-bright: var(--action-primary); --gold-dim: var(--bg-selected);
+  --accent: var(--action-primary); --accent-soft: var(--bg-selected);
+  --up: var(--market-up); --up-dim: var(--market-upBg); --down: var(--market-down); --down-dim: var(--market-downBg);
+  --danger: var(--status-danger); --info: var(--status-info);
+  --font-body: var(--font-family-ui); --font-display: var(--font-family-ui); --font-mono: var(--font-family-code);
+  --radius-sm: var(--radiusPx-tag); --radius-md: var(--radiusPx-control); --radius-lg: var(--radiusPx-card);
+  --shadow-md: var(--shadow-card); --dur: var(--motion-normalMs);
 }
-
-::selection { background: var(--gold-dim); color: var(--gold-bright); }
-
-/* ============ 深色主题（暖棕夜盘） ============ */
-:root[data-theme="dark"] {
-  --bg: #221c17;
-  --bg-deep: #1a1511;
-  --surface: #2c241d;
-  --surface-2: #342a21;
-  --surface-3: #3e3327;
-  --border: #463829;
-  --border-strong: #5a4836;
-
-  --text: #f2ece0;
-  --text-2: #b3a48c;
-  --text-3: #80715d;
-
-  --gold: #e8a87c;
-  --gold-bright: #f3bd95;
-  --gold-dim: rgba(232, 168, 124, 0.16);
-
-  --accent: #ffc93c;
-  --accent-soft: rgba(255, 201, 60, 0.18);
-
-  --up: #ff6b6b;
-  --up-dim: rgba(255, 107, 107, 0.16);
-  --down: #4ecdc4;
-  --down-dim: rgba(78, 205, 196, 0.14);
-
-  --danger: #ff6b6b;
-  --info: #4ecdc4;
-
-  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.4);
-}
-
 :root[data-theme="dark"] ::selection { background: var(--gold-dim); color: var(--gold-bright); }
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb { background: var(--surface-3); }
 :root[data-theme="dark"] tr:hover td { background: rgba(255, 255, 255, 0.025); }
@@ -164,7 +100,7 @@ html { overflow-x: clip; }
 .nav-link.active {
   color: var(--gold-bright);
   background: var(--gold-dim);
-  border-color: rgba(212, 175, 106, 0.25);
+  border-color: color-mix(in srgb, var(--action-primary) 25%, transparent);
 }
 .nav-link .icon { width: 17px; height: 17px; opacity: 0.85; }
 
@@ -233,7 +169,7 @@ html { overflow-x: clip; }
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(34, 28, 23, 0.42);
+  background: var(--bg-mask);
   z-index: 190;
   border: none;
   padding: 0;
@@ -384,7 +320,7 @@ button.primary:hover { background: var(--gold); }
 button.ghost { background: transparent; border-color: transparent; color: var(--text-2); padding: 6px 10px; }
 button.ghost:hover { color: var(--gold); background: var(--gold-dim); border-color: transparent; }
 button.danger-ghost { background: transparent; border-color: transparent; color: var(--text-3); padding: 4px 8px; }
-button.danger-ghost:hover { color: var(--danger); background: rgba(224, 93, 93, 0.1); }
+button.danger-ghost:hover { color: var(--danger); background: color-mix(in srgb, var(--status-danger) 10%, transparent); }
 
 input, select, textarea {
   font-family: var(--font-body);
@@ -409,7 +345,7 @@ input[type="number"] {
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 12%, transparent);
 }
 textarea { resize: vertical; min-height: 88px; line-height: 1.7; }
 label.field { display: block; margin-bottom: 14px; }
@@ -466,12 +402,12 @@ label.field > span {
 .ui-picker-field:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 12%, transparent);
 }
 .ui-picker-trigger.open,
 .ui-picker-field.open {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 106, 0.12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 12%, transparent);
 }
 .ui-picker-trigger .placeholder { color: var(--text-3); }
 .ui-picker-trigger > span,
@@ -745,7 +681,7 @@ label.field > span {
   margin-top: 10px;
   padding: 10px 12px;
   background: var(--gold-dim);
-  border: 1px solid rgba(212, 175, 106, 0.25);
+  border: 1px solid color-mix(in srgb, var(--action-primary) 25%, transparent);
   border-radius: var(--radius-sm);
   font-size: 12px;
   color: var(--text-2);
@@ -765,7 +701,7 @@ th {
 }
 td { padding: 10px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(255, 255, 255, 0.015); }
+tr:hover td { background: var(--bg-hover); }
 
 .tag {
   display: inline-block;
@@ -803,10 +739,10 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 }
 .node-cell .lv { font-family: var(--font-display); font-size: 15px; }
 .node-cell.lit {
-  background: linear-gradient(160deg, rgba(212, 175, 106, 0.22), rgba(212, 175, 106, 0.08));
-  border-color: rgba(212, 175, 106, 0.55);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--action-primary) 22%, transparent), color-mix(in srgb, var(--action-primary) 8%, transparent));
+  border-color: color-mix(in srgb, var(--action-primary) 55%, transparent);
   color: var(--gold-bright);
-  box-shadow: 0 0 14px rgba(212, 175, 106, 0.15);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--action-primary) 15%, transparent);
 }
 .node-cell.next {
   border-color: var(--border-strong);
@@ -836,12 +772,12 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 .progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(212, 175, 106, 0.55), var(--gold) 70%, var(--gold-bright));
-  box-shadow: 0 0 10px rgba(212, 175, 106, 0.35);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--action-primary) 55%, transparent), var(--gold) 70%, var(--gold-bright));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--action-primary) 35%, transparent);
   transition: width 600ms ease-out;
   min-width: 2px;
 }
-.progress-fill.slim { background: linear-gradient(90deg, rgba(106, 155, 212, 0.5), var(--info)); box-shadow: 0 0 8px rgba(106, 155, 212, 0.3); }
+.progress-fill.slim { background: linear-gradient(90deg, color-mix(in srgb, var(--action-primary) 50%, transparent), var(--info)); box-shadow: 0 0 8px color-mix(in srgb, var(--action-primary) 30%, transparent); }
 
 /* 闪记卡片 */
 .flash-card {
@@ -903,7 +839,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 }
 .trade-score-card.active,
 .trade-score-card:hover {
-  border-color: rgba(212, 175, 106, 0.45);
+  border-color: color-mix(in srgb, var(--action-primary) 45%, transparent);
 }
 .trade-score-card.nested {
   margin-top: 6px;
@@ -925,7 +861,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
   background: var(--surface-2);
 }
 .trade-t-group.active {
-  border-color: rgba(212, 175, 106, 0.5);
+  border-color: color-mix(in srgb, var(--action-primary) 50%, transparent);
 }
 .trade-t-group-head {
   display: flex;
@@ -1063,7 +999,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--bg-mask);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1130,8 +1066,8 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 }
 .trade-analysis-item:hover,
 .trade-analysis-item.active {
-  border-color: rgba(212, 175, 106, 0.45);
-  background: rgba(212, 175, 106, 0.06);
+  border-color: color-mix(in srgb, var(--action-primary) 45%, transparent);
+  background: color-mix(in srgb, var(--action-primary) 6%, transparent);
 }
 .trade-analysis-head {
   display: flex;
@@ -1177,8 +1113,8 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 }
 
 .alert {
-  border: 1px solid rgba(224, 93, 93, 0.35);
-  background: rgba(224, 93, 93, 0.07);
+  border: 1px solid color-mix(in srgb, var(--status-danger) 35%, transparent);
+  background: color-mix(in srgb, var(--status-danger) 7%, transparent);
   color: var(--up);
   padding: 12px 16px;
   border-radius: var(--radius-md);
@@ -1207,7 +1143,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 .quit-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(245, 240, 230, 0.85);
+  background: var(--bg-mask);
   backdrop-filter: blur(3px);
   z-index: 9999;
   display: flex;
@@ -1215,7 +1151,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
   justify-content: center;
   animation: fade-in 200ms ease-out;
 }
-:root[data-theme="dark"] .quit-overlay { background: rgba(8, 9, 13, 0.78); }
+:root[data-theme="dark"] .quit-overlay { background: var(--bg-mask); }
 .quit-card {
   background: var(--surface);
   border: 1px solid var(--border-strong);
@@ -1241,14 +1177,14 @@ tr:hover td { background: rgba(255, 255, 255, 0.015); }
 .ai-busy-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(245, 240, 230, 0.72);
+  background: var(--bg-mask);
   backdrop-filter: blur(2px);
   z-index: 9998;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-:root[data-theme="dark"] .ai-busy-overlay { background: rgba(8, 9, 13, 0.72); }
+:root[data-theme="dark"] .ai-busy-overlay { background: var(--bg-mask); }
 .ai-busy-card {
   background: var(--surface);
   border: 1px solid var(--border-strong);

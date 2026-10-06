@@ -18,7 +18,7 @@ from test_strategy_lab import fixture, bars
 
 
 def test_four_presets_match_original_constants_and_require_explicit_adaptation():
-    old_path = Path(__file__).resolve().parents[3] / 'final-trade/backend/scripts/morning_band_report.py'
+    old_path = Path(__file__).resolve().parents[1] / 'scripts/morning_band_report.py'
     module = ast.parse(old_path.read_text(encoding='utf-8'))
     declaration = next(row for row in module.body if isinstance(row, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'CANDIDATES' for target in row.targets))
     scope = {'dict': dict}
@@ -42,7 +42,7 @@ def test_four_presets_match_original_constants_and_require_explicit_adaptation()
 
 
 def old_custom():
-    path = Path(__file__).resolve().parents[3] / 'final-trade/backend/scripts/tune_weike_rhythm.py'
+    path = Path(__file__).resolve().parents[1] / 'scripts/tune_weike_rhythm.py'
     module = ast.parse(path.read_text(encoding='utf-8'))
     node = next(row for row in module.body if isinstance(row, ast.FunctionDef) and row.name == '_eval_custom')
     from app.core.force_rhythm_strategy import resolve_force_rhythm_params

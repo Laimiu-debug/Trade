@@ -8,9 +8,9 @@
 .signals-wyckoff-diagram {
   width: 100%;
   max-width: 980px;
-  border: 1px solid rgba(44, 62, 80, 0.12);
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
-  background: #fff;
+  background: var(--bg-surface);
 }
 
 .signals-filter-gap {

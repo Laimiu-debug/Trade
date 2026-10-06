@@ -11,12 +11,12 @@
 }
 
 .chart-return-pos {
-  color: #ce5649;
+  color: var(--market-up);
   font-weight: 600;
 }
 
 .chart-return-neg {
-  color: #1a8b66;
+  color: var(--market-down);
   font-weight: 600;
 }
 

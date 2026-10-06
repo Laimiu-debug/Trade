@@ -17,7 +17,7 @@ from test_strategy_lab import fixture
 
 
 def original_rule():
-    source = Path(__file__).resolve().parents[3] / 'final-trade/backend/scripts/verify_weike_rules.py'
+    source = Path(__file__).resolve().parents[1] / 'scripts/verify_weike_rules.py'
     tree = ast.parse(source.read_text(encoding='utf-8'))
     function = next(row for row in tree.body if isinstance(row, ast.FunctionDef) and row.name == 'should_buy')
     scope = {}

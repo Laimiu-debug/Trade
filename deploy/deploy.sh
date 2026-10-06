@@ -18,8 +18,16 @@ NGINX_CONF="/etc/nginx/sites-available/final-trade"
 PYTHON_VERSION="python3.12"
 NODE_VERSION="22"
 BACKEND_PORT=8000
-FRONTEND_PORT=80
-DOMAIN=""                               # 填入你的域名，如 trade.example.com（留空则用 IP）
+PUBLIC_ORIGIN="${PUBLIC_ORIGIN:-}"       # 必填，例如 https://trade.example.com
+CERTBOT_EMAIL="${CERTBOT_EMAIL:-}"       # 必填，用于证书续期通知
+TRADE_AUTH_USER="${TRADE_AUTH_USER:-trade}"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+DOMAIN=$(python3 "${SCRIPT_DIR}/legacy_nginx.py" "${PUBLIC_ORIGIN}" --domain-only)
+if [[ ! "${CERTBOT_EMAIL}" =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+$ ]] || \
+   [[ ! "${TRADE_AUTH_USER}" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]; then
+    echo "请设置 CERTBOT_EMAIL 和有效的 TRADE_AUTH_USER。"
+    exit 1
+fi
 
 echo "============================================"
 echo " Final Trade - Ubuntu 部署脚本"
@@ -33,7 +41,7 @@ echo "[1/5] 安装系统依赖..."
 
 sudo apt update
 sudo apt install -y \
-    curl wget git nginx \
+    curl wget git nginx certbot apache2-utils \
     software-properties-common \
     ca-certificates gnupg \
     build-essential
@@ -143,6 +151,15 @@ echo ""
 # ===========================================
 echo "[5/5] 配置 Nginx 和系统服务..."
 
+# 所有页面和接口均在 HTTPS 下认证；密码由 htpasswd 交互读取，不进入参数或日志。
+if [ ! -s /etc/nginx/final-trade.htpasswd ]; then
+    sudo htpasswd -cB /etc/nginx/final-trade.htpasswd "${TRADE_AUTH_USER}"
+fi
+sudo chown root:www-data /etc/nginx/final-trade.htpasswd
+sudo chmod 640 /etc/nginx/final-trade.htpasswd
+sudo mkdir -p "${INSTALL_DIR}/data" /var/www/.tdx-trend /var/www/letsencrypt
+sudo chown -R www-data:www-data "${INSTALL_DIR}/data" /var/www/.tdx-trend
+
 # --- systemd 服务文件 ---
 sudo tee /etc/systemd/system/final-trade-backend.service > /dev/null <<SERVICE
 [Unit]
@@ -158,6 +175,8 @@ ExecStart=/opt/final-trade/backend/venv/bin/uvicorn app.main:app --host 127.0.0.
 Restart=always
 RestartSec=5
 Environment=PYTHONUNBUFFERED=1
+Environment=TRADING_MS_ALLOWED_ORIGINS=${PUBLIC_ORIGIN}
+Environment=TRADING_MS_DATA_DIR=${INSTALL_DIR}/data
 
 [Install]
 WantedBy=multi-user.target
@@ -168,61 +187,20 @@ sudo systemctl enable final-trade-backend
 sudo systemctl restart final-trade-backend
 echo "  ✓ 后端服务已启动"
 
-# --- Nginx 配置 ---
-sudo tee "${NGINX_CONF}" > /dev/null <<NGINX
-server {
-    listen 80;
-    server_name ${DOMAIN:-_};
-
-    # 前端静态文件
-    root /opt/final-trade/frontend/dist;
-    index index.html;
-
-    # API 反向代理 -> FastAPI
-    location /api/ {
-        proxy_pass http://127.0.0.1:${BACKEND_PORT};
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_read_timeout 120s;
-        proxy_connect_timeout 10s;
-    }
-
-    # Journal HTML, API and uploads are mounted together in the backend.
-    location /journal-app/ {
-        proxy_pass http://127.0.0.1:${BACKEND_PORT};
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_read_timeout 120s;
-    }
-
-    # SPA 路由 fallback
-    location / {
-        try_files \$uri \$uri/ /index.html;
-    }
-
-    # 静态资源缓存
-    location /assets/ {
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-    }
-
-    # Gzip 压缩
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml;
-    gzip_min_length 1024;
-}
-NGINX
-
-# 启用站点
+# 申请证书前只暴露 ACME 验证路径与 HTTPS 跳转，不通过 HTTP 暴露应用。
+python3 "${SCRIPT_DIR}/legacy_nginx.py" "${PUBLIC_ORIGIN}" --bootstrap | sudo tee "${NGINX_CONF}" > /dev/null
 sudo ln -sf "${NGINX_CONF}" /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t
+sudo systemctl restart nginx
+sudo certbot certonly --webroot -w /var/www/letsencrypt -d "${DOMAIN}" \
+    --email "${CERTBOT_EMAIL}" --agree-tos --non-interactive \
+    --deploy-hook "systemctl reload nginx"
 
-# 测试并重启 Nginx
-sudo nginx -t && sudo systemctl restart nginx
+# 有效证书就绪后启用带认证的 HTTPS 页面和 API。
+python3 "${SCRIPT_DIR}/legacy_nginx.py" "${PUBLIC_ORIGIN}" | sudo tee "${NGINX_CONF}" > /dev/null
+sudo nginx -t
+sudo systemctl reload nginx
 
 echo "  ✓ Nginx 配置完成"
 echo ""
@@ -235,7 +213,7 @@ echo "============================================"
 echo " 部署完成！"
 echo "============================================"
 echo ""
-echo "  前端访问:  http://${DOMAIN:-$SERVER_IP}"
+echo "  前端访问:  ${PUBLIC_ORIGIN}（需要登录）"
 echo "  后端 API:  http://127.0.0.1:${BACKEND_PORT}"
 echo ""
 echo "  ⚠ 下一步：从 Windows 上传 TDX 数据"
@@ -256,10 +234,4 @@ echo "    重启后端:      sudo systemctl restart final-trade-backend"
 echo "    重启 Nginx:    sudo systemctl restart nginx"
 echo ""
 
-# 可选：HTTPS 提示
-if [ -n "${DOMAIN}" ]; then
-    echo "  配置 HTTPS（可选）:"
-    echo "    sudo apt install certbot python3-certbot-nginx -y"
-    echo "    sudo certbot --nginx -d ${DOMAIN}"
-    echo ""
-fi
+echo "  来源与认证已配置；证书由 certbot 自动续期。"

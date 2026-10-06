@@ -1,5 +1,8 @@
 # Final Trade - Ubuntu 部署指南
 
+本目录的 `deploy.sh` 部署旧版工作台；新版统一应用按 [远程部署说明](../docs/REMOTE_DEPLOYMENT.md) 使用 `deploy/rebuild/` 模板。
+旧版部署需要解析到服务器的域名、开放的 80/443 端口与有效邮箱。脚本配置 HTTPS、整个站点的密码认证和 `TRADING_MS_ALLOWED_ORIGINS`，后端只监听本机；域名来源写请求可以保存，其他来源仍返回 403。
+
 ## 数据方案：Windows TDX 同步
 
 Ubuntu 服务器上不运行 TDX，而是：
@@ -20,7 +23,7 @@ FastAPI 分析展示
 
 ```bash
 # 本地执行
-scp -r ./backend ./frontend deploy/ ${USER}@<服务器IP>:/tmp/final-trade/
+scp -r ./backend ./frontend ./journal-frontend deploy/ ${USER}@<服务器IP>:/tmp/final-trade/
 ```
 
 ### 2. SSH 登录服务器，执行部署
@@ -28,8 +31,13 @@ scp -r ./backend ./frontend deploy/ ${USER}@<服务器IP>:/tmp/final-trade/
 ```bash
 sudo mv /tmp/final-trade /opt/final-trade
 chmod +x /opt/final-trade/deploy/deploy.sh
-sudo bash /opt/final-trade/deploy/deploy.sh
+sudo env PUBLIC_ORIGIN=https://trade.example.com CERTBOT_EMAIL=you@example.com \
+  TRADE_AUTH_USER=trade bash /opt/final-trade/deploy/deploy.sh
 ```
+
+替换域名和邮箱后执行。首次部署会交互要求设置访问密码；密码文件保存在 `/etc/nginx/final-trade.htpasswd`，再次部署保留已有账号。若证书申请失败，脚本立即停止，HTTP 入口只保留证书验证与 HTTPS 跳转。完成后使用 `https://trade.example.com` 登录。
+
+已有旧版部署也需要重跑上述部署步骤，单独执行 `update.sh` 不会补齐来源、证书和认证配置。修改域名时重跑部署，确保浏览器地址与 systemd 的可信来源一致。
 
 ### 3. 配置 SSH 免密（让 Windows 能自动上传）
 
@@ -92,7 +100,7 @@ Start-ScheduledTask -TaskName "FinalTrade-TDX-Sync"
 或通过 API 配置：
 
 ```bash
-curl -X POST http://localhost:8000/api/config \
+curl -u trade -X PUT https://trade.example.com/api/config \
   -H "Content-Type: application/json" \
   -d '{
     "tdx_data_path": "/opt/final-trade/tdx-data",
@@ -117,11 +125,12 @@ ls /opt/final-trade/tdx-data/sh/lday/ | head -10
 ls /opt/final-trade/tdx-data/sz/lday/ | head -10
 ```
 
-## 配置 HTTPS（有域名时）
+## 证书和访问密码维护
 
 ```bash
-sudo apt install certbot python3-certbot-nginx -y
-sudo certbot --nginx -d your-domain.com
+sudo certbot renew --dry-run
+# 修改登录密码（交互输入；不要用 -b 把密码放进命令行）
+sudo htpasswd -B /etc/nginx/final-trade.htpasswd trade
 ```
 
 ## 防火墙
