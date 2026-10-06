@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api, type SimFill } from './api'
+import { Icon } from './workspace-icons'
 
 type Tag = { id: string; type: 'emotion' | 'reason'; name: string; active: boolean; revision: number }
 type Assignment = { fill_id: string; emotion_tag_id: string | null; reason_tag_ids: string[]; revision: number }
@@ -48,13 +49,13 @@ export function SimReviewTags({ accountId, fills, frozen }: { accountId: string;
   const currentAssignment = assignments.find(row => row.fill_id === selectedFill)
 
   return <section className="card">
-    <h2>模拟成交复盘标签</h2>
+    <h2 className="title-with-icon"><Icon name="flag" />模拟成交复盘标签</h2>
     <p className="muted">每笔成交可选一个情绪标签和最多 16 个原因标签。删除标签后保留历史关联与统计，成交记录不会删除。</p>
     {error && <div className="alert error" role="alert">{error}</div>}
     {message && <div className="alert success" role="status">{message}</div>}
     {!frozen && <form className="form" onSubmit={event => { event.preventDefault(); mutate('标签已创建', async () => { await api(root + '/review-tags', 'POST', { type, name }); setName('') }) }}>
       <div className="form-grid"><label className="field"><span>类别</span><select value={type} onChange={event => setType(event.target.value as 'emotion' | 'reason')}><option value="emotion">情绪</option><option value="reason">原因</option></select></label><label className="field"><span>新标签名称</span><input value={name} maxLength={80} onChange={event => setName(event.target.value)} required /></label></div>
-      <button className="button secondary">添加标签</button>
+      <button className="button secondary"><Icon name="add" />添加标签</button>
     </form>}
     <div className="form-actions">{tags.filter(row => row.active).map(row => <span key={row.id} className="tag-chip">{row.type === 'emotion' ? '情绪' : '原因'} · {row.name}{!frozen && <button className="link-button danger" type="button" aria-label={`删除标签 ${row.name}`} onClick={() => { if (window.confirm(`删除标签“${row.name}”？历史成交关联仍会保留。`)) mutate('标签已停用', () => api(root + `/review-tags/${row.id}?expected_revision=${row.revision}`, 'DELETE')) }}>×</button>}</span>)}</div>
     <label className="field"><span>选择成交记录</span><select value={selectedFill} onChange={event => chooseFill(event.target.value)}><option value="">选择成交</option>{fills.map(row => <option key={row.id} value={row.id}>{row.fill_date} · {row.fill_price} · ¥ {row.gross} · {row.id.slice(0, 8)}</option>)}</select></label>
@@ -62,7 +63,7 @@ export function SimReviewTags({ accountId, fills, frozen }: { accountId: string;
       <p>{selected.fill_date} · {selected.fill_price} · ¥ {selected.gross} · 已实现盈亏 {selected.realized_pnl ?? '未平仓'}</p>
       <label className="field"><span>情绪标签</span><select disabled={frozen} value={emotion} onChange={event => setEmotion(event.target.value)}><option value="">不设置</option>{tags.filter(row => row.type === 'emotion' && (row.active || row.id === emotion)).map(row => <option key={row.id} value={row.id}>{row.name}{row.active ? '' : '（已删除）'}</option>)}</select></label>
       <div className="form-grid">{tags.filter(row => row.type === 'reason' && (row.active || reasons.includes(row.id))).map(row => <label className="check-field" key={row.id}><input type="checkbox" disabled={frozen || (!row.active && !reasons.includes(row.id))} checked={reasons.includes(row.id)} onChange={event => setReasons(current => event.target.checked ? [...current, row.id] : current.filter(id => id !== row.id))} />{row.name}{row.active ? '' : '（已删除）'}</label>)}</div>
-      {!frozen && <button className="button primary" disabled={reasons.length > 16} onClick={() => mutate('成交标签已保存', () => api(root + `/fills/${selected.id}/tags`, 'PUT', { expected_revision: currentAssignment?.revision || 0, emotion_tag_id: emotion || null, reason_tag_ids: reasons }))}>保存成交标签</button>}
+      {!frozen && <button className="button primary" disabled={reasons.length > 16} onClick={() => mutate('成交标签已保存', () => api(root + `/fills/${selected.id}/tags`, 'PUT', { expected_revision: currentAssignment?.revision || 0, emotion_tag_id: emotion || null, reason_tag_ids: reasons }))}><Icon name="save" />保存成交标签</button>}
     </div>}
     <h3>标签统计</h3>
     <p className="muted">{stats?.method}</p>

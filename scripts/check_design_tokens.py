@@ -1,7 +1,10 @@
 """Check legibility of shared light/dark design tokens (WCAG contrast ratios)."""
 from __future__ import annotations
-import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from design_tokens import load_resolved  # noqa: E402
 
 
 def luminance(color: str) -> float:
@@ -16,7 +19,7 @@ def contrast(foreground: str, background: str) -> float:
 
 
 def main() -> None:
-    tokens = json.loads((Path(__file__).resolve().parents[1] / 'docs/design-tokens.json').read_text(encoding='utf-8'))
+    tokens = load_resolved()
     themes = tokens['themes']
     assert themes['light']['color'].keys() == themes['dark']['color'].keys(), 'Theme roles must match'
     checks = []
@@ -29,6 +32,9 @@ def main() -> None:
                   for prefix, roles in [('market', ('up', 'down')), ('status', ('success', 'warning', 'danger', 'info'))]
                   for role in roles]
         pairs += [('border.control', bg, 3) for bg in ('bg.canvas', 'bg.surface')]
+        pairs += [(f'tone.{tone}', f'tone.{tone}Bg', 4.5) for tone in ('blue', 'green', 'amber', 'violet', 'teal', 'pink')]
+        pairs += [('nav.activeText', 'nav.active', 4.5), ('nav.text', 'nav.background', 4.5),
+                  ('action.primary', 'action.subtle', 4.5)]
         for foreground, background, minimum in pairs:
             ratio = contrast(colors[foreground], colors[background])
             checks.append((mode, foreground, background, ratio, minimum))

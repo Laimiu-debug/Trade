@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from './api'
 import { DirectoryPicker } from './directory-picker'
+import { Icon } from './workspace-icons'
 
 type Source = { id: string; name: string; network: boolean; configured: boolean; instruments: string[]; daily: boolean; intraday: string | null; location: string | null; notes: string }
 type Probe = { status: string; symbol: string; checked_at: string; sample_count?: number; first_date?: string; last_date?: string; elapsed_ms: number; error_code?: string; message?: string; scope?: string }
@@ -52,7 +53,7 @@ export function ProviderHealth({ onBusy }: { onBusy?: (value: boolean) => void }
     } catch (err) { setError(err instanceof Error ? err.message : '测试失败') }
     finally { setBusy(''); onBusy?.(false) }
   }
-  return <section className="card span-all" aria-label="行情能力与连通性"><h2>行情能力与连通性</h2>
+  return <section className="card span-all" aria-label="行情能力与连通性"><h2 className="title-with-icon"><Icon name="market" />行情能力与连通性</h2>
     <p className="muted">打开此页只读取适配器能力。点击在线来源的测试按钮才会联网；测试不会导入行情，也不会切换默认来源。已配置不代表连通。</p>
     <section className="market-detail" aria-label="通达信目录选择"><h3>本地通达信目录</h3>
       <p style={{ overflowWrap: 'anywhere' }}>当前目录：{locations?.current_path || '尚未选择'}{locations?.selection === 'auto' ? '（启动时自动识别）' : ''}</p>

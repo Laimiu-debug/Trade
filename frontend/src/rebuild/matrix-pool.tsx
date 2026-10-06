@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { StrategyPresets } from './strategy-presets'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type Source = { id: string; as_of_date: string; summary: { input: number } }
 type Spec = { title: string; type: string; minimum?: number; maximum?: number }
@@ -68,13 +69,13 @@ export function MatrixPoolPanel({ onOpenMarket, onPromoted }: { onOpenMarket: (i
       <details><summary>矩阵参数 · {Object.keys(params).length} 项</summary><div className="form-grid">
         {Object.entries(params).map(([key, value]) => <label key={key} className="field"><span>{strategy?.params_schema[key]?.title || key}</span><input type="number" required value={value} min={strategy?.params_schema[key]?.minimum} max={strategy?.params_schema[key]?.maximum} step={strategy?.params_schema[key]?.type === 'integer' ? '1' : 'any'} onChange={event => setParams(current => ({ ...current, [key]: event.target.value }))} /></label>)}
       </div></details>
-      {strategy?.enabled_in_rebuild === false && <p className="muted">矩阵策略已停用，新运行请先在系统设置启用；历史仍可查看。</p>}<div className="form-actions"><button className="button primary" disabled={busy || !sourceId || strategy?.enabled_in_rebuild === false}>运行矩阵入池与信号</button><button type="button" className="button secondary" onClick={() => refresh().catch(err => setError(err.message))}>刷新输入池</button></div>
+      {strategy?.enabled_in_rebuild === false && <p className="muted">矩阵策略已停用，新运行请先在系统设置启用；历史仍可查看。</p>}<div className="form-actions"><button className="button primary" disabled={busy || !sourceId || strategy?.enabled_in_rebuild === false}><Icon name="run" />运行矩阵入池与信号</button><button type="button" className="button secondary" onClick={() => refresh().catch(err => setError(err.message))}><Icon name="refresh" />刷新输入池</button></div>
     </form>
     <div className="field"><span>历史矩阵运行</span><select aria-label="历史矩阵运行" value={selected?.id || ''} onChange={event => { if (event.target.value) open(event.target.value) }}><option value="">选择已保存记录</option>{runs.map(item => <option key={item.id} value={item.id}>{item.as_of_date} · {item.summary.signal_count} 个信号 · {item.id.slice(0, 12)}</option>)}</select></div>
     {selected?.result && <div className="market-detail"><h4>矩阵结果 · {selected.as_of_date}</h4>
       <div className="period-summary"><span>源池：{selected.summary.source_count}</span><span>参与排名：{selected.summary.input_count}</span><span>日期 / 可得时间排除：{selected.summary.excluded_count}</span><span>入池：{selected.summary.pool_count}</span><span>买点：{selected.summary.signal_count}</span></div>
       <p className="muted">{selected.result.calculation_version} · 代码摘要 {selected.code_sha256.slice(0, 12)} · 严格模式 {selected.request?.strict ? '启用' : '关闭'}</p>
-      <button className="button secondary" type="button" onClick={() => { if (selected.request) { setSourceId(selected.request.source_run_id); setParams(selected.request.params); setStrict(selected.request.strict) } }}>复制这次运行参数</button>
+      <button className="button secondary" type="button" onClick={() => { if (selected.request) { setSourceId(selected.request.source_run_id); setParams(selected.request.params); setStrict(selected.request.strict) } }}><Icon name="copy" />复制这次运行参数</button>
       <p className="muted">S1 使用回撤，S2 使用量能斜率；S3 入池按 Top N，评分沿用旧插件的正收益判断。S5/S6 为旧插件近似买点。评分不等于事件质量分。</p>
       <div className="table-wrap"><table><thead><tr><th>排名 / 代码</th><th>收益排名</th><th>入池 / 买点</th><th>插件评分</th><th>S1 S2 S3 S4 S5 S6 S7</th><th>操作</th></tr></thead><tbody>
         {[...selected.result.rows].sort((a, b) => (a.rank ?? Infinity) - (b.rank ?? Infinity)).map(row => <tr key={row.dataset_id}><td>{row.rank ?? '—'} · {row.symbol}<br />{row.name}</td><td>{row.ret40_rank}</td><td>{row.in_pool ? '入池' : '未入池'} / {row.signal ? '触发' : '未触发'}<br /><small>入池条件：{row.pool_score} / 4</small><br /><small>{row.reasons.map(reason => reasonText[reason] || reason).join('、')}</small></td><td>{row.score.toFixed(2)}<br /><small>评分 S3：{row.components.s3_rank ? '通过' : '未通过'}</small></td><td>{['s1', 's2', 's3', 's4', 's5', 's6', 's7'].map(key => row.components[key] ? '✓' : '·').join('　')}</td><td><button className="link-button" onClick={() => onOpenMarket(row.dataset_id)}>查看 K 线</button>{row.signal && <button className="link-button" disabled={busy} onClick={() => promote(row.dataset_id)}>提升为观察信号</button>}</td></tr>)}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 export type EventProfileDimension = { dimension_id: string; label: string; metric_key: string; weight: number; invert: boolean; enabled: boolean }
 export type EventProfileRuleOption = { rule_key: string; label: string; description: string; category: string; value_type: 'number' | 'integer' | 'boolean'; min_value: number | null; max_value: number | null; step: number | null; recommended_min: number | null; recommended_max: number | null; default_value: number | boolean }
@@ -183,8 +184,8 @@ export function EventProfileEditor({ onChanged }: { onChanged?: (catalog: EventP
     {error && <div className="alert error" role="alert">{error}</div>}
     {notice && <div className="alert success" role="status">{notice}</div>}
     <div className="toolbar" style={{ flexWrap: 'wrap', marginBottom: 16 }}>
-      <button type="button" className="button secondary" disabled={busy} onClick={refresh}>刷新模板列表</button>
-      {draft && <button type="button" className="button secondary" disabled={busy} onClick={duplicate}>复制为自定义模板</button>}
+      <button type="button" className="button secondary" disabled={busy} onClick={refresh}><Icon name="refresh" />刷新模板列表</button>
+      {draft && <button type="button" className="button secondary" disabled={busy} onClick={duplicate}><Icon name="copy" />复制为自定义模板</button>}
     </div>
     {catalog && draft && <>
       <label className="field"><span>查看或编辑模板</span><select value={selectedId} disabled={busy} onChange={event => {
@@ -215,7 +216,7 @@ export function EventProfileEditor({ onChanged }: { onChanged?: (catalog: EventP
             {!readonly && <button type="button" className="button secondary" style={{ marginTop: 12 }} disabled={draft.dimensions.length >= 24} onClick={() => {
               const metric = catalog.metric_options.find(option => !draft.dimensions.some(item => item.metric_key === option.metric_key)) || catalog.metric_options[0]
               if (metric) change({ dimensions: [...draft.dimensions, { dimension_id: `dim_${crypto.randomUUID()}`, metric_key: metric.metric_key, label: metric.label, weight: '1', enabled: true, invert: false }] })
-            }}>添加评分维度</button>}
+            }}><Icon name="add" />添加评分维度</button>}
           </details>}
         </fieldset>
         <details><summary>事件判定规则 · {catalog.rule_options.length} 项</summary>
@@ -237,7 +238,7 @@ export function EventProfileEditor({ onChanged }: { onChanged?: (catalog: EventP
       </div>}
       {deletePending && selected && <div className="alert error" role="alert" style={{ marginTop: 12 }}>
         <p>确认删除“{selected.name}”？{dirty ? '未保存的修改也将丢弃。' : ''}{selected.profile_id === catalog.active_profile_id ? '当前模板将恢复为经典综合判别。' : ''}</p>
-        <div className="toolbar"><button type="button" className="button secondary danger" disabled={busy} onClick={remove}>确认删除模板</button><button type="button" className="button secondary" disabled={busy} onClick={() => setDeletePending(false)}>取消删除</button></div>
+        <div className="toolbar"><button type="button" className="button secondary danger" disabled={busy} onClick={remove}><Icon name="check" />确认删除模板</button><button type="button" className="button secondary" disabled={busy} onClick={() => setDeletePending(false)}><Icon name="close" />取消删除</button></div>
       </div>}
       {history && <div style={{ marginTop: 16 }}><h4>修改历史 · {selected?.name}</h4>{history.length ? history.map(row => <article key={row.id} style={{ marginBottom: 16 }}><p>{actionNames[row.action] || row.action} · 版本 {row.revision} · {new Date(row.created_at).toLocaleString()}</p><HistorySnapshot row={row} catalog={catalog} /></article>) : <p className="muted">暂无修改记录。</p>}</div>}
     </>}

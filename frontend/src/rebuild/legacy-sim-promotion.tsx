@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type Preview = { account_name: string; expected_revision: number; preview_sha256: string; can_import: boolean;
   notes: string[]; errors: Array<{ section: string; source_id: string; message: string }>;
@@ -34,7 +35,7 @@ export function LegacySimPromotion({ importId, revision, accountId, onChanged, o
         <button className="button primary" disabled={busy || !ack || !preview.can_import} onClick={() => void work(async () => {
           const result = await api<{ account_id: string }>(`/legacy-imports/${importId}/simulation/apply`, 'POST', { expected_revision: preview.expected_revision, account_name: preview.account_name, expected_preview_sha256: preview.preview_sha256, acknowledge_limitations: ack })
           setCreated(result.account_id); setPreview(null); await onChanged(); onImported?.(result.account_id)
-        })}>确认创建独立模拟账户</button>
+        })}><Icon name="check" />确认创建独立模拟账户</button>
       </div>}
     </>}
   </section>

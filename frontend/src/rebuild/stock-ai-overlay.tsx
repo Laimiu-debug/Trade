@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type Analysis = { id: string; status: string; kind: string; created_at: string; target: { dataset_id?: string; decision_at?: string }; output?: { summary: string; confidence: number; conclusion: string; breakout_date: string | null; rise_reasons: string[] } }
 
@@ -29,7 +30,7 @@ export function StockAIOverlay({ datasetId, accountId, manualDate, onDate }: { d
       try { const result = await api<Analysis>('/ai/generations/' + id + suffix); if (stamp === requestId.current) setSelected(result) }
       catch (err) { if (stamp === requestId.current) setError(err instanceof Error ? err.message : '分析读取失败') }
     }}><option value="">不叠加 AI 日期</option>{rows.map(row => <option key={row.id} value={row.id}>{row.created_at.slice(0, 19)} · {row.status === 'accepted' ? '已保留' : '待核对'} · {row.id.slice(0, 8)}</option>)}</select></label></div>
-    <button type="button" className="button secondary" onClick={() => setRefresh(value => value + 1)}>刷新分析记录</button>
+    <button type="button" className="button secondary" onClick={() => setRefresh(value => value + 1)}><Icon name="refresh" />刷新分析记录</button>
     {selected?.output ? <div><p>人工启动日：{manualDate || '未标注'} · AI 候选日：{selected.output.breakout_date || '未给出'}{manualDate && selected.output.breakout_date && ` · ${manualDate === selected.output.breakout_date ? '日期一致' : '日期不同，请结合依据核对'}`}</p><p>{selected.output.summary}</p><p className="muted">结论：{selected.output.conclusion} · 模型自述置信度 {(selected.output.confidence * 100).toFixed(0)}% · 决策时刻 {selected.target.decision_at}</p><ul>{selected.output.rise_reasons.map((reason, index) => <li key={index}>{reason}</li>)}</ul></div> : <p className="muted">{rows.length ? '请选择一条分析查看依据。' : '当前范围尚无此样本的已校验分析，可在 AI 工作台“识别与复盘”生成。'}</p>}
   </details>
 }

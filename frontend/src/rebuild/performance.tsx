@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type Period = { key: string; start_date: string; end_date: string; return_pct: string | null; return_quality: string; baseline_date: string | null; last_confirmed_date: string | null; confirmed_points: number; coverage_days: number | null; last_nav: string | null; min_drawdown_pct: string | null; node_achievements: Array<{ level: number; first_lit_date: string; days_from_start: number }>; rounds: { closed_rounds: number; winning_rounds: number; losing_rounds: number; closed_pnl: string; win_rate_pct: string | null; payoff_ratio: string | null; profit_factor: string | null; round_ids: string[] } }
 type Performance = { projection_status: string; projection_version: string | null; calculation_version: string | null; items: Period[]; method: string }
@@ -19,7 +20,7 @@ export function PerformanceSummary({ accountId, onOpenRounds }: { accountId: str
   }, [accountId, kind])
   const selected = data?.items.find(row => row.key === selectedKey)
   return <section className="card">
-    <div className="section-heading"><div><h2>收益与回合统计</h2><p>已确认快照计算收益；回合按结束日归属。</p></div><select aria-label="统计周期" value={kind} onChange={event => setKind(event.target.value as 'daily' | 'weekly' | 'monthly')}><option value="daily">每日</option><option value="weekly">每周</option><option value="monthly">每月</option></select></div>
+    <div className="section-heading"><div><h2 className="title-with-icon"><Icon name="statistics" />收益与回合统计</h2><p>已确认快照计算收益；回合按结束日归属。</p></div><select aria-label="统计周期" value={kind} onChange={event => setKind(event.target.value as 'daily' | 'weekly' | 'monthly')}><option value="daily">每日</option><option value="weekly">每周</option><option value="monthly">每月</option></select></div>
     <div className="toolbar"><a className="button secondary" href={`/api/v1/accounts/${accountId}/exports/performance.pdf?kind=${kind}&limit=24`}>导出统计 PDF</a><a className="button secondary" href={`/api/v1/accounts/${accountId}/exports/performance.xlsx?kind=${kind}&limit=24`}>导出统计 Excel</a><a className="button secondary" href={`/api/v1/accounts/${accountId}/exports/performance/summary.csv?kind=${kind}&limit=24`}>导出汇总 CSV</a></div>
     {error && <div className="alert error" role="alert">{error}</div>}
     <p className="muted">{data?.method} 结果状态：{data?.projection_status ?? '加载中'}；版本：{data?.calculation_version ?? '—'}。</p>

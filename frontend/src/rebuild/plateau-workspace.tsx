@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import { PlateauTableDownload } from './research-table-downloads'
 import { useTaskDeepLink } from './task-deep-link'
+import { Icon } from './workspace-icons'
 
 type Axis = { key: string; values: string; low: string; high: string; precision: number }
 type Spec = { type: string; minimum?: number; maximum?: number; enum?: string[] }
@@ -89,7 +90,7 @@ export function PlateauWorkspace({ baseRunId }: { baseRunId?: string }) {
   const displayedPoints = [...(selected?.points || [])].sort((a, b) => (scoreMap.get(a.id)?.rank || 9999) - (scoreMap.get(b.id)?.rank || 9999) || a.ordinal - b.ordinal)
   const pointScore = point ? scoreMap.get(point.id) : null
   return <section className="card" aria-label="单股收益平原" style={{ marginTop: 20 }}>
-    <div className="section-header"><div><h3>单股收益平原</h3><p className="muted">冻结行情与执行参数上的 grid / LHS 实验。每点单独保存，暂停在当前点完成后生效。最多 400 点、8 维；单点 120 秒，实验累计 1 小时、结果 64 MiB。</p></div><button type="button" className="button secondary" disabled={busy} onClick={() => perform(refresh)}>刷新实验历史</button></div>
+    <div className="section-header"><div><h3>单股收益平原</h3><p className="muted">冻结行情与执行参数上的 grid / LHS 实验。每点单独保存，暂停在当前点完成后生效。最多 400 点、8 维；单点 120 秒，实验累计 1 小时、结果 64 MiB。</p></div><button type="button" className="button secondary" disabled={busy} onClick={() => perform(refresh)}><Icon name="refresh" />刷新实验历史</button></div>
     <p className="muted">当前为单股日线模型；旧组合仓位撮合、日内减仓、矩阵回测与样本外验证仍待承接。候选参数不会自动替换策略配置。</p>
     {error && <p className="alert error" role="alert">{error}</p>}{notice && <p className="alert" role="status">{notice}</p>}
     <div className="form-grid"><label><span>实验名称</span><input value={name} onChange={event => setName(event.target.value)} maxLength={80} /></label>
@@ -105,7 +106,7 @@ export function PlateauWorkspace({ baseRunId }: { baseRunId?: string }) {
       <button type="button" className="button secondary" disabled={busy || axes.length === 1} onClick={() => setAxes(axes.filter((_, at) => at !== index))}>移除维度 {index + 1}</button>
     </div>)}
     <div className="toolbar" style={{ marginTop: 12 }}><button type="button" className="button secondary" disabled={busy || axes.length >= 8 || !Object.keys(schema).some(key => !axes.some(axis => axis.key === key))} onClick={() => { const key = Object.keys(schema).find(key => !axes.some(axis => axis.key === key) && (mode === 'grid' || ['integer', 'number'].includes(schema[key].type))); if (key) setAxes([...axes, { key, values: String(schema[key].minimum ?? 0), low: String(schema[key].minimum ?? 0), high: String(schema[key].maximum ?? 1), precision: schema[key].type === 'integer' ? 0 : 4 }]) }}>增加采样维度</button>
-      <button type="button" className="button secondary" disabled={busy || !sourceId || !Object.keys(schema).length} onClick={() => perform(async () => { const checked = await api<Omit<Preview, 'requestKey'>>('/research/plateaus/preview', 'POST', body); if (live.current) setPreview({ ...checked, requestKey }) })}>预览采样计划</button>
+      <button type="button" className="button secondary" disabled={busy || !sourceId || !Object.keys(schema).length} onClick={() => perform(async () => { const checked = await api<Omit<Preview, 'requestKey'>>('/research/plateaus/preview', 'POST', body); if (live.current) setPreview({ ...checked, requestKey }) })}><Icon name="document" />预览采样计划</button>
     </div>
     {activePreview && <div className="alert" style={{ marginTop: 12 }}><p>请求 {activePreview.plan.requested_points} 点 → 实际 {activePreview.plan.actual_points} 点；去重 {activePreview.plan.deduplicated_points} 点；无效组合 {activePreview.plan.invalid_points} 点；冻结种子 {activePreview.plan.seed}。</p><p>{activePreview.plan.notes.join('；')}</p>
       <details><summary>查看冻结参数组合</summary><div className="table-wrap"><table><thead><tr><th>点</th><th>参数</th><th>预检结果</th></tr></thead><tbody>{activePreview.plan.points.map(item => <tr key={item.ordinal}><td>{item.ordinal + 1}</td><td>{JSON.stringify(item.axis_values)}</td><td>{item.error || '可执行'}</td></tr>)}</tbody></table></div></details>
@@ -113,7 +114,7 @@ export function PlateauWorkspace({ baseRunId }: { baseRunId?: string }) {
     </div>}
     <div className="table-wrap" style={{ marginTop: 20 }}><table><thead><tr><th>实验</th><th>状态</th><th>检查点</th><th>采样 / 种子</th><th>操作</th></tr></thead><tbody>{runs.map(run => <tr key={run.id}><td>{run.name}</td><td>{stateName[run.state] || run.state}</td><td>{run.counts.succeeded || 0} 成功 / {run.counts.failed || 0} 失败 / {run.counts.invalid || 0} 无效 · 共 {run.plan.actual_points}</td><td>{run.plan.sampling_mode} · {run.plan.seed}</td><td><button type="button" className="link-button" disabled={busy} onClick={() => perform(() => choose(run.id))}>查看实验</button>{[['pause', 'pause', '暂停实验'], ['resume', 'resume', '继续实验'], ['cancel', 'cancel', '取消实验'], ['retry_failed', 'retry-failed', '重试失败点']].map(([capability, action, label]) => run.capabilities[capability] && <button key={action} type="button" className="link-button" disabled={busy} onClick={() => perform(() => control(run.id, action))}>{label}</button>)}{run.capabilities.delete && <button type="button" className="link-button danger" disabled={busy} onClick={() => setDeleteId(run.id)}>删除实验</button>}</td></tr>)}</tbody></table></div>
     {!runs.length && <p className="muted">暂无参数实验。先完成单股回测，再预览参数范围。</p>}
-    {deleteId && <div className="alert error"><p>从历史列表删除“{runs.find(run => run.id === deleteId)?.name}”？检查点保留在本地审计数据中。</p><button type="button" className="button secondary danger" disabled={busy} onClick={() => perform(() => control(deleteId, 'delete'))}>确认删除实验</button><button type="button" className="button secondary" onClick={() => setDeleteId('')}>保留实验</button></div>}
+    {deleteId && <div className="alert error"><p>从历史列表删除“{runs.find(run => run.id === deleteId)?.name}”？检查点保留在本地审计数据中。</p><button type="button" className="button secondary danger" disabled={busy} onClick={() => perform(() => control(deleteId, 'delete'))}><Icon name="check" />确认删除实验</button><button type="button" className="button secondary" onClick={() => setDeleteId('')}>保留实验</button></div>}
     {selected && <section aria-label="收益平原详情" style={{ marginTop: 24 }}><h3>{selected.name} · {stateName[selected.state] || selected.state}</h3><p className="muted">{selected.symbol} · {selected.strategy_id} · 累计计算 {(selected.elapsed_ms / 1000).toFixed(1)} 秒 · 已保存 {(selected.total_bytes / 1048576).toFixed(2)} MiB</p>{selected.error && <p className="alert error">{selected.error}</p>}
       {['succeeded', 'failed', 'cancelled'].includes(selected.state) && <PlateauTableDownload id={selected.id} />}<a className="button secondary" href={`/api/v1/research/plateaus/${selected.id}/export.json`} download>导出采样与评估 JSON</a>
       {selected.points?.length ? <SliceHeatmap key={selected.id} points={selected.points} axisNames={Object.keys(selected.plan.axes)} onSelect={candidate => perform(() => choosePoint(candidate))} /> : null}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, type Trade } from './api'
+import { Icon } from './workspace-icons'
 
 type Plan = { written_on: string; target_date: string; forecast: string; position_plan: string; risk_plan: string; watchlist: Array<{ code: string; name: string; condition: string; action: string; matching_trade_ids: string[] }>; rehearsal: Array<{ code: string; name: string; qty: number | null; explicit_target: boolean; actual_qty: number | null; quantity_delta: number | null; quality: string }>; calendar?: { target_status: 'open' | 'closed' | 'unknown' } }
 type Comparison = { date: string; plans: Plan[]; actual_trades: Trade[]; snapshot: { total_assets: string; available_cash: string | null; position_count: number } | null; actual_market_observation: string | null; method: string }
@@ -16,7 +17,7 @@ export function PlanComparison({ accountId, day }: { accountId: string; day: str
       .catch(err => { if (active) setError(err.message) })
     return () => { active = false }
   }, [accountId, day, revision])
-  return <section className="card"><div className="section-heading"><div><h2>昨日计划与今日实际</h2><p>查看此前指定今天执行的手工计划。</p></div><button className="button secondary" onClick={() => setRevision(value => value + 1)}>刷新</button></div>
+  return <section className="card"><div className="section-heading"><div><h2 className="title-with-icon"><Icon name="period" />昨日计划与今日实际</h2><p>查看此前指定今天执行的手工计划。</p></div><button className="button secondary" onClick={() => setRevision(value => value + 1)}><Icon name="refresh" />刷新</button></div>
     {error && <div className="alert error" role="alert">{error}</div>}
     <p className="muted">{data?.method}</p>
     {data && !data.plans.length && <p className="muted">没有指向 {day} 的已保存计划。</p>}

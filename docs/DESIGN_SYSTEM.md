@@ -1,46 +1,56 @@
-# Trade 设计系统 · Clear Workspace
+# Trade 设计系统 · Bright Workspace v2
 
-更新：2026-10-06。风格：简洁浅色工作台，轻背景、留白、紧凑表格。
+更新：2026-10-06。风格：清爽浅色工作台——白色面板、柔和阴影、蓝色操作，彩色图标底块区分模块；红涨绿跌。
 
 ## 设计方向
 
-浅灰画布承托白色内容面板；蓝色只强调操作、选中和品牌。标题与核心数值突出，表格降低行高，正文保留阅读空间。减少渐变、玻璃效果和装饰性大色块，让交易记录、来源、时间和状态更容易核对。
+浅灰画布承托白色卡片，卡片使用细边框与双层柔和阴影，悬停时抬升。每个导航模块有固定色调（蓝/绿/琥珀/紫/青/粉），页头、指标卡和卡片标题用同色调图标底块标识，便于快速定位。蓝色只用于操作、选中与品牌；状态和行情颜色语义独立。
 
-新版工作台、原 Ant Design 工作台、独立复盘模块共享一份语义令牌。保留原有业务路由、操作、真实/模拟账户区分、红涨绿跌与导出能力。
+## 三层令牌
 
-## 唯一令牌源
+`docs/design-tokens.json`（schemaVersion 2）是唯一来源：
 
-`docs/design-tokens.json` 是颜色、字体、间距、尺寸、圆角、阴影、动效与打印参数的单一来源。使用项目 JSON 格式。
+1. **基础色板 `palette`**：neutral / blue / red / green / amber / violet / teal / pink 色阶（`d*` 为深色主题专用阶）。生成 `--palette-<色系>-<阶>`，仅供语义层引用，组件不直接使用。
+2. **语义角色 `themes.<light|dark>.color`**：值写作 `{palette.blue.600}` 引用。角色名与 v1 兼容（`bg.surface`、`action.primary`、`market.up` 等），新增 `bg.muted`、`border.default/strong`、`action.subtle`、`tone.*`、`nav.activeText`；阴影新增 `xs` 与 `raised`。
+3. **尺寸与组件 `font / spacePx / radiusPx / sizePx`**：字号增加 `micro/title`，圆角 6/8/12/14/18，侧栏 248、顶栏 60，新增 `iconSmall/iconTile/iconTileLarge`。
 
-运行 `python scripts/generate_rebuild_tokens.py`，生成：
+`scripts/design_tokens.py` 解析引用；`python scripts/generate_rebuild_tokens.py` 输出：
 
 - `frontend/src/rebuild/tokens.generated.css`
-- `frontend/src/shared/theme/design-tokens.generated.ts`
+- `frontend/src/shared/theme/design-tokens.generated.ts`（已解析的实际值，图表与 Canvas 直接使用）
 - `journal-frontend/src/tokens.generated.css`
 - `journal-frontend/src/design-tokens.generated.ts`
 
-CSS 自定义组件直接使用变量。Ant Design 通过 `workspaceTheme()` 映射语义值。ECharts 和 Canvas 使用 TypeScript 中的实际颜色；Canvas 无法绘制 `var()` 字符串。兼容旧组件的 CSS 别名只引用语义变量，不维护另一套数值。
+生成文件禁止手工修改。`--check` 只比较不重写。`python scripts/check_design_tokens.py` 对明暗两套主题执行 58 项 WCAG 对比度检查（正文 4.5、控件边框 3，含全部 `tone.*` 与导航选中态）。
 
-生成文件禁止手工修改。`python scripts/generate_rebuild_tokens.py --check` 只比较文件，不会重写文件；未同步时返回失败。
+## 图标
 
-## 色彩
+使用 `lucide-react`（ISC）。`frontend/src/rebuild/workspace-icons.tsx` 按**角色名**导出：
+
+- `<Icon name="save" />`：按钮、标题内联图标，`aria-hidden`，不改变可访问名称。
+- `<IconTile name="overview" tone="blue" size="sm|md|lg" />`：彩色底块，用于页头、指标卡。
+- `WorkspaceIcon` 保留给导航旧调用。
+
+页面不直接引用 lucide 组件；新增角色在 `icons` 映射中登记。卡片标题使用 `<h2 className="title-with-icon"><Icon name="…" />标题</h2>`。
+
+## 色彩（浅色 / 深色）
 
 | 角色 | 浅色 | 深色 | 用途 |
 |---|---|---|---|
-| bg.canvas | #f6f8fb | #101722 | 整体画布 |
-| bg.surface | #ffffff | #172131 | 卡片、菜单、弹层 |
-| bg.subtle | #f8fafc | #1d2a3d | 表头、次级区块 |
-| bg.selected | #edf3ff | #243c60 | 导航、选中状态 |
-| border.subtle | #e4e9f1 | #2d3b50 | 分隔、卡片边界 |
-| border.control | #8190a6 | #6e809a | 输入框边界 |
-| text.primary | #182438 | #eaf0f9 | 标题、正文、数据 |
-| text.secondary | #485870 | #b6c3d7 | 辅助说明 |
-| text.muted | #62728a | #99aac2 | 日期、单位、元信息 |
-| action.primary | #245bdb | #91b9ff | 主按钮、链接 |
-| market.up | #c43e46 | #ff9ba2 | 上涨、正收益 |
-| market.down | #147d64 | #71d5b3 | 下跌、负收益 |
+| bg.canvas | #f4f6fa | #0b111c | 整体画布 |
+| bg.surface | #ffffff | #151d2d | 卡片、菜单、弹层 |
+| bg.subtle | #fafbfd | #1a2336 | 表头、次级区块 |
+| bg.selected | #eef4ff | #1d3561 | 导航、选中状态 |
+| border.subtle | #e3e8f0 | #283349 | 分隔、卡片边界 |
+| border.control | #7f8ca1 | #6c7a92 | 输入框边界 |
+| text.primary | #141b29 | #e7ecf4 | 标题、正文、数据 |
+| text.secondary | #4a5568 | #b6c1d2 | 辅助说明 |
+| text.muted | #5f6b80 | #93a1b7 | 日期、单位、元信息 |
+| action.primary | #2563eb | #6b9bff | 主按钮、链接 |
+| market.up | #d0313f | #ffa3ab | 上涨、正收益 |
+| market.down | #0d7f5c | #74dcb1 | 下跌、负收益 |
 
-状态使用 `status.success / warning / danger / info`，行情使用 `market.up / down / flat`。即使值相同也引用不同语义。所有状态有文字或形状提示，不能仅依靠颜色。
+状态使用 `status.success / warning / danger / info`，行情使用 `market.up / down / flat`，模块色调使用 `tone.*`。即使值相同也引用不同语义。所有状态有文字或形状提示，不能仅依靠颜色。
 
 品牌源图为 `frontend/public/trade-mark.svg`：蓝色圆角底、白色 T 和行情柱。复盘模块使用同一 SVG。PNG、Apple 图标和多尺寸 ICO 由 `npm run icons:rebuild` 从源 SVG 渲染。
 
@@ -51,14 +61,15 @@ CSS 自定义组件直接使用变量。Ant Design 通过 `workspaceTheme()` 映
 | 项目 | 默认值 |
 |---|---|
 | 正文 / 表格 | 14px / 13px |
-| 页面标题 / 核心指标 | 28px / 30px |
-| 次级标题 / 字段标签 | 16px / 12px |
+| 页面标题 / 核心指标 | 26px / 28px |
+| 卡片标题 / 字段标签 | 16px / 13px |
 | 桌面 / 移动页面留白 | 32px / 16px |
 | 卡片内边距 | 24px，手机 16px |
-| 常驻侧栏 / 顶栏 | 232px / 64px |
-| 表格行高 | 舒适 40px，紧凑 34px |
+| 常驻侧栏 / 顶栏（吸顶） | 248px / 60px |
+| 表格行高 | 舒适 42px，紧凑 34px |
 | 常规输入 / 按钮 | 36px |
-| 控件 / 卡片 / 弹窗圆角 | 7px / 12px / 16px |
+| 控件 / 卡片 / 弹窗圆角 | 8px / 14px / 18px |
+| 图标 / 图标底块 | 18px（按钮 16px）/ 32·36·44px |
 
 金额、百分比与指标使用等宽数字。新版列表默认紧凑，显式保存过的舒适偏好继续生效。正文行高保持可读，不将阅读页压成数据表格。
 

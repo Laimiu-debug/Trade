@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type Settings = { version: number; config: { commission_rate: string; minimum_commission: string; sell_stamp_rate: string; transfer_rate: string } }
 
@@ -38,9 +39,9 @@ export function RealFeeEditor({ accountId, trade }: { accountId: string; trade: 
     ['commission_rate', '佣金率'], ['minimum_commission', '最低佣金（元）'],
     ['sell_stamp_rate', '卖出印花税率'], ['transfer_rate', '过户费率'],
   ]
-  return <section className="card span-all"><div className="section-heading"><div><h2>交易费用规则</h2><p>实盘与模拟交易共用同一计算公式。规则调整只影响此后新增或修改的交易。</p></div><button type="button" className="button secondary" onClick={() => setEditing(!editing)}>{editing ? '收起设置' : '设置费率'}</button></div>
+  return <section className="card span-all"><div className="section-heading"><div><h2 className="title-with-icon"><Icon name="calculator" />交易费用规则</h2><p>实盘与模拟交易共用同一计算公式。规则调整只影响此后新增或修改的交易。</p></div><button type="button" className="button secondary" onClick={() => setEditing(!editing)}>{editing ? '收起设置' : '设置费率'}</button></div>
     {preview && <p className="muted">当前输入预计费用：¥ {preview.calculated_fee}（佣金 {preview.breakdown.commission}、印花税 {preview.breakdown.stamp}、过户费 {preview.breakdown.transfer}）；{trade.fee_mode === 'manual' ? `实付覆盖 ¥ ${preview.fee}` : '按计算值入账'}</p>}
     {error && <p className="danger" role="alert">{error}</p>}
-    {editing && settings && <div className="form"><p className="muted">规则版本 {settings.version}。费率填写小数，例如 0.0003 表示万分之三。</p><div className="form-grid">{fields.map(([key, label]) => <label className="field" key={key}>{label}<input type="number" min="0" max={key === 'minimum_commission' ? undefined : '0.01'} step={key === 'minimum_commission' ? '0.01' : '0.000001'} value={settings.config[key]} onChange={event => setSettings({ ...settings, config: { ...settings.config, [key]: event.target.value } })} /></label>)}</div><div className="form-actions"><button type="button" className="button primary" disabled={busy} onClick={save}>保存费用规则</button></div></div>}
+    {editing && settings && <div className="form"><p className="muted">规则版本 {settings.version}。费率填写小数，例如 0.0003 表示万分之三。</p><div className="form-grid">{fields.map(([key, label]) => <label className="field" key={key}>{label}<input type="number" min="0" max={key === 'minimum_commission' ? undefined : '0.01'} step={key === 'minimum_commission' ? '0.01' : '0.000001'} value={settings.config[key]} onChange={event => setSettings({ ...settings, config: { ...settings.config, [key]: event.target.value } })} /></label>)}</div><div className="form-actions"><button type="button" className="button primary" disabled={busy} onClick={save}><Icon name="save" />保存费用规则</button></div></div>}
   </section>
 }

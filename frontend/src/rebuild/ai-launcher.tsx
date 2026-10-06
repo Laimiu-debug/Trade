@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Icon } from './workspace-icons'
 
 export type AIActivity = { running: boolean; accountId: string | null; runId: string | null }
 export type AIHandoff = { page: string; accountId?: string; accountKind?: string; datasetId?: string; researchRunId?: string; artifact?: { type: 'valuation' | 'backtest' | 'portfolio'; id: string }; label?: string }
@@ -39,10 +40,10 @@ export function GlobalAILauncher({ accountId, accountKind, page, datasetId, rese
     }
     onOpen()
   }
-  return <button className="button secondary" type="button" onClick={open} aria-label={activity.running ? '查看运行中的 AI 助手' : '询问 AI 助手'}>{activity.running ? 'AI 生成中 · 查看 / 停止' : '询问 AI'}</button>
+  return <button className="button secondary" type="button" onClick={open} aria-label={activity.running ? '查看运行中的 AI 助手' : '询问 AI 助手'}><Icon name="ai" />{activity.running ? 'AI 生成中 · 查看 / 停止' : '询问 AI'}</button>
 }
 
 /** Page-local selection button: only explicit clicks hand off an existing ID. */
 export function AIContextButton({ source, onOpen }: { source: AIHandoff; onOpen?: () => void }) {
-  return <button className="button secondary" type="button" onClick={() => { sendAIHandoff(source); if (onOpen) onOpen(); else window.dispatchEvent(new Event('trade-ai-open')) }}>带入 AI 核对</button>
+  return <button className="button secondary" type="button" onClick={() => { sendAIHandoff(source); if (onOpen) onOpen(); else window.dispatchEvent(new Event('trade-ai-open')) }}><Icon name="ai" />带入 AI 核对</button>
 }

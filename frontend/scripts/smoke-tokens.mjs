@@ -1,7 +1,12 @@
 import { chromium } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 
-const tokens = JSON.parse(await readFile(new URL('../../docs/design-tokens.json', import.meta.url), 'utf8'))
+const raw = JSON.parse(await readFile(new URL('../../docs/design-tokens.json', import.meta.url), 'utf8'))
+// Resolve {palette.x.y} / {color.role} references the same way scripts/design_tokens.py does.
+const resolve = (value, colors) => typeof value === 'string' && value.includes('{')
+  ? resolve(value.replace(/\{([\w.-]+)\}/g, (_, path) => { const [head, a, ...rest] = path.split('.'); return head === 'palette' ? raw.palette[a][rest.join('.')] : colors[[a, ...rest].join('.')] }), colors)
+  : value
+const tokens = { ...raw, themes: Object.fromEntries(Object.entries(raw.themes).map(([mode, theme]) => [mode, { ...theme, color: Object.fromEntries(Object.entries(theme.color).map(([key, value]) => [key, resolve(value, theme.color)])) }])) }
 const rgb = hex => `rgb(${[1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16)).join(', ')})`
 
 const browser = await chromium.launch({ headless: true, channel: 'msedge' })

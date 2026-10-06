@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { api, apiUpload } from './api'
 import { LegacyReportLibrary } from './legacy-report-library'
+import { Icon } from './workspace-icons'
 
 type Summary = { initial_capital: string; ending_assets: string; total_return: string; max_drawdown: string; trade_count: number; win_rate: string | null; quality_flags: string[] }
 type Report = { id: string; title: string; source_run_id: string; origin: 'local' | 'import'; content_sha256: string; created_at: string; strategy_id: string; strategy_version: string; symbol: string; first_date: string; last_date: string; summary: Summary; payload?: {
@@ -50,7 +51,7 @@ export function ReportLibrary({ sourceRunId, onCreated }: { sourceRunId?: string
   }
 
   return <section className="card span-all" aria-label="研究报告库" style={{ marginTop: 16 }}>
-    <h2>研究报告库</h2>
+    <h2 className="title-with-icon"><Icon name="document" />研究报告库</h2>
     <p className="muted">保存已完成单股回测的行情、参数、事件模板和结果快照。支持离线 HTML、Excel 与完整 ZIP 报告包；下方可单独导入旧报告与平原档案。</p>
     {error && <div className="alert error" role="alert">{error}</div>}
     {notice && <div className="alert success" role="status">{notice}</div>}
@@ -66,7 +67,7 @@ export function ReportLibrary({ sourceRunId, onCreated }: { sourceRunId?: string
       await refresh()
       if (live.current) { setSelected(imported); setFile(null); if (fileInput.current) fileInput.current.value = ''; setNotice('报告包已校验并保存。导入报告未重新计算；相同内容会复用已有报告。') }
     })}>校验并导入报告包</button></details>
-    <div className="toolbar" style={{ margin: '16px 0' }}><button type="button" className="button secondary" disabled={busy} onClick={() => perform(refresh)}>刷新报告库</button><span className="muted">{reports.length} 份报告</span></div>
+    <div className="toolbar" style={{ margin: '16px 0' }}><button type="button" className="button secondary" disabled={busy} onClick={() => perform(refresh)}><Icon name="refresh" />刷新报告库</button><span className="muted">{reports.length} 份报告</span></div>
     <div className="table-wrap"><table><thead><tr><th>报告</th><th>证券 / 策略</th><th>样本区间</th><th>收益 / 回撤</th><th>来源</th><th>操作</th></tr></thead><tbody>{reports.map(item => <tr key={item.id}><td>{item.title}<br /><small className="muted">{new Date(item.created_at).toLocaleString()}</small></td><td>{item.symbol}<br /><small>{item.strategy_id === 'metadata_unavailable' ? '目录摘要缺失，请查看详情' : item.strategy_id}</small></td><td>{item.first_date}<br />{item.last_date}</td><td>{percentage(item.summary.total_return)} / {percentage(item.summary.max_drawdown)}</td><td>{item.origin === 'import' ? '导入，未重新计算' : '本地冻结'}</td><td><button type="button" className="link-button" disabled={busy} onClick={() => perform(async () => { const report = await api<Report>(`/research/reports/${encodeURIComponent(item.id)}`); if (live.current) { setSelected(report); setDeleteId('') } })}>查看报告</button><button type="button" className="link-button danger" disabled={busy} onClick={() => setDeleteId(item.id)}>删除报告</button></td></tr>)}</tbody></table></div>
     {!reports.length && <p className="muted">暂无已保存报告。</p>}
     {deleteId && <div className="alert error" style={{ marginTop: 12 }}><p>删除“{reports.find(item => item.id === deleteId)?.title}”？来源回测仍可查看。</p><div className="toolbar"><button type="button" className="button secondary danger" disabled={busy} onClick={() => perform(async () => {
@@ -74,7 +75,7 @@ export function ReportLibrary({ sourceRunId, onCreated }: { sourceRunId?: string
       await api(`/research/reports/${encodeURIComponent(removed)}`, 'DELETE')
       await refresh()
       if (live.current) { setDeleteId(''); if (selected?.id === removed) setSelected(null); setNotice('报告已从列表删除。') }
-    })}>确认删除报告</button><button type="button" className="button secondary" disabled={busy} onClick={() => setDeleteId('')}>取消删除报告</button></div></div>}
+    })}><Icon name="check" />确认删除报告</button><button type="button" className="button secondary" disabled={busy} onClick={() => setDeleteId('')}><Icon name="close" />取消删除报告</button></div></div>}
     {selected && detail && <section aria-label="冻结报告详情" style={{ marginTop: 24 }}><h3>{selected.title}</h3><p className="muted">{selected.origin === 'import' ? '导入报告，未重新计算' : '本地已完成回测快照'} · {selected.symbol} · {selected.strategy_version}</p>
       <div className="toolbar" style={{ flexWrap: 'wrap' }}>{[['export.zip', '下载完整 ZIP 报告包'], ['report.html', '下载离线 HTML 报告'], ['export.xlsx', '下载报告 Excel']].map(([suffix, label]) => <a key={suffix} className="button secondary" href={`/api/v1/research/reports/${encodeURIComponent(selected.id)}/${suffix}`} download>{label}</a>)}</div>
       <div className="period-summary" style={{ marginTop: 16 }}><span>期初 ¥ {selected.summary.initial_capital}</span><span>期末 ¥ {selected.summary.ending_assets}</span><span>收益 {percentage(selected.summary.total_return)}</span><span>最大回撤 {percentage(selected.summary.max_drawdown)}</span><span>完成交易 {selected.summary.trade_count}</span><span>胜率 {percentage(selected.summary.win_rate)}</span></div>

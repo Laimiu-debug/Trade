@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type NewsItem = { id: string; title: string; snippet: string; url: string | null; published_at: string; source_name: string; provider: string }
 type NewsView = {
@@ -58,7 +59,7 @@ export function MarketNewsEditor() {
   }
 
   const totalPages = Math.max(1, Math.ceil((result?.items.length || 0) / 20))
-  return <section className="card span-all"><h2>市场资讯</h2>
+  return <section className="card span-all"><h2 className="title-with-icon"><Icon name="news" />市场资讯</h2>
     <p className="muted">按固定截至时间查看近期资讯。进入页面只读取本地缓存；点击“联网刷新”才请求新闻来源。历史窗口只过滤已抓取条目，不补造历史新闻。</p>
     <form className="form" onSubmit={event => { event.preventDefault(); void load(false) }}>
       <div className="form-grid">

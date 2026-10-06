@@ -3,13 +3,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from design_tokens import load_resolved, root  # noqa: E402
 
-root = Path(__file__).resolve().parents[1]
-source = root / 'docs' / 'design-tokens.json'
 target = root / 'frontend' / 'src' / 'rebuild' / 'tokens.generated.css'
-tokens = json.loads(source.read_text(encoding='utf-8'))
+tokens = load_resolved()
 
 
 def theme_variables(theme: dict) -> list[str]:
@@ -44,7 +45,12 @@ def supporting_variables(value: dict, prefix: str = '') -> list[str]:
     return lines
 
 
-parts = ['/* Generated from docs/design-tokens.json. Do not edit directly. */']
+def palette_variables() -> list[str]:
+    return [f'  --palette-{family}-{step}: {value};'
+            for family, steps in tokens['palette'].items() for step, value in steps.items()]
+
+
+parts = ['/* Generated from docs/design-tokens.json. Do not edit directly. */', ':root {', *palette_variables(), '}']
 for theme, selector in [('light', ':root, [data-theme="light"]'), ('dark', '[data-theme="dark"]')]:
     parts += [selector + ' {', *theme_variables(tokens['themes'][theme]), '}']
 parts += [':root {', *dimension_variables(),

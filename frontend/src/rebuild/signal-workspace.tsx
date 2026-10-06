@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from './api'
 import { ScanJobs } from './scan-jobs'
 import type { EventProfileCatalog } from './event-profiles'
+import { Icon } from './workspace-icons'
 
 type Dataset = { id: string; symbol: string; first_date: string; last_date: string; availability_quality: string }
 type Strategy = { enabled_in_rebuild?: boolean; default_in_rebuild?: boolean; id: string; name: string; signal_params: Record<string, string | number | boolean> | null; params_schema: Record<string, { title?: string; type: string; minimum?: number; maximum?: number; options?: string[]; enum?: string[] }>; capabilities: { supports_signal_age_filter: boolean; supports_entry_delay: boolean } }
@@ -76,7 +77,7 @@ export function SignalWorkspace({ onOpenMarket, onOpenResearch }: { onOpenMarket
     const scan = await api<Scan>(`/research/scans/${id}`)
     setAsOf(scan.as_of_date || scan.date_to || today()); setNotice('扫描已完成，可以预览信号报告。')
   }
-  return <section className="panel"><div className="section-heading"><div><h2>信号工作区</h2><p className="muted">从保存的判断证据查看信号年龄、确认、排名与区间表现。历史状态固定在报告截至日。</p></div><button type="button" disabled={Boolean(busy)} onClick={() => action('refresh', refresh)}>刷新来源与历史</button></div>
+  return <section className="panel"><div className="section-heading"><div><h2 className="title-with-icon"><Icon name="signals" />信号工作区</h2><p className="muted">从保存的判断证据查看信号年龄、确认、排名与区间表现。历史状态固定在报告截至日。</p></div><button type="button" disabled={Boolean(busy)} onClick={() => action('refresh', refresh)}>刷新来源与历史</button></div>
     {error && <p className="danger" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
     <details><summary>从固定样本 / 趋势池 / 本地通达信集合启动扫描</summary><p className="muted">复用后台扫描队列。单次最多 100 个样本、单日 100 次或区间 1000 次判断。超出时请显式选子集；当前本地文件集合不代表已核验的历史全市场。</p>
       <div className="form-grid"><label className="field"><span>候选来源</span><select value={sourceKind} onChange={event => { setSourceKind(event.target.value); setSourceId(''); setSourcePreview(null); setSelected([]) }}><option value="fixed">固定行情样本</option><option value="trend_pool">已保存趋势筛选池</option><option value="tdx">已完成通达信任务</option></select></label>

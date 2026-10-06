@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type ClosedFill = { fill_id: string; symbol: string; sell_date: string; quantity: number; sell_gross: string; fees: string; realized_pnl: string; buy_allocations: Array<{ buy_fill_id: string | null; buy_date: string; quantity: number; cost_basis?: string; sell_fees?: string; realized_pnl?: string }>; quality: string }
 type SimPerformance = { buy_attribution_unavailable_fill_ids: string[]; buy_fill_count: number; sell_fill_count: number; realized_pnl: string; win_rate_pct: string | null; profit_factor: string | null; max_consecutive_wins: number; max_consecutive_losses: number; best_fill_id: string | null; worst_fill_id: string | null; monthly: Array<{ month: string; sell_count: number; realized_pnl: string; fill_ids: string[] }>; realized_curve: Array<{ date: string; fill_id: string; cumulative_realized_pnl: string }>; closed_fills: ClosedFill[]; method: string }
@@ -23,7 +24,7 @@ export function SimPerformanceSummary({ accountId, fillCount }: { accountId: str
   }, [accountId, fillCount, query])
   const selected = data?.closed_fills.find(row => row.fill_id === selectedFillId)
   return <section className="card">
-    <h2>模拟已实现交易统计</h2>
+    <h2 className="title-with-icon"><Icon name="statistics" />模拟已实现交易统计</h2>
     {data && <div className="toolbar"><a className="button secondary" href={`${exportRoot}.pdf?${query}`} download>导出当前归属口径 PDF</a><a className="button secondary" href={`${exportRoot}.xlsx?${query}`}>导出统计 Excel</a><a className="button secondary" href={`${exportRoot}/summary.csv?${query}`}>导出月份 CSV</a></div>}
     <label className="field"><span>月份归属日期</span><select value={dateBasis} onChange={event => setDateBasis(event.target.value as 'buy' | 'sell')}><option value="sell">卖出日</option><option value="buy">买入日（事后归属）</option></select></label>
     <form className="form-grid" onSubmit={event => { event.preventDefault(); if (rangeDraft.from && rangeDraft.to && rangeDraft.from > rangeDraft.to) { setError('开始日期不能晚于结束日期'); return } setRange({ ...rangeDraft }) }}><label className="field">统计开始日期<input type="date" value={rangeDraft.from} onChange={event => setRangeDraft(value => ({ ...value, from: event.target.value }))} /></label><label className="field">统计结束日期<input type="date" value={rangeDraft.to} onChange={event => setRangeDraft(value => ({ ...value, to: event.target.value }))} /></label><div className="form-actions"><button className="button secondary">应用统计区间</button><button type="button" className="button secondary" onClick={() => { setRangeDraft({ from: '', to: '' }); setRange({ from: '', to: '' }); setError('') }}>清空统计区间</button></div></form>

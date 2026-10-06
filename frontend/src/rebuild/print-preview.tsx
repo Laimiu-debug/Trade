@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, connect } from './api'
+import { Icon } from './workspace-icons'
 
 type Attachment = { id: string; original_name: string }
 
@@ -41,11 +42,11 @@ export function PrintPreview() {
     })().catch(reason => { if (active) setError(reason instanceof Error ? reason.message : '打印内容读取失败') })
     return () => { active = false }
   }, [accountId, kind, key, valid])
-  return <main className="print-preview"><div className="print-toolbar"><strong>复盘打印预览</strong><span>仅打印已保存的内容</span><button className="button primary" type="button" disabled={!markdown || Boolean(error)} onClick={() => window.print()}>打开浏览器打印</button></div>
+  return <main className="print-preview"><div className="print-toolbar"><strong>复盘打印预览</strong><span>仅打印已保存的内容</span><button className="button primary" type="button" disabled={!markdown || Boolean(error)} onClick={() => window.print()}><Icon name="open" />打开浏览器打印</button></div>
     {error && <p className="alert error" role="alert">{error}</p>}
     {!error && !markdown && <p>正在读取复盘…</p>}
     {markdown && <article className="print-document">{blocks(markdown).map((block, index) => block.kind === 'title' ? <h1 key={index}>{block.text}</h1> : block.kind === 'section' ? <h2 key={index}>{block.text}</h2> : block.kind === 'bullet' ? <p className="print-bullet" key={index}>• {block.text}</p> : <p key={index}>{block.text}</p>)}
-      {attachments.length > 0 && <section className="print-attachments"><h2>原始复盘截图</h2>{attachments.map(item => <figure key={item.id}><img src={`/api/v1/accounts/${accountId}/review-attachments/${item.id}/content`} alt={item.original_name} /><figcaption>{item.original_name}</figcaption></figure>)}</section>}
+      {attachments.length > 0 && <section className="print-attachments"><h2 className="title-with-icon"><Icon name="upload" />原始复盘截图</h2>{attachments.map(item => <figure key={item.id}><img src={`/api/v1/accounts/${accountId}/review-attachments/${item.id}/content`} alt={item.original_name} /><figcaption>{item.original_name}</figcaption></figure>)}</section>}
       <footer>Trade · 复盘记录 · {key}</footer></article>}
   </main>
 }

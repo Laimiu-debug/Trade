@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { api, type Trade } from './api'
 import { useReviewBuffer } from './review-drafts'
+import { Icon } from './workspace-icons'
 
 type Entry = { ai_comment?: string; ai_generation_id?: string; ai_run_id?: string; ai: number | null; final: number | null; comment: string; final_source: string | null }
 type Sheet = { id: string; scope: 'daily' | 'trade' | 't_group'; subject_id: string; trade_ids: string[]; association_changed: boolean; scores: Record<string, Entry>; comment: string; revision: number }
@@ -109,7 +110,7 @@ export function ReviewScores({ accountId, day }: { accountId: string; day: strin
     } finally { if (scopeStamp.current === stamp && selection.current === selected) setBusy(false) }
   }
 
-  return <section className="card"><h2>人工复盘评分</h2><p className="muted">整日六维、逐笔三维、同股做 T 分组分别保存。最终分为 0–10 分。AI 建议与人工最终分分别保存，可在 AI 工作台生成整日 / 逐笔 / 批量 / 做 T 评分。</p>
+  return <section className="card"><h2 className="title-with-icon"><Icon name="flag" />人工复盘评分</h2><p className="muted">整日六维、逐笔三维、同股做 T 分组分别保存。最终分为 0–10 分。AI 建议与人工最终分分别保存，可在 AI 工作台生成整日 / 逐笔 / 批量 / 做 T 评分。</p>
     {error && <div className="alert error" role="alert">{error}</div>}{message && <div className="alert success" role="status">{message}</div>}
     {buffer.warning && <p className="danger" role="alert">{buffer.warning}</p>}
     {buffer.conflict && <div className="alert error"><p>另一页面的评分草稿已变化，请明确选择。</p><button className="button" onClick={() => { const other = buffer.resolve(false); if (other !== undefined) { setScores(other?.scores ?? valuesFromSheet()); setComment(other?.comment ?? sheet?.comment ?? '') } }}>采用另一页面评分草稿</button><button className="button" onClick={() => buffer.write({ base_revision: buffer.value?.base_revision ?? sheet?.revision ?? 0, scores, comment }, true)}>保留本页评分草稿</button></div>}
@@ -121,6 +122,6 @@ export function ReviewScores({ accountId, day }: { accountId: string; day: strin
     {sheet?.association_changed && <p className="danger">评分关联的成交已变化，请核对历史评分。</p>}
     <div className="form-grid">{dimensions[scope].map(([key, label]) => <div className="market-detail" key={key}><label className="field">{scope === 'trade' && key === 'timing' ? trades.find(row => row.id === tradeId)?.side === 'sell' ? '卖点质量' : '买点质量' : label}<select value={scores[key]?.final ?? ''} onChange={event => edit({ ...scores, [key]: { ...(scores[key] || { final: null, comment: '' }), final: event.target.value ? Number(event.target.value) : null } })}><option value="">未评分</option>{Array.from({ length: 11 }, (_, i) => <option key={i} value={i}>{i}</option>)}</select></label>{sheet?.scores[key]?.ai !== null && sheet?.scores[key]?.ai !== undefined && <div><p className="muted">AI 建议：{sheet.scores[key].ai} · {sheet.scores[key].ai_comment || '未提供评语'}<br />{sheet.scores[key].final_source === 'ai_accepted' ? '此维度最终分已由人工采用建议' : '尚未采用本维度建议'}</p><button type="button" className="button secondary" disabled={dirty || buffer.conflict || versionConflict || !loaded} onClick={() => copySuggestion(key)}>采用此维度建议</button>{dirty && <p className="muted">请先保存当前人工编辑，再采用 AI 建议。</p>}</div>}<label className="field">评语<input value={scores[key]?.comment ?? ''} onChange={event => edit({ ...scores, [key]: { ...(scores[key] || { final: null, comment: '' }), comment: event.target.value } })} /></label></div>)}</div>
     <label className="field">整体点评<textarea value={comment} onChange={event => edit(scores, event.target.value)} /></label>
-    <button className="button primary" disabled={!loaded || !canSave || buffer.conflict || versionConflict} onClick={save}>保存人工评分</button></fieldset>
+    <button className="button primary" disabled={!loaded || !canSave || buffer.conflict || versionConflict} onClick={save}><Icon name="save" />保存人工评分</button></fieldset>
   </section>
 }

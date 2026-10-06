@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api } from './api'
+import { Icon } from './workspace-icons'
 
 type Page = 'backtest' | 'market' | 'research' | 'ai' | 'overview' | 'events'
 type Task = { id: string; kind: string; title: string; page: Page; state: string; progress: { done: number; total: number } | null; created_at: string; updated_at: string; error_code: string | null; note: string | null; actions: { cancel?: string; retry?: string; pause?: string; resume?: string }; pause_supported: boolean }
@@ -48,7 +49,7 @@ export function TaskCenter({ accountId, onOpen }: { accountId?: string; onOpen: 
   }
 
   const rows = (summary?.items || []).filter(row => (!kind || row.kind === kind) && (state === 'all' || (state === 'active' ? active(row) : ['failed', 'partial_failed', 'interrupted'].includes(row.state))))
-  return <section className="card"><div className="section-heading"><div><h2>任务中心</h2><p>行情、筛选和回测为共享研究任务；AI 与重算记录按当前账户显示。</p></div><button className="button secondary" onClick={() => refresh().catch(err => setError(err.message))}>刷新任务</button></div>
+  return <section className="card"><div className="section-heading"><div><h2 className="title-with-icon"><Icon name="tasks" />任务中心</h2><p>行情、筛选和回测为共享研究任务；AI 与重算记录按当前账户显示。</p></div><button className="button secondary" onClick={() => refresh().catch(err => setError(err.message))}><Icon name="refresh" />刷新任务</button></div>
     {error && <div className="alert error" role="alert">{error}</div>}{notice && <div className="alert success" role="status">{notice}</div>}
     <div className="form-grid"><label className="field"><span>任务类别</span><select value={kind} onChange={event => setKind(event.target.value)}><option value="">全部类别</option>{Object.entries(kinds).map(([key, value]) => <option key={key} value={key}>{value}</option>)}</select></label><label className="field"><span>任务状态</span><select value={state} onChange={event => setState(event.target.value)}><option value="all">全部状态</option><option value="active">正在处理</option><option value="failed">需要检查</option></select></label></div>
     <p className="muted">当前显示 {rows.length} 项 · 正在处理 {summary?.active_count ?? '—'} 项。每类保留最近 {summary?.limit_per_kind ?? 100} 项预览，运行中的任务优先显示。</p>

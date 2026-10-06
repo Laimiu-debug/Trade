@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { api } from './api'
 import { printPreviewUrl } from './print-preview'
 import { useReviewBuffer } from './review-drafts'
+import { Icon } from './workspace-icons'
 const today = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10)
 function Field({ label, children }: { label: string; children: ReactNode }) { return <label className="field"><span>{label}</span>{children}</label> }
 
@@ -128,7 +129,7 @@ export function PeriodEditor({ accountId }: { accountId: string }) {
   const fields = kind === 'weekly' ? weeklyFields : monthlyFields
   return <section className="card reading"><div className="section-heading"><div><h2>{kind === 'weekly' ? '周复盘' : '月复盘'}</h2><p>正文由您编辑，统计随账本重算，并显示所用结果状态。</p></div></div>
     <div className="period-controls"><select aria-label="复盘周期" value={kind} onChange={event => setKind(event.target.value as 'weekly' | 'monthly')}><option value="weekly">周复盘</option><option value="monthly">月复盘</option></select><input aria-label="选择日期" type="date" value={date} onChange={event => { if (event.target.value) setDate(event.target.value) }} /><strong>{key}</strong></div>
-    {message && <div className="alert" role="status">{message}</div>}{!verified && <button className="button secondary" onClick={() => setReload(value => value + 1)}>重新读取周期正文</button>}
+    {message && <div className="alert" role="status">{message}</div>}{!verified && <button className="button secondary" onClick={() => setReload(value => value + 1)}><Icon name="refresh" />重新读取周期正文</button>}
     {buffer.warning && <p className="danger" role="alert">{buffer.warning}</p>}
     {buffer.conflict && <div className="alert error"><p>另一页面的周期草稿已变化；当前输入保留，请明确选择。</p><button className="button" onClick={() => {
       const other = buffer.resolve(false)
@@ -143,7 +144,7 @@ export function PeriodEditor({ accountId }: { accountId: string }) {
       {conflict && <div className="alert error"><p>正式正文已更新，请先比较版本；本机草稿不会被覆盖。</p><details><summary>查看正式正文（第 {formal?.revision} 版）</summary>{fields.map(([field, label]) => <p key={field} style={{ whiteSpace: 'pre-wrap' }}><strong>{label}：</strong>{formal?.sections[field] || '空'}</p>)}</details><button className="button secondary" disabled={busy || !formal || buffer.conflict} onClick={() => { if (formal) { clearDraft(); setRecord(formal); setDirty(false); setConflict(false) } }}>采用正式周期正文</button><button className="button secondary" disabled={busy || !formal || buffer.conflict} onClick={() => { if (formal && record) { setRecord({ ...formal, sections: record.sections }); persist(record.sections, formal.revision); setConflict(false) } }}>以最新版本继续编辑周期草稿</button></div>}
       <form className="form" onSubmit={event => { event.preventDefault(); void save() }}><fieldset disabled={busy} style={{ border: 0, padding: 0, minWidth: 0 }}>
         {fields.map(([field, label]) => <Field key={field} label={label}><textarea rows={field === 'tags' ? 2 : 4} value={record.sections[field] ?? ''} onChange={event => edit(field, event.target.value)} /></Field>)}
-        <button className="button primary" disabled={conflict || buffer.conflict || !verified}>保存周期复盘</button>{record.revision > 0 && <a className="button" href={`/api/v1/accounts/${accountId}/exports/review/${kind}/${key}.md`} download>导出已保存的 Markdown</a>}{record.revision > 0 && <a className="button" href={`/api/v1/accounts/${accountId}/exports/review/${kind}/${key}.pdf`} download>导出复盘 PDF</a>}{record.revision > 0 && <a className="button" href={printPreviewUrl(accountId, kind, key)} target="_blank" rel="noopener noreferrer">浏览器打印</a>}{record.revision > 0 && <button className="button" type="button" disabled={dirty || conflict || buffer.conflict || !verified} onClick={remove}>删除本周期正文</button>}
+        <button className="button primary" disabled={conflict || buffer.conflict || !verified}><Icon name="save" />保存周期复盘</button>{record.revision > 0 && <a className="button" href={`/api/v1/accounts/${accountId}/exports/review/${kind}/${key}.md`} download>导出已保存的 Markdown</a>}{record.revision > 0 && <a className="button" href={`/api/v1/accounts/${accountId}/exports/review/${kind}/${key}.pdf`} download>导出复盘 PDF</a>}{record.revision > 0 && <a className="button" href={printPreviewUrl(accountId, kind, key)} target="_blank" rel="noopener noreferrer">浏览器打印</a>}{record.revision > 0 && <button className="button" type="button" disabled={dirty || conflict || buffer.conflict || !verified} onClick={remove}>删除本周期正文</button>}
       </fieldset></form></>}
   </section>
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { api } from './api'
 import { DirectoryPicker } from './directory-picker'
+import { Icon } from './workspace-icons'
 
 type Operation = { id: string; kind: 'switch' | 'exit'; state: string; source_data_dir: string; destination?: string; recovery_path?: string; error?: string | null }
 type Transition = { id: string; state: string; active_data_dir?: string; error?: string | null }
@@ -82,7 +83,7 @@ export function LifecycleControl({ suggestedDirectory = '' }: { suggestedDirecto
   }
   const operation = status?.operation || savedOperation.current
   const blocked = busy || Boolean(pending)
-  return <section className="card span-all" aria-label="服务与目录切换"><h2>服务与目录切换</h2>
+  return <section className="card span-all" aria-label="服务与目录切换"><h2 className="title-with-icon"><Icon name="open" />服务与目录切换</h2>
     {error && <div role="alert" className="alert error">{error}</div>}{notice && <p role="status" style={{ overflowWrap: 'anywhere' }}>{notice}</p>}
     {status && <><p>{labels[status.state] || status.state} · 当前写入 {status.active_writes} 项 · 后台工作 {Object.values(status.active_background).reduce((sum, value) => sum + value, 0)} 项</p><p style={{ overflowWrap: 'anywhere' }}>当前目录：{status.data_dir}</p>
       {!status.supported ? <p className="muted">当前为独立服务进程。使用项目启动器 <code>python scripts/run_trade_rebuild.py</code> 启动后，可在这里切换目录和退出应用。</p> : <>
@@ -90,9 +91,9 @@ export function LifecycleControl({ suggestedDirectory = '' }: { suggestedDirecto
           {suggestedDirectory && <button className="button secondary" onClick={() => { setDestination(suggestedDirectory); setPreview(null); setConfirmed(false) }}>使用刚恢复或复制的目录</button>}
           <DirectoryPicker disabled={blocked} label="选择切换目录" onSelect={path => { setDestination(path); setPreview(null); setConfirmed(false) }} />
           <button className="button secondary" disabled={!destination.trim() || !status.capabilities.switch} onClick={() => work(async () => { setPreview(await api<Preview>('/system/lifecycle/switch-preview', 'POST', { destination })); setConfirmed(false) })}>校验切换目标</button>
-          {preview && <div className="market-detail"><h3>确认切换范围</h3><p style={{ overflowWrap: 'anywhere' }}>原目录：{preview.source_data_dir}<br />目标目录：{preview.destination}</p><p>目标包含 {preview.dataset_count} 份行情、{preview.attachment_count} 个附件，共 {(preview.total_bytes / 1024 / 1024).toFixed(2)} MiB。预检有效至 {preview.expires_at}。</p><p>将停止接收新写入，等待当前工作结束并保存原目录恢复点，再启动目标目录。目标启动失败时会尝试恢复原目录。请先保存其他页面中尚未提交的编辑。</p><label className="check-field"><input type="checkbox" checked={confirmed} onChange={event => setConfirmed(event.target.checked)} />我已保存编辑，并确认使用上述目标目录</label><button className="button primary" disabled={!confirmed} onClick={() => work(() => submit('switch'))}>确认切换并重启</button></div>}
+          {preview && <div className="market-detail"><h3>确认切换范围</h3><p style={{ overflowWrap: 'anywhere' }}>原目录：{preview.source_data_dir}<br />目标目录：{preview.destination}</p><p>目标包含 {preview.dataset_count} 份行情、{preview.attachment_count} 个附件，共 {(preview.total_bytes / 1024 / 1024).toFixed(2)} MiB。预检有效至 {preview.expires_at}。</p><p>将停止接收新写入，等待当前工作结束并保存原目录恢复点，再启动目标目录。目标启动失败时会尝试恢复原目录。请先保存其他页面中尚未提交的编辑。</p><label className="check-field"><input type="checkbox" checked={confirmed} onChange={event => setConfirmed(event.target.checked)} />我已保存编辑，并确认使用上述目标目录</label><button className="button primary" disabled={!confirmed} onClick={() => work(() => submit('switch'))}><Icon name="check" />确认切换并重启</button></div>}
           <hr /><button className="button secondary" disabled={!status.capabilities.exit} onClick={() => setExitReview(true)}>准备退出应用</button>
-          {exitReview && <div className="market-detail"><p>请先保存尚未提交的编辑。退出会等待当前写入与后台工作结束。重新打开启动器即可继续使用。</p><button className="button danger" onClick={() => work(() => submit('exit'))}>确认退出应用</button><button className="button secondary" onClick={() => setExitReview(false)}>返回</button></div>}
+          {exitReview && <div className="market-detail"><p>请先保存尚未提交的编辑。退出会等待当前写入与后台工作结束。重新打开启动器即可继续使用。</p><button className="button danger" onClick={() => work(() => submit('exit'))}><Icon name="check" />确认退出应用</button><button className="button secondary" onClick={() => setExitReview(false)}>返回</button></div>}
         </fieldset>
       </>}
     </>}
