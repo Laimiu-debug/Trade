@@ -11,6 +11,14 @@ DEFAULT_FEE_CONFIG = {'commission_rate': '0.0003', 'minimum_commission': '5.00',
                       'sell_stamp_rate': '0.001', 'transfer_rate': '0.00001'}
 
 
+def validate_order_quantity(quantity: int, side: str) -> None:
+    """Default simulation buys use 100-share lots; odd holdings remain sellable."""
+    if isinstance(quantity, bool) or not isinstance(quantity, int) or quantity <= 0:
+        raise TradeError('INVALID_QUANTITY', '委托数量必须为正整数')
+    if side == 'buy' and quantity % 100:
+        raise TradeError('SIM_INVALID_LOT_SIZE', '模拟买入数量必须为 100 股的整数倍')
+
+
 @dataclass(frozen=True)
 class FeeRule:
     commission_rate: Decimal

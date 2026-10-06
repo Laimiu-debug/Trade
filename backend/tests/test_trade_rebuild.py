@@ -906,7 +906,7 @@ def test_outdated_projection_rebuilds_without_overwriting_history(tmp_path: Path
             'X-CSRF-Token': csrf, 'Idempotency-Key': 'create'}).json()['data']
         assert process_one(app.state.db_factory) is False
         with app.state.db_factory.begin() as session:
-            session.execute(text("INSERT INTO projection_versions(id, account_id, input_revision, calculation_version, payload_json, state, created_at) VALUES ('old', :account, 0, 'nav-rounds-v1', '{}', 'current', '2025-01-01T00:00:00Z')"),
+            session.execute(text("INSERT INTO projection_versions(id, account_id, input_revision, calculation_version, payload_json, state, created_at) VALUES ('old', :account, 0, 'nav-rounds-v4', '{}', 'current', '2025-01-01T00:00:00Z')"),
                             {'account': account['id']})
     second = create_app(tmp_path, auto_rebuild=False)
     with started_client(second) as client:
@@ -915,11 +915,11 @@ def test_outdated_projection_rebuilds_without_overwriting_history(tmp_path: Path
         assert client.get(base + '/analytics').json()['data']['status'] == 'recalculating'
         assert process_one(second.state.db_factory)
         latest = client.get(base + '/analytics').json()['data']
-        assert latest['status'] == 'fresh' and latest['calculation_version'] == 'nav-rounds-v4'
+        assert latest['status'] == 'fresh' and latest['calculation_version'] == 'nav-rounds-v5'
         with second.state.db_factory() as session:
             rows = session.execute(text('SELECT state, calculation_version FROM projection_versions WHERE account_id=:account ORDER BY created_at'),
                                    {'account': account['id']}).all()
-            assert rows == [('historical', 'nav-rounds-v1'), ('current', 'nav-rounds-v4')]
+            assert rows == [('historical', 'nav-rounds-v4'), ('current', 'nav-rounds-v5')]
 
 
 def test_round_ids_streaks_and_anomalies_are_separate() -> None:

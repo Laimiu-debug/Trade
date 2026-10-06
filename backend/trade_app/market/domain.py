@@ -64,9 +64,11 @@ def eligible_bars(bars: list[dict], decision_at: str, strict: bool) -> tuple[lis
     eligible: list[dict] = []
     quality: set[str] = set()
     for bar in bars:
-        event_end = datetime.fromisoformat(bar['event_date'] + 'T23:59:59+00:00')
         available = bar.get('available_at')
         if available is None:
+            # Historical daily bars without a verified timestamp are assumed
+            # available at Shanghai day end only in non-strict research mode.
+            event_end = datetime.fromisoformat(bar['event_date'] + 'T23:59:59.999999+08:00')
             if event_end > cutoff:
                 continue
             quality.add('historical_availability_unknown')

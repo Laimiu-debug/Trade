@@ -22,10 +22,14 @@ def main():
         parser.error('Use the default app bundle on macOS')
     if importlib.util.find_spec('PyInstaller') is None:
         parser.error('PyInstaller is required in the build Python environment')
+    if not (ROOT / 'frontend/public/data/stock-database.slim.json').is_file():
+        parser.error('Missing checked-in offline stock library: frontend/public/data/stock-database.slim.json')
     if not args.skip_frontend:
         subprocess.run(['npm.cmd' if sys.platform == 'win32' else 'npm', 'run', 'build:rebuild'], cwd=ROOT / 'frontend', check=True)
     if not (ROOT / 'frontend/dist-rebuild/rebuild.html').is_file():
         parser.error('Missing rebuilt frontend')
+    if not (ROOT / 'frontend/dist-rebuild/data/stock-database.slim.json').is_file():
+        parser.error('Missing offline stock library in dist-rebuild; rebuild the frontend before packaging')
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
     output = ROOT / '.release-dist' / stamp
     output.mkdir(parents=True, exist_ok=False)

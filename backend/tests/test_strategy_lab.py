@@ -127,18 +127,28 @@ def test_pause_resume_reconstructs_committed_chunks_and_rejects_tampering(tmp_pa
 
 
 def test_unknown_historical_availability_requires_explicit_retrospective_mode():
+    from trade_app.research.lab_target_fit import collect_snapshots
+
     raw = fixture()
     for row in raw['datasets'][0]['bars']:
         row['available_at'] = None
     value = normalize_input(raw)
     payload = {'operation': 'scan', 'context': portfolio_context(value), 'as_of_date': value['as_of_date']}
     assert lab_worker.compute(payload)['rows'] == {}
+    day = value['as_of_date']
+    assert collect_snapshots(payload['context'], 'sh600000', day, day)[0] == []
     payload['context']['config']['execution_strict'] = False
     retrospective = lab_worker.compute(payload)
     assert retrospective['rows']['sh600000']['source_date'] == value['as_of_date']
     assert 'historical_availability_assumed_at_local_close' in retrospective['quality_flags']
+    snapshots, excluded = collect_snapshots(payload['context'], 'sh600000', day, day)
+    assert not excluded and len(snapshots) == 1
+    assert snapshots[0]['known_at'] is None
+    assert 'historical_availability_assumed_at_local_close' in snapshots[0]['quality_flags']
+    assert all(row['available_at'] is None for row in payload['context']['datasets'][0]['bars'])
     payload['context']['datasets'][0]['bars'][-1]['available_at'] = '2026-01-01T00:00:00Z'
     assert lab_worker.compute(payload)['rows'] == {}
+    assert collect_snapshots(payload['context'], 'sh600000', day, day)[0] == []
 
 
 def test_resume_cannot_mix_inputs_or_code_versions(tmp_path, monkeypatch):

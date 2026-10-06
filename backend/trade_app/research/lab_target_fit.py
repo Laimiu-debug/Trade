@@ -93,9 +93,8 @@ def collect_snapshots(context, symbol, start, end, label_dates=()):
         prior = [row for row in dataset['bars'] if row['event_date'] <= day]
         at = day + 'T15:59:59.999999+00:00'
         bars, flags = eligible_bars(prior, at, context['config']['execution_strict'])
-        if not context['config']['execution_strict']:
-            unknown = [row for row in prior if not row.get('available_at') and row not in bars]
-            if unknown: bars = sorted(bars + unknown, key=lambda row: row['event_date']); flags.append('historical_availability_assumed_at_local_close')
+        if not context['config']['execution_strict'] and any(row.get('available_at') is None for row in bars):
+            flags.append('historical_availability_assumed_at_local_close')
         if len(bars) < 40 or bars[-1]['event_date'] != day or context['config']['execution_strict'] and len(bars) != len(prior):
             excluded.append({'date': day, 'target': day in targets, 'reason': 'no_complete_fresh_history', 'quality_flags': flags})
             continue

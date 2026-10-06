@@ -1,6 +1,26 @@
-# 本地发行验收 · 更新于 2026-10-03
+# 本地发行验收 · 更新于 2026-10-06
 
 ## 当前可运行产物
+
+### 2026-10-06 代码审查修复 · Windows 单文件包
+
+最终产物：`.release-dist/20261006T081013007420Z/TradeRebuild.exe`，大小 **81287724 字节（约 77.5 MiB）**。构建使用 Python 3.13.16、PyInstaller 6.19.0，以及已验证的生产前端；409 份应用源码和静态资源与构建清单逐项匹配。
+
+- 修复宽松模式的上海当日收盘估值、全额出金舍入及残余份额、经典策略日终卖出计划、模拟买入整手校验。净值投影升级为 `nav-rounds-v5`，计划协议升级为 `portfolio-asof-conditional-next-observation-v2`；实验室继续保留未知可得时间的显式质量标记。
+- 补入有来源记录的 5224 条沪深证券离线检索快照，公共 JSON 固定 LF 换行以保持摘要一致。源码或构建产物缺少股票库时，构建器在生成发行目录前停止。数据来源与覆盖范围见 `frontend/public/data/README.md`。
+
+| 验证与指纹 | 结果 |
+|---|---|
+| 后端修复验证 | **116 个相关用例通过**，包含四项问题新增的 **21 个回归用例**及实验室兼容性复测 |
+| 发行与运行时检查 | **35 个用例通过**：冻结运行时、远程访问边界、受控生命周期及 v4 净值投影升级；**7 个构建/资源用例通过**：缺失资源拒绝构建、资源来源摘要和现有开发工具边界 |
+| 构建与静态检查 | 生产前端构建通过；源码语法、架构、OpenAPI/TypeScript 契约、生成令牌、40 项主题对比度及 Git 差异检查通过 |
+| 最终 EXE 四项回归 | `%TEMP%/trade-four-fixes-frozen-bUO9un`：只复制 EXE 至中文空格目录，实际 API 验证全额出金清零、v5 投影、1/101 股买入拒绝且不预留资金、未知可得时间当日收盘估值、经典退出进入日终计划 |
+| 最终 EXE 完整验收 | `%TEMP%/trade-frozen-smoke-Dlvf1u`：19 策略、离线股票库、真实单股/组合/分析 worker、实验室与同步 CLI、中文 PDF、备份、目录切换、重新解包启动后资料和报告保留、正常退出及解压目录清理通过 |
+| 最终 EXE 进程回收 | `%TEMP%/trade-launcher-cleanup-Q8HqYw`：并发重复启动复用、只结束自己的启动器后服务回收、端口与数据锁释放、重启保留账户、正常退出清理运行记录及临时解包目录通过 |
+| EXE SHA-256 | `386c1eeb5d7d9beb72bc0b3882e9286461b772edbcd6016d3c82baee6fbaf134` |
+| 清单 SHA-256 | `a73984762eba42d03e3bf09d275c5648d62b16c114f65c84af8442bad705389f` |
+
+构建和最终验收日志位于 `.tmp-rebuild-review-release-20261006T074858/`，包括 `build-verified.log`、`packaged-smoke-verified.log`、`four-fixes-smoke-verified.log`、`launcher-cleanup-verified.log` 与 `package-verification-verified.json`。发行包在独立数据目录、独立指针和随机端口验收；二进制与临时证据不纳入源码提交。
 
 ### 2026-10-03 全项目检查优化 · 独立 Windows 单文件包
 

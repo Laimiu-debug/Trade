@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from trade_app.platform.types import TradeError, money_minor, money_text, new_id, price_text, price_units, utc_now
 from trade_app.research.draft_models import SimOrderDraft
 from trade_app.research.models import ResearchRun
-from trade_app.trading.domain import calculate_fees
+from trade_app.trading.domain import calculate_fees, validate_order_quantity
 from trade_app.trading.simulation import audit, create_order, fee_rule, minor, portfolio, sim_account
 
 
@@ -124,6 +124,7 @@ def create_draft(session: Session, account_id: str, body: dict) -> dict:
         raise TradeError('SIGNAL_INCOMPLETE', '观察信号缺少代码或日期', 409)
     units = price_units(body['limit_price'])
     quantity = body['quantity']
+    validate_order_quantity(quantity, 'buy')
     existing = session.scalar(select(SimOrderDraft).where(
         SimOrderDraft.account_id == account_id,
         SimOrderDraft.source_run_id == run.id).limit(1))
@@ -159,6 +160,7 @@ def update_draft(session: Session, account_id: str, draft_id: str, body: dict) -
         raise TradeError('REVISION_CONFLICT', '草稿版本已变化', 409)
     if row.status != 'draft':
         raise TradeError('DRAFT_FINAL', '草稿已结束，不能编辑', 409)
+    validate_order_quantity(body['quantity'], 'buy')
     before = _data(row)
     row.quantity = body['quantity']
     row.limit_price_units = price_units(body['limit_price'])
@@ -171,6 +173,7 @@ def update_draft(session: Session, account_id: str, draft_id: str, body: dict) -
 
 def preview_draft(session: Session, account_id: str, draft_id: str) -> dict:
     row = _draft(session, account_id, draft_id)
+    validate_order_quantity(row.quantity, 'buy')
     _account, wallet = sim_account(session, account_id)
     current = portfolio(session, account_id)
     price = Decimal(row.limit_price_units) / 10_000

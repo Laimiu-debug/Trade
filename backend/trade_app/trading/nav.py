@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 from trade_app.platform.types import TradeError, decimal_text, money_text
 
@@ -59,9 +59,13 @@ def calculate_nav(flows: list[FlowFact], snapshots: list[SnapshotFact], *,
                     raise TradeError("NAV_UNAVAILABLE", f"{day} 缺少可用于折算份额的有效净值")
                 delta = amount / nav
                 if flow.kind == "withdraw":
-                    if delta > shares:
+                    # Money is recorded in minor units; recurring Decimal
+                    # divisions must not reject a full redemption or leave dust.
+                    redeemable_minor = int((shares * nav * 100).quantize(
+                        Decimal('1'), rounding=ROUND_HALF_UP))
+                    if flow.amount_minor > redeemable_minor:
                         raise TradeError("OVER_WITHDRAWAL", f"{day} 出金超过可赎回份额")
-                    shares -= delta
+                    shares = Decimal(0) if flow.amount_minor == redeemable_minor else shares - delta
                 else:
                     shares += delta
             else:

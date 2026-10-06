@@ -14,6 +14,7 @@ from trade_app.research.runtime import evaluate_strategy
 from trade_app.research.backtest_domain import run_single_symbol_backtest
 from trade_app.research.backtest_service import process_one_backtest
 from trade_app.research.portfolio_domain import run_chunk
+from trade_app.research.portfolio_plan_domain import build_plan
 from trade_app.research.portfolio_service import process_one_portfolio
 from trade_app.research.scan_job_service import process_one_scan_chunk
 from trade_app.research.service import describe_strategy, normalize_strategy_params, strategy_catalog
@@ -208,6 +209,50 @@ def test_portfolio_uses_same_rules_and_chunk_boundaries_do_not_change_trades(str
     rest = run_chunk(ctx, checkpoint=first['checkpoint'], days=40)
     assert first['trades'] + rest['trades'] == actual['trades']
     assert rest['checkpoint'] == actual['checkpoint']
+
+
+@pytest.mark.parametrize('strategy_id', CLASSIC_STRATEGY_IDS)
+@pytest.mark.parametrize('strict', [True, False])
+def test_close_plan_matches_next_open_classic_exit_without_reading_future(strategy_id, strict):
+    rows = rows_for(strategy_id)
+    if not strict:
+        for row in rows:
+            row['available_at'] = None
+    ctx = context(count=40, start=31, execution_strict=strict)
+    ctx.update(strategy_id=strategy_id, params=PARAMS[strategy_id])
+    ctx['datasets'][0]['bars'] = rows
+    first = run_chunk(ctx, days=4)
+    before = deepcopy((ctx, first['checkpoint']))
+    plan = build_plan(ctx, first['checkpoint'], rows[34]['event_date'])
+    assert (ctx, first['checkpoint']) == before
+    sell, = [row for row in plan['open_signals'] if row['side'] == 'sell']
+    assert sell['reason'] == 'CLASSIC_SIGNAL_NEXT_OPEN'
+    assert sell['components']['components']['exit_signal'] is True
+    assert sell['components']['components']['exit_reason']
+    next_day = run_chunk(ctx, first['checkpoint'], days=1)
+    actual, = [trade for trade in next_day['trades'] if trade['side'] == 'sell']
+    assert actual['reason'] == sell['reason']
+    assert actual['quantity'] == sell['quantity_if_executable']
+    # Changing subsequent prices and dates must not change this frozen close plan.
+    changed = deepcopy(ctx)
+    for row in changed['datasets'][0]['bars'][35:]:
+        row.update(open='500', high='501', low='499', close='500', volume=0)
+    changed['all_calendar'] = changed['all_calendar'][:35]
+    assert build_plan(changed, first['checkpoint'], rows[34]['event_date']) == plan
+
+
+@pytest.mark.parametrize('strategy_id', CLASSIC_STRATEGY_IDS)
+def test_close_plan_does_not_use_late_classic_exit(strategy_id):
+    rows = rows_for(strategy_id)
+    rows[34]['available_at'] = rows[35]['event_date'] + 'T02:00:00+00:00'
+    ctx = context(count=40, start=31)
+    ctx.update(strategy_id=strategy_id, params=PARAMS[strategy_id])
+    ctx['datasets'][0]['bars'] = rows
+    first = run_chunk(ctx, days=4)
+    assert first['checkpoint']['positions']
+    plan = build_plan(ctx, first['checkpoint'], rows[34]['event_date'])
+    assert not any(row['side'] == 'sell' for row in plan['open_signals'])
+    assert 'unavailable_or_stale_prior_history' in plan['quality_flags']
 
 
 @pytest.mark.parametrize('strategy_id', CLASSIC_STRATEGY_IDS)

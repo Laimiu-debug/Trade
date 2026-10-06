@@ -9,7 +9,7 @@ from trade_app.research.portfolio_event_domain import evaluate_event_bars
 from trade_app.research.portfolio_exit_rules import known_band_exit, effective_stop
 from trade_app.research.runtime import evaluate_strategy
 
-VERSION = 'portfolio-asof-conditional-next-observation-v1'
+VERSION = 'portfolio-asof-conditional-next-observation-v2'
 
 
 def signals_at_close(context, as_of_date):
@@ -45,10 +45,15 @@ def signals_at_close(context, as_of_date):
             if not math.isfinite(score): score = 0
             risks = evaluation.get('risk_events') or []
             signals[symbol] = {'buy': bool(result.get('signal') and result.get('draft_eligible')),
-                'sell': bool(risks and evaluation.get('primary_event') in risks), 'in_pool': result.get('status') == 'computed',
+                'sell': bool(risks and evaluation.get('primary_event') in risks) or result.get('exit_signal') is True,
+                'in_pool': result.get('status') == 'computed',
                 'score': score, 'source_date': result.get('source_date'), 'reasons': evaluation.get('reasons', []),
                 'components': {'primary_event': evaluation.get('primary_event'), 'risk_events': risks},
                 'ma10': sum(float(row['close']) for row in bars[-10:]) / 10 if len(bars) >= 10 else None}
+            if 'exit_signal' in result:
+                signals[symbol]['components'].update(exit_signal=result['exit_signal'],
+                    exit_reason=evaluation.get('exit_reason'), entry_reason=evaluation.get('entry_reason'),
+                    indicator=result.get('indicator'), strength_formula=evaluation.get('local_score_formula'))
     for signal in signals.values(): flags.update(signal.get('quality_flags', []))
     return signals, prefixes, knowledge, sorted(flags)
 
@@ -78,7 +83,8 @@ def build_plan(context, state, as_of_date):
         ratio, details = Decimal(1), {}
         if signal and signal['sell']:
             reason = ('MATRIX_S8_S9_NEXT_OPEN' if context['mode'] == 'matrix_raw_s1_s9' else
-                'ALIGNED_EVENTS_NEXT_OPEN' if context['mode'] == 'aligned_wyckoff_events' else 'RISK_EVENT_NEXT_OPEN')
+                'ALIGNED_EVENTS_NEXT_OPEN' if context['mode'] == 'aligned_wyckoff_events' else
+                'CLASSIC_SIGNAL_NEXT_OPEN' if signal['components'].get('exit_signal') is True else 'RISK_EVENT_NEXT_OPEN')
             details['components'] = signal['components']
         if visible and position['last_observed_date'] != visible[-1]['event_date'] and visible[-1]['event_date'] >= position['entry_date']:
             prior = visible[-1]

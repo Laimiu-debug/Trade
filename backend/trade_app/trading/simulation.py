@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from trade_app.platform.models import AuditEvent
 from trade_app.platform.symbols import market_symbol_aliases, market_symbol_key, validated_market_symbol_key
 from trade_app.platform.types import TradeError, decimal_value, money_minor, money_text, new_id, price_text, price_units, utc_now
-from trade_app.trading.domain import DEFAULT_FEE_CONFIG, FeeRule, FillState, LotBalance, apply_fill, calculate_fees, consume_fifo
+from trade_app.trading.domain import DEFAULT_FEE_CONFIG, FeeRule, FillState, LotBalance, apply_fill, calculate_fees, consume_fifo, validate_order_quantity
 from trade_app.trading.models import Account
 from trade_app.trading.sim_models import SimFill, SimLot, SimOrder, SimWallet
 from trade_app.trading.service import account_data, account_or_error
@@ -205,6 +205,7 @@ def create_order(session: Session, account_id: str, body: dict) -> dict:
         raise TradeError('INVALID_SYMBOL', '证券代码不能为空')
     symbol_key = validated_market_symbol_key(symbol)
     quantity = body['quantity']
+    validate_order_quantity(quantity, body['side'])
     units = price_units(body['limit_price'])
     price = Decimal(units) / 10_000
     config = json.loads(wallet.config_json)
@@ -283,6 +284,7 @@ def fill_order(session: Session, account_id: str, order_id: str, body: dict,
         raise TradeError('REVISION_CONFLICT', '委托版本已变化', 409)
     if row.status != 'pending':
         raise TradeError('ORDER_FINAL', '委托已结束，不能重复成交', 409)
+    validate_order_quantity(row.quantity, row.side)
     fill_day = validate_day(str(body['fill_date']))
     if fill_day != wallet.as_of_date or fill_day < row.submit_date:
         raise TradeError('INVALID_FILL_DATE', '成交日期须等于模拟时钟且不早于提交日期')

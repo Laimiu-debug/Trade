@@ -20,6 +20,8 @@ python scripts/build_trade_rebuild.py --onefile
 
 已有经过验证的前端构建时可用 `--skip-frontend`。发布包带前端静态资源、离线股票库、中文字体、数据库迁移、策略目录以及用于运行指纹的源码副本。构建后生成逐文件长度/SHA-256 清单；构建成功与所有功能验收是两项不同的门禁。
 
+离线股票库位于 `frontend/public/data/stock-database.slim.json`，是应提交的公共静态资源；来源与覆盖范围见同目录 README 和 `stock-library-source.json`。构建器在生成发行目录前检查源码及前端产物中的该文件，缺失时直接停止；使用 `--skip-frontend` 时也不能跳过资源检查。
+
 ## 运行模式
 
 - 开发：`python scripts/run_trade_rebuild.py --data-dir <独立目录>`。

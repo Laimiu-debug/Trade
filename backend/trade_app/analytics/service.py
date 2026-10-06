@@ -14,7 +14,7 @@ from trade_app.trading.service import account_or_error, list_trades, nav_inputs
 from trade_app.trading.targets import target_config
 
 
-CALCULATION_VERSION = "nav-rounds-v4"
+CALCULATION_VERSION = "nav-rounds-v5"
 
 
 def projection_status(session: Session, account_id: str) -> dict:

@@ -1,0 +1,32 @@
+{
+  "format": "trade-offline-stock-library-v1",
+  "fetched_at": "2026-10-06T08:03:58.895919+00:00",
+  "provider": "baostock",
+  "provider_version": "0.9.4",
+  "source_url": "https://www.baostock.com/",
+  "queries": [
+    "query_stock_basic()",
+    "query_stock_industry()"
+  ],
+  "scope": "沪深在上市A股静态检索快照；不含北交所，不是实时证券主数据",
+  "selection": "type=1, status=1; sh.6*, sz.0*, sz.3*",
+  "count": 5224,
+  "markets": {
+    "SZSE": 2904,
+    "SSE": 2320
+  },
+  "missing_industry_count": 0,
+  "industry_update_dates": [
+    "2026-10-05"
+  ],
+  "cnspell": {
+    "tool": "pypinyin",
+    "version": "0.55.0",
+    "style": "FIRST_LETTER"
+  },
+  "source_sha256": {
+    "stock_basic": "bcefeadc078534681bf14850af278f23e5e691cab3645a0c4a3ac9ffa135055c",
+    "stock_industry": "005bb8a7e7980be6a55c90a4e15b0d161b3a74b58c752e0db2f17206c3562ea8"
+  },
+  "library_sha256": "1a7114500059c96bf1ebeb8d773b9fec9da646e27b0d094702578ce4f0ddb1fd"
+}

@@ -159,7 +159,7 @@ def test_real_alias_rounds_valuation_and_old_projection_upgrade(database, tmp_pa
     assert process_one(database)
     with database() as session:
         status = projection_status(session, account['id'])
-        assert status['status'] == 'fresh' and status['calculation_version'] == 'nav-rounds-v4'
+        assert status['status'] == 'fresh' and status['calculation_version'] == 'nav-rounds-v5'
         assert status['result']['rounds'][0]['pnl'] == '100.00'
         assert session.get(ProjectionVersion, 'old-alias-projection').state == 'historical'
         assert [row['symbol'] for row in list_trades(session, account['id'])] == ['600000', '600000.SH']

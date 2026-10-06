@@ -31,14 +31,10 @@ def compute(payload):
         for item in context['datasets']:
             prior = [bar for bar in item['bars'] if bar['event_date'] <= day]
             bars, flags = eligible_bars(prior, at, context['config']['execution_strict'])
-            if not context['config']['execution_strict']:
-                # Retrospective mode assumes undated rows were observable at
-                # local close; never invent a historical available_at value.
-                visible_dates = {bar['event_date'] for bar in bars}
-                unknown = [bar for bar in prior if not bar.get('available_at') and bar['event_date'] not in visible_dates]
-                if unknown:
-                    bars = sorted(bars + unknown, key=lambda bar: bar['event_date'])
-                    flags.append('historical_availability_assumed_at_local_close')
+            if not context['config']['execution_strict'] and any(bar.get('available_at') is None for bar in bars):
+                # Shared availability rules already apply the local day-end
+                # assumption. Preserve the laboratory's explicit quality flag.
+                flags.append('historical_availability_assumed_at_local_close')
             quality.update(flags)
             if not bars or bars[-1]['event_date'] != day or context['config']['execution_strict'] and len(bars) != len(prior):
                 omitted.append({'symbol': item['symbol'], 'reason': 'no_complete_fresh_history', 'quality_flags': flags})

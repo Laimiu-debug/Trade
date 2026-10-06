@@ -6,6 +6,7 @@ import math
 import pytest
 
 from trade_app.platform.types import TradeError
+from trade_app.market.domain import eligible_bars
 from trade_app.platform.compute_process import ComputeResult, run_json_process
 from trade_app.research import portfolio_domain as domain, portfolio_service as service
 from trade_app.research.portfolio_domain import canonical, digest, initial_checkpoint, matrix_signals, run_chunk
@@ -38,6 +39,35 @@ def signals(monkeypatch, predicate=lambda symbol, bars: len(bars) == 3):
         return {'status': 'computed', 'source_date': bars[-1]['event_date'], 'signal': hit, 'draft_eligible': hit,
                 'score': 10, 'quality_flags': []}
     monkeypatch.setattr(domain, 'evaluate_strategy', evaluate)
+
+
+def test_unknown_availability_uses_shanghai_day_end_and_keeps_strict_guard():
+    rows = context(count=2, start=0)['datasets'][0]['bars']
+    day = rows[-1]['event_date']
+    for row in rows:
+        row['available_at'] = None
+    before, _ = eligible_bars(rows, day + 'T15:59:59.999998+00:00', False)
+    assert before == rows[:-1]
+    visible, quality = eligible_bars(rows, day + 'T15:59:59.999999+00:00', False)
+    assert visible == rows
+    assert quality == ['historical_availability_unknown']
+    assert eligible_bars(rows, day + 'T23:59:59.999999+08:00', False)[0] == rows
+    assert eligible_bars(rows, day + 'T15:59:59.999999+00:00', True)[0] == []
+    rows[-1]['available_at'] = day + 'T16:00:00+00:00'
+    assert eligible_bars(rows, day + 'T15:59:59.999999+00:00', False)[0] == rows[:-1]
+
+
+def test_nonstrict_unknown_bar_marks_same_day_close(monkeypatch):
+    ctx = context(count=7, execution_strict=False)
+    rows = ctx['datasets'][0]['bars']
+    for row in rows:
+        row['available_at'] = None
+    rows[-1].update(open='10', high='20', low='10', close='20')
+    signals(monkeypatch)
+    result = run_chunk(ctx, days=20)
+    assert result['equity'][-1]['positions']['sh600000']['mark'] == '20'
+    assert Decimal(result['checkpoint']['ending_assets']) == 20000
+    assert 'historical_availability_unknown' in result['checkpoint']['quality_flags']
 
 
 def test_private_signal_provider_receives_only_causal_prefix_and_rejects_future_source():

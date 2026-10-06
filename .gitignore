@@ -37,6 +37,12 @@ frontend/dist-rebuild/
 .tmp-rebuild-*/
 journal-frontend/dist/
 data/
+# Checked-in public reference data required by offline stock search.
+!frontend/public/data/
+frontend/public/data/*
+!frontend/public/data/stock-database.slim.json
+!frontend/public/data/stock-library-source.json
+!frontend/public/data/README.md
 data_location.txt
 frontend/test-results/
 
