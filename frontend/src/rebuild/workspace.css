@@ -100,7 +100,7 @@ html[data-density="compact"] th, html[data-density="compact"] td { padding: 7px 
 .field { gap: 7px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 .form { gap: 18px; }
 .content .form-grid { gap: 18px 22px; }
-.content :where(fieldset) { border-color: var(--border-subtle); border-radius: var(--radiusPx-card); background: var(--bg-subtle); }
+.content :where(fieldset) { border-color: var(--border-subtle); border-radius: var(--radiusPx-card); }
 .content :where(summary) { color: var(--text-primary); }
 .content :where(summary)::marker { color: var(--text-muted); }
 
@@ -152,6 +152,55 @@ html[data-density="compact"] th, html[data-density="compact"] td { padding: 7px 
 .news-article h3 { font-weight: 600; }
 .reading { line-height: var(--font-lineHeight-reading); }
 .reading textarea { line-height: var(--font-lineHeight-reading); }
+
+/* ── Segmented tabs (any role="tablist" in page content) ── */
+.content .workspace-navigation { display: flex; flex-wrap: wrap; gap: 2px; width: fit-content; max-width: 100%; padding: 4px; margin: 0 0 20px; background: var(--bg-muted); border: 0; border-radius: 10px; }
+.workspace-navigation-item { min-height: 34px; padding: 7px 16px; border: 0; border-radius: 7px; background: transparent; color: var(--text-secondary); font-size: 13px; font-weight: 500; transition: background var(--motion-fastMs), color var(--motion-fastMs); }
+.workspace-navigation-item:hover { background: color-mix(in srgb, var(--bg-surface) 60%, transparent); color: var(--text-primary); }
+.workspace-navigation-item[aria-current="page"] { background: var(--bg-surface); color: var(--text-primary); font-weight: 600; box-shadow: var(--shadow-xs); }
+.workspace-navigation-item:focus-visible { box-shadow: var(--shadow-focus); outline: 0; }
+.content [role="tablist"] { display: flex; flex-wrap: wrap; gap: 2px; width: fit-content; max-width: 100%; padding: 4px; margin-block: 4px 16px; background: var(--bg-muted); border-radius: 10px; }
+.content [role="tablist"] > [role="tab"] { min-height: 32px; padding: 6px 14px; border: 0; border-radius: 7px; background: transparent; box-shadow: none; color: var(--text-secondary); font-size: 13px; font-weight: 500; }
+.content [role="tablist"] > [role="tab"]:hover:not(:disabled) { background: color-mix(in srgb, var(--bg-surface) 60%, transparent); color: var(--text-primary); }
+.content [role="tablist"] > [role="tab"][aria-selected="true"] { background: var(--bg-surface); color: var(--text-primary); font-weight: 600; box-shadow: var(--shadow-xs); }
+.settings-intro { margin-bottom: 4px; }
+.settings-intro > p { margin: 0 0 8px; font-size: var(--font-sizePx-caption); }
+
+/* ── Overview dashboard ── */
+.quick-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 20px; }
+.overview-grid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr); gap: 20px; align-items: start; }
+.overview-main, .overview-side { display: grid; min-width: 0; align-content: start; }
+.overview-side .card h2 { font-size: 15px; }
+@media (max-width: 1100px) { .overview-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ── Long-page structure: section nav, grouped forms, sticky actions ── */
+.form-section, .anchor-target, .card[id] { scroll-margin-top: calc(var(--sizePx-header) + 16px); }
+.form-section + .form-section { margin-top: 8px; padding-top: 20px; border-top: 1px solid var(--border-subtle); }
+.form-section { display: grid; gap: 16px; min-width: 0; }
+.form-section > .section-heading { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+.form-section-title { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; font-weight: 650; }
+.form-section-title .workspace-icon { width: 16px; height: 16px; flex-basis: 16px; color: var(--action-primary); }
+.field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+.field-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sticky-actions { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; margin: 8px calc(-1 * var(--sizePx-cardPadding)) 0; padding: 12px var(--sizePx-cardPadding); background: color-mix(in srgb, var(--bg-surface) 92%, transparent); backdrop-filter: blur(8px); border-top: 1px solid var(--border-subtle); border-radius: 0 0 var(--radiusPx-card) var(--radiusPx-card); }
+.sticky-actions > .muted { margin-right: auto; font-size: var(--font-sizePx-caption); }
+.review-aside { display: grid; gap: 0; align-content: start; position: sticky; top: calc(var(--sizePx-header) + 16px); max-height: calc(100vh - var(--sizePx-header) - 32px); overflow-y: auto; scrollbar-width: thin; }
+.section-nav { display: grid; gap: 2px; padding: 14px 10px; margin-bottom: 20px; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radiusPx-card); box-shadow: var(--shadow-card); }
+.section-nav-title { margin: 0 8px 6px; font-size: var(--font-sizePx-micro); font-weight: 600; letter-spacing: var(--font-letterSpacing-caps); color: var(--text-muted); }
+.section-nav a { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--radiusPx-control); color: var(--text-secondary); font-size: 13px; text-decoration: none; transition: background var(--motion-fastMs), color var(--motion-fastMs); }
+.section-nav a .workspace-icon { width: 16px; height: 16px; flex-basis: 16px; opacity: .75; }
+.section-nav a:hover { background: var(--bg-hover); color: var(--text-primary); }
+.section-nav a[aria-current="location"] { background: var(--nav-active); color: var(--nav-activeText); font-weight: 600; }
+.section-nav a[aria-current="location"] .workspace-icon { opacity: 1; }
+@media (max-width: 1100px) {
+  .field-grid, .field-grid-3 { grid-template-columns: minmax(0, 1fr); }
+  .review-aside { position: static; max-height: none; overflow: visible; }
+  .review-aside .section-nav { display: flex; flex-wrap: wrap; gap: 4px; }
+  .review-aside .section-nav-title { width: 100%; }
+}
+@media (max-width: 700px) {
+  .sticky-actions { margin-inline: calc(-1 * var(--sizePx-cardPaddingMobile)); padding-inline: var(--sizePx-cardPaddingMobile); }
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .content > * { animation: page-enter var(--motion-slowMs) var(--motion-easing); }
