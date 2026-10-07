@@ -6,9 +6,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from app.core.signal_analyzer import SignalAnalyzer as LegacyAnalyzer
-from app.models import CandlePoint as LegacyCandlePoint
-from app.store import InMemoryStore
+import hashlib
+
+from legacy_oracle import oracle, plain
 from trade_app.market.domain import eligible_bars
 from trade_app.research.wyckoff_domain import (
     CALCULATION_VERSION, MINIMUM_BARS, SOURCE_PATH,
@@ -48,6 +48,8 @@ def event_rich_bars():
 
 
 def _legacy_inputs(bars):
+    from app.models import CandlePoint as LegacyCandlePoint
+    from app.store import InMemoryStore
     candles = [LegacyCandlePoint(time=bar['event_date'], open=bar['open'], high=bar['high'],
                                 low=bar['low'], close=bar['close'], volume=bar['volume'], amount=0)
                for bar in bars]
@@ -60,16 +62,26 @@ def _legacy_inputs(bars):
     return InMemoryStore._build_row_from_candles(store, 'sh600000'), candles
 
 
+def _key(*parts):
+    return hashlib.sha256(json.dumps(parts, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:24]
+
+
 def _assert_parity(bars, window_days=60, profile=None):
-    row, candles = _legacy_inputs(bars)
     result = calculate_snapshot(bars, window_days=window_days, profile=profile)
-    expected = LegacyAnalyzer.calculate_wyckoff_snapshot(
-        row, candles, window_days, event_judgment_profile=profile)
-    assert result['snapshot'] == expected
-    assert result['candidate'] == {name: getattr(row, name) for name in ('ret40', 'retrace20', 'amplitude20')}
-    assert result['event_age_days'] == LegacyAnalyzer._build_event_age_days(
-        dates=[point.time for point in candles[-result['effective_window_days']:]],
-        event_chain=expected['event_chain'])
+
+    def legacy():
+        from app.core.signal_analyzer import SignalAnalyzer as LegacyAnalyzer
+        row, candles = _legacy_inputs(bars)
+        snapshot = LegacyAnalyzer.calculate_wyckoff_snapshot(row, candles, window_days, event_judgment_profile=profile)
+        return {'snapshot': snapshot,
+                'candidate': {name: getattr(row, name) for name in ('ret40', 'retrace20', 'amplitude20')},
+                'event_age_days': LegacyAnalyzer._build_event_age_days(
+                    dates=[point.time for point in candles[-result['effective_window_days']:]],
+                    event_chain=snapshot['event_chain'])}
+    expected = oracle('parity:' + _key(bars, window_days, profile), legacy)
+    assert plain(result['snapshot']) == expected['snapshot']
+    assert plain(result['candidate']) == expected['candidate']
+    assert plain(result['event_age_days']) == expected['event_age_days']
     assert result['has_data'] is True
     assert result['source_path'] == SOURCE_PATH
     assert result['calculation_version'] == CALCULATION_VERSION
@@ -92,13 +104,17 @@ def test_full_snapshot_matches_original_with_store_candidate_metrics(count, wind
 @pytest.mark.parametrize('count', [0, 1, 24, 25, 29])
 def test_short_candidate_history_returns_explicit_insufficient_snapshot(count):
     bars = event_rich_bars()[:count]
-    row, candles = _legacy_inputs(bars)
-    assert row is None
+    def legacy():
+        from app.core.signal_analyzer import SignalAnalyzer as LegacyAnalyzer
+        row, candles = _legacy_inputs(bars)
+        return {'row_is_none': row is None, 'snapshot': LegacyAnalyzer._insufficient_data_snapshot(candles)}
+    expected = oracle(f'insufficient:{count}', legacy)
+    assert expected['row_is_none']
     assert candidate_from_bars(bars) is None
     result = calculate_snapshot(bars)
     assert result['has_data'] is False
     assert result['candidate'] is None
-    assert result['snapshot'] == LegacyAnalyzer._insufficient_data_snapshot(candles)
+    assert plain(result['snapshot']) == expected['snapshot']
     assert result['observed_bars'] == count
     assert result['required_bars'] == 30
     assert result['effective_window_days'] == 0

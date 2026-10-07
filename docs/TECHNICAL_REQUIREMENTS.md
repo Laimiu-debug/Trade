@@ -17,7 +17,7 @@
 | [开发文档](DEVELOPMENT_SPEC.md) | 目录、实体、接口、任务与部署的详细设计 |
 | [开发 TODO](DEVELOPMENT_TODO.md) | 实施任务、依赖关系与证据记录 |
 | [设计规范](DESIGN_SYSTEM.md) / [令牌](design-tokens.json) | 界面、图表、打印与主题数值 |
-| [代码审查](CODE_REVIEW_TODO.md) | 旧实现问题的证据与防回归条件 |
+| [代码审查](archive/CODE_REVIEW_TODO.md) | 旧实现问题的证据与防回归条件 |
 
 本文细化架构约束，不改变功能范围、原数据保留和 final-trade 作为视觉基础的决定。若实现设计与本文冲突，应在合入前形成架构决策记录，列明原因、替代方案和验证证据，并同步相关文档；功能删减、自动迁移旧数据等范围变化仍需用户决定。
 

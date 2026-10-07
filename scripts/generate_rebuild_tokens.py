@@ -59,9 +59,7 @@ css = '\n'.join(parts) + '\n'
 typescript = '// Generated from docs/design-tokens.json. Do not edit.\nexport const designTokens = ' + json.dumps(tokens, ensure_ascii=False, indent=2) + ' as const\n'
 outputs = {
     target: css,
-    root / 'journal-frontend/src/tokens.generated.css': css,
-    root / 'frontend/src/shared/theme/design-tokens.generated.ts': typescript,
-    root / 'journal-frontend/src/design-tokens.generated.ts': typescript,
+    root / 'frontend/src/rebuild/design-tokens.generated.ts': typescript,
 }
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--check', action='store_true')

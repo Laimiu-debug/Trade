@@ -1,3 +1,4 @@
+import importlib
 from pathlib import Path
 import asyncio
 import csv
@@ -43,36 +44,90 @@ from trade_app.research.screener_metrics import build_candidate
 from trade_app.research.tdx_universe import process_one_universe_symbol
 from trade_app.research.tdx_universe_models import TdxUniverseJob
 from trade_app.research.b1_domain import B1Params as NewB1Params, check_b1 as new_check_b1
-from app.core.b1_strategy import B1Params as OldB1Params, check_b1 as old_check_b1
-from app.core.market_momentum import _compute_daily_top_symbols as legacy_trend_top
-from app.core.market_momentum import count_consecutive_limit_up as legacy_limit_height
-from app.core import sector_capital_flow as legacy_sector_flow
-from app.core.abnormal_movement import analyze_symbol_abnormal_events as legacy_analyze_abnormal
 from trade_app.research.abnormal_domain import analyze_symbol_abnormal_events as new_analyze_abnormal
-from app.core.sentiment_valuation import ValuationInputs as OldValuationInputs, calc_theoretical_cap as old_valuation_calc
 from trade_app.research.valuation_domain import ValuationInputs as NewValuationInputs, calc_theoretical_cap as new_valuation_calc
 from trade_app.research import valuation_service
-from app.core.sector_analyzer import SECTOR_CODES as legacy_sector_codes
 from trade_app.research.sector_codes import SECTOR_CODES as new_sector_codes
 from trade_app.research.sector_service import compute_sector_flow
-from app.models import ScreenerResult, ScreenerStepConfigs
-from app.store import InMemoryStore
-from app.tdx_loader import _build_row as legacy_build_screener_row
-from app.core.strategy_plugins import RelativeStrengthBreakoutPlugin
-from app.core.trend_king_strategy import calculate_trend_king_signal as legacy_trend_king, evaluate_trend_king_signal as legacy_trend_king_evaluate
-from app.models import CandlePoint as LegacyCandlePoint
 from trade_app.research.trend_king_domain import CandlePoint as NewTrendKingCandlePoint, calculate_trend_king_signal as new_trend_king, evaluate_trend_king_signal as new_trend_king_evaluate
-from app.core.limit_up_arb_strategy import calculate_limit_up_arb_signal as legacy_limit_up_arb, evaluate_limit_up_arb_signal as legacy_limit_up_arb_evaluate
 from trade_app.research.limit_up_arb_domain import calculate_limit_up_arb_signal as new_limit_up_arb, evaluate_limit_up_arb_signal as new_limit_up_arb_evaluate
-from app.core.ths_volume_signal import calculate_ths_main_retail_signal as legacy_ths_signal
 from trade_app.research.ths_volume_domain import calculate_ths_main_retail_signal as new_ths_signal
-from app.core.emotion_limit_up_strategy import calculate_emotion_limit_up_signal as legacy_emotion_signal, evaluate_emotion_limit_up_signal as legacy_emotion_evaluate
 from trade_app.research.emotion_limit_up_domain import calculate_emotion_limit_up_signal as new_emotion_signal, evaluate_emotion_limit_up_signal as new_emotion_evaluate
-from app.core.strategy_plugins import calculate_wulong_cluster_signal as legacy_wulong_signal, evaluate_wulong_cluster_signal as legacy_wulong_evaluate
 from trade_app.research.wulong_domain import calculate_wulong_cluster_signal as new_wulong_signal, evaluate_wulong_cluster_signal as new_wulong_evaluate
-from app.core.force_rhythm_strategy import calculate_force_rhythm_signal as legacy_rhythm_signal, evaluate_force_rhythm_signal as legacy_rhythm_evaluate
 from trade_app.research.force_rhythm_domain import calculate_force_rhythm_signal as new_rhythm_signal, evaluate_force_rhythm_signal as new_rhythm_evaluate
 from trade_app.research.domain import normalize_params as normalize_relative_strength_params
+from legacy_oracle import oracle, plain
+
+
+# Retired final-trade implementations, replayed from tests/fixtures/legacy_oracle.
+class _Deferred:
+    """Constructor arguments for an original model; only instantiated while recording."""
+    def __init__(self, target, **fields):
+        self.target, self.fields = target, fields
+
+    def model_copy(self, update):
+        return _Deferred(self.target, **{**self.fields, **update})
+
+    def model_dump(self, **_):
+        return {'__legacy__': self.target, **self.fields}
+
+
+def _real(value):
+    if isinstance(value, _Deferred):
+        module, name = value.target.split(':')
+        return getattr(importlib.import_module(module), name)(**_real(value.fields))
+    if isinstance(value, list):
+        return [_real(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_real(item) for item in value)
+    if isinstance(value, dict):
+        return {key: _real(item) for key, item in value.items()}
+    return value
+
+
+def _digest(value):
+    return hashlib.sha256(json.dumps(plain(value), sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:24]
+
+
+def _legacy(target):
+    """Proxy for an original function; its arguments are hashed into the oracle key."""
+    def call(*args, **kwargs):
+        def compute():
+            module, name = target.split(':')
+            return getattr(importlib.import_module(module), name)(*_real(list(args)), **_real(kwargs))
+        return oracle(target.rsplit(':', 1)[1] + ':' + _digest([args, kwargs]), compute)
+    return call
+
+
+def LegacyCandlePoint(**fields):
+    return _Deferred('app.models:CandlePoint', **fields)
+
+
+def OldB1Params(**fields):
+    return _Deferred('app.core.b1_strategy:B1Params', **fields)
+
+
+def OldValuationInputs(**fields):
+    return _Deferred('app.core.sentiment_valuation:ValuationInputs', **fields)
+
+
+old_check_b1 = _legacy('app.core.b1_strategy:check_b1')
+legacy_trend_top = _legacy('app.core.market_momentum:_compute_daily_top_symbols')
+legacy_limit_height = _legacy('app.core.market_momentum:count_consecutive_limit_up')
+legacy_analyze_abnormal = _legacy('app.core.abnormal_movement:analyze_symbol_abnormal_events')
+old_valuation_calc = _legacy('app.core.sentiment_valuation:calc_theoretical_cap')
+legacy_build_screener_row = _legacy('app.tdx_loader:_build_row')
+legacy_trend_king = _legacy('app.core.trend_king_strategy:calculate_trend_king_signal')
+legacy_trend_king_evaluate = _legacy('app.core.trend_king_strategy:evaluate_trend_king_signal')
+legacy_limit_up_arb = _legacy('app.core.limit_up_arb_strategy:calculate_limit_up_arb_signal')
+legacy_limit_up_arb_evaluate = _legacy('app.core.limit_up_arb_strategy:evaluate_limit_up_arb_signal')
+legacy_ths_signal = _legacy('app.core.ths_volume_signal:calculate_ths_main_retail_signal')
+legacy_emotion_signal = _legacy('app.core.emotion_limit_up_strategy:calculate_emotion_limit_up_signal')
+legacy_emotion_evaluate = _legacy('app.core.emotion_limit_up_strategy:evaluate_emotion_limit_up_signal')
+legacy_wulong_signal = _legacy('app.core.strategy_plugins:calculate_wulong_cluster_signal')
+legacy_wulong_evaluate = _legacy('app.core.strategy_plugins:evaluate_wulong_cluster_signal')
+legacy_rhythm_signal = _legacy('app.core.force_rhythm_strategy:calculate_force_rhythm_signal')
+legacy_rhythm_evaluate = _legacy('app.core.force_rhythm_strategy:evaluate_force_rhythm_signal')
 
 
 def test_relative_strength_params_follow_legacy_catalog_bounds() -> None:
@@ -1563,17 +1618,21 @@ def test_four_step_funnel_matches_legacy_filters_and_preserves_missing_turnover(
                                         'retrace20': 0.26})]
     config = FunnelConfig.model_validate({'step1': {'rank_start': 1, 'top_n': 10}})
     actual = run_funnel(candidates, config)
-    legacy_rows = [ScreenerResult(**{**row.model_dump(), 'latest_price': 10,
-                                     'day_change': 0, 'day_change_pct': 0,
-                                     'turnover20': row.turnover20 or 0,
-                                     'stage': 'Mid', 'labels': [], 'reject_reasons': []})
-                   for row in candidates]
-    legacy_config = ScreenerStepConfigs.model_validate({
-        **config.model_dump(exclude={'mode'}), 'step1': {**config.step1.model_dump(), 'top_n': 10}})
-    legacy = InMemoryStore._run_screener_filters_for_backtest(
-        legacy_rows, mode='strict', step_configs=legacy_config)
-    for stage, old_rows in zip(('step1', 'step2', 'step3', 'step4'), legacy):
-        assert [item['symbol'] for item in actual['pools'][stage]] == [item.symbol for item in old_rows]
+    def legacy_funnel(mode, step_configs):
+        from app.models import ScreenerResult, ScreenerStepConfigs
+        from app.store import InMemoryStore
+        legacy_rows = [ScreenerResult(**{**row.model_dump(), 'latest_price': 10,
+                                         'day_change': 0, 'day_change_pct': 0,
+                                         'turnover20': row.turnover20 or 0,
+                                         'stage': 'Mid', 'labels': [], 'reject_reasons': []})
+                       for row in candidates]
+        pools = InMemoryStore._run_screener_filters_for_backtest(
+            legacy_rows, mode=mode, step_configs=ScreenerStepConfigs.model_validate(step_configs))
+        return [[item.symbol for item in rows] for rows in pools]
+    legacy = oracle('screener_funnel:strict', lambda: legacy_funnel('strict', {
+        **config.model_dump(exclude={'mode'}), 'step1': {**config.step1.model_dump(), 'top_n': 10}}))
+    for stage, old_symbols in zip(('step1', 'step2', 'step3', 'step4'), legacy):
+        assert [item['symbol'] for item in actual['pools'][stage]] == old_symbols
     assert actual['summary'] == {'input': 4, 'step1': 3, 'step2': 2,
                                  'step3': 1, 'step4': 1}
     assert 'sh600001' not in [item['symbol'] for item in actual['pools']['step1']]
@@ -1582,11 +1641,9 @@ def test_four_step_funnel_matches_legacy_filters_and_preserves_missing_turnover(
                                           'step3': {'allow_blowoff_top': True},
                                           'step4': {'final_top_n': 2}})
     loose_actual = run_funnel(candidates, loose)
-    loose_legacy_config = ScreenerStepConfigs.model_validate(loose.model_dump(exclude={'mode'}))
-    loose_expected = InMemoryStore._run_screener_filters_for_backtest(
-        legacy_rows, mode='loose', step_configs=loose_legacy_config)
-    for stage, old_rows in zip(('step1', 'step2', 'step3', 'step4'), loose_expected):
-        assert [item['symbol'] for item in loose_actual['pools'][stage]] == [item.symbol for item in old_rows]
+    loose_expected = oracle('screener_funnel:loose', lambda: legacy_funnel('loose', loose.model_dump(exclude={'mode'})))
+    for stage, old_symbols in zip(('step1', 'step2', 'step3', 'step4'), loose_expected):
+        assert [item['symbol'] for item in loose_actual['pools'][stage]] == old_symbols
 
 
 def test_frozen_screener_metrics_match_legacy_tdx_formula_without_faking_missing_fields() -> None:
@@ -1617,7 +1674,7 @@ def test_frozen_screener_metrics_match_legacy_tdx_formula_without_faking_missing
                   'up_down_volume_ratio', 'pullback_volume_ratio',
                   'has_blowoff_top', 'has_divergence_5d', 'has_upper_shadow_risk',
                   'ai_confidence', 'theme_stage', 'trend_class'):
-        assert getattr(actual, field) == getattr(expected, field), field
+        assert plain(getattr(actual, field)) == expected[field], field
     assert 'HISTORICAL_AVAILABLE_AT_UNKNOWN' in actual.quality_flags
     without_amount = {**dataset, 'bars': [{**item, 'amount': None} for item in bars]}
     missing = build_candidate(without_amount, cutoff, 40)
@@ -2482,9 +2539,12 @@ def test_relative_strength_signal_matches_legacy_plugin_on_frozen_bars(tmp_path:
         assert len({row['id'] for row in catalog}) == 19
         assert sum(row['origin'] == 'final_trade' for row in catalog) == 16
         assert sum(row['origin'] == 'classic_reference' for row in catalog) == 3
-        from app.core.strategy_registry import StrategyRegistry
         from trade_app.research.classic_domain import CLASSIC_STRATEGY_IDS
-        assert {row['id'] for row in catalog if row['origin'] == 'final_trade'} == {row.strategy_id for row in StrategyRegistry().list()}
+
+        def legacy_ids():
+            from app.core.strategy_registry import StrategyRegistry
+            return sorted(row.strategy_id for row in StrategyRegistry().list())
+        assert {row['id'] for row in catalog if row['origin'] == 'final_trade'} == set(oracle('registry_ids', legacy_ids))
         assert {row['id'] for row in catalog if row['origin'] == 'classic_reference'} == set(CLASSIC_STRATEGY_IDS)
         active = next(row for row in catalog if row['id'] == 'relative_strength_breakout_v1')
         assert active['status'] == 'partial_signal' and active['signal_params']['min_ret40'] == '0.12'
@@ -2606,15 +2666,20 @@ def test_relative_strength_signal_matches_legacy_plugin_on_frozen_bars(tmp_path:
         assert accepted.status_code == 200, accepted.text
         assert len(accepted.json()['data']['orders']) == 2
         assert len(client.get(batch_root + '/orders').json()['data']) == 2
-        plugin = RelativeStrengthBreakoutPlugin()
-        legacy_row = SimpleNamespace(**candidate)
-        assert bool(plugin.build_universe(candidates=[legacy_row], params={
-            'min_ret40': 0.12, 'max_retrace20': 0.22,
-            'min_up_down_volume_ratio': 1.15, 'min_vol_slope20': 0,
-            'min_ai_confidence': 0}, mode='signals')) == run['result']['signal']
-        assert plugin.generate_signals(row=legacy_row, snapshot={}, params={
-            'min_ret40': 0.12, 'max_retrace20': 0.22,
-            'min_up_down_volume_ratio': 1.15}) == run['result']['signal']
+        def legacy_plugin():
+            from app.core.strategy_plugins import RelativeStrengthBreakoutPlugin
+            plugin = RelativeStrengthBreakoutPlugin()
+            legacy_row = SimpleNamespace(**candidate)
+            return {'universe': bool(plugin.build_universe(candidates=[legacy_row], params={
+                        'min_ret40': 0.12, 'max_retrace20': 0.22,
+                        'min_up_down_volume_ratio': 1.15, 'min_vol_slope20': 0,
+                        'min_ai_confidence': 0}, mode='signals')),
+                    'signal': plugin.generate_signals(row=legacy_row, snapshot={}, params={
+                        'min_ret40': 0.12, 'max_retrace20': 0.22,
+                        'min_up_down_volume_ratio': 1.15})}
+        legacy = oracle('relative_strength_plugin:' + _digest(candidate), legacy_plugin)
+        assert legacy['universe'] == run['result']['signal']
+        assert legacy['signal'] == run['result']['signal']
         repeated = client.post('/api/v1/research/runs', json=body,
                                headers={'X-CSRF-Token': csrf, 'Idempotency-Key': 'research-again'})
         assert repeated.json()['data']['id'] == run['id']
@@ -2737,7 +2802,7 @@ def test_b1_frozen_run_parity_history_and_as_of(tmp_path: Path) -> None:
     old_bars = [{'date': bar['event_date'],
                  **{key: float(bar[key]) for key in ('open', 'high', 'low', 'close')},
                  'volume': bar['volume']} for bar in bars]
-    assert new_check_b1('600000', old_bars, NewB1Params()) == old_check_b1(
+    assert plain(new_check_b1('600000', old_bars, NewB1Params())) == old_check_b1(
         '600000', old_bars, OldB1Params())
 
     app = create_app(tmp_path, auto_rebuild=False)
@@ -2839,7 +2904,7 @@ def test_b1_positive_hit_promotes_to_sim_draft(tmp_path: Path) -> None:
                     'volume': bar['volume']} for bar in bars]
     expected = old_check_b1('600000', legacy_bars, OldB1Params())
     assert expected is not None
-    assert new_check_b1('600000', legacy_bars, NewB1Params()) == expected
+    assert plain(new_check_b1('600000', legacy_bars, NewB1Params())) == expected
     app = create_app(tmp_path, auto_rebuild=False)
     with started_client(app) as client:
         csrf = client.get('/api/v1/session').json()['data']['csrf_token']
@@ -3021,7 +3086,10 @@ def test_limit_up_ladder_tdx_job_publishes_frozen_timeline(tmp_path: Path, monke
 
 
 def test_sector_flow_proxy_matches_legacy_fixed_index_series(monkeypatch) -> None:
-    assert new_sector_codes == legacy_sector_codes
+    def legacy_codes():
+        from app.core.sector_analyzer import SECTOR_CODES
+        return SECTOR_CODES
+    assert plain(new_sector_codes) == oracle('sector_codes', legacy_codes)
     datasets = {}
     old_series = {}
     for code, sector, slope in (('881001', '煤炭', 0.02), ('881006', '石油石化', 0.04)):
@@ -3035,19 +3103,23 @@ def test_sector_flow_proxy_matches_legacy_fixed_index_series(monkeypatch) -> Non
             old_bars.append({'date': day, 'close': close, 'amount': float(amount)})
         datasets[code] = {'bars': bars}
         old_series[sector] = old_bars
-    monkeypatch.setattr(legacy_sector_flow, 'load_sector_series_by_name', lambda _path: old_series)
-    old_rows, _, old_leaders, old_dates, _ = legacy_sector_flow.scan_sector_capital_flow(
-        tdx_data_path='unused', date_from='2025-01-05', date_to='2025-01-15',
-        daily_top_n=1, flow_window=5)
+
+    def legacy_flow():
+        from app.core import sector_capital_flow as legacy_sector_flow
+        monkeypatch.setattr(legacy_sector_flow, 'load_sector_series_by_name', lambda _path: old_series)
+        rows, _, leaders, dates, _ = legacy_sector_flow.scan_sector_capital_flow(
+            tdx_data_path='unused', date_from='2025-01-05', date_to='2025-01-15',
+            daily_top_n=1, flow_window=5)
+        return {'dates': dates, 'rows': [[row.date, row.sector, row.flow_score, row.rank_flow] for row in rows],
+                'leaders': [[row.sector, row.leader_days] for row in leaders]}
+    legacy = oracle('sector_flow', legacy_flow)
     result = compute_sector_flow(datasets, {'date_from': '2025-01-05',
                                              'date_to': '2025-01-15',
                                              'daily_top_n': 1, 'flow_window': 5})
-    assert result['dates'] == old_dates
-    assert [(row['date'], row['sector'], row['flow_score'], row['rank_flow'])
-            for row in result['flow_table']] == [
-                (row.date, row.sector, row.flow_score, row.rank_flow) for row in old_rows]
-    assert [(row['sector'], row['leader_days']) for row in result['leaders']] == [
-        (row.sector, row.leader_days) for row in old_leaders]
+    assert result['dates'] == legacy['dates']
+    assert [[row['date'], row['sector'], row['flow_score'], row['rank_flow']]
+            for row in result['flow_table']] == legacy['rows']
+    assert [[row['sector'], row['leader_days']] for row in result['leaders']] == legacy['leaders']
 
 
 def test_sector_flow_tdx_job_freezes_source_and_publishes_history(tmp_path: Path, monkeypatch) -> None:
@@ -3107,8 +3179,7 @@ def test_abnormal_domain_preserves_legacy_episode_and_cooling(tmp_path: Path) ->
                     'date_to': days[-1], 'include_warnings': True,
                     'snapshot_only': snapshot_only, 'trading_dates': days,
                     'cooling_days': cooling}
-            assert [asdict(row) for row in new_analyze_abnormal(**args)] == [
-                asdict(row) for row in legacy_analyze_abnormal(**args)]
+            assert plain([asdict(row) for row in new_analyze_abnormal(**args)]) == legacy_analyze_abnormal(**args)
 
 
 def test_abnormal_tdx_job_uses_frozen_benchmark_and_publishes_events(tmp_path: Path, monkeypatch) -> None:
@@ -3171,8 +3242,7 @@ def test_abnormal_domain_suspension_and_benchmark_fallback(tmp_path: Path, monke
             'index_close_by_date': index_close, 'date_from': days[0],
             'date_to': days[-1], 'include_warnings': True,
             'snapshot_only': False, 'trading_dates': days, 'cooling_days': 3}
-    assert [asdict(row) for row in new_analyze_abnormal(**args)] == [
-        asdict(row) for row in legacy_analyze_abnormal(**args)]
+    assert plain([asdict(row) for row in new_analyze_abnormal(**args)]) == legacy_analyze_abnormal(**args)
 
     tdx = tmp_path / 'tdx'
     folder = tdx / 'vipdoc' / 'sh' / 'lday'
@@ -3215,8 +3285,7 @@ def test_abnormal_domain_suspension_and_benchmark_fallback(tmp_path: Path, monke
 def test_five_factor_valuation_parity_scenarios_and_pe_provenance(tmp_path: Path, monkeypatch) -> None:
     factors = dict(earnings_yi=12.5, growth_coef=1.3, base_pe=22.5,
                    index_coef=1.1, sentiment_coef=1.8)
-    assert asdict(new_valuation_calc(NewValuationInputs(**factors))) == asdict(
-        old_valuation_calc(OldValuationInputs(**factors)))
+    assert plain(asdict(new_valuation_calc(NewValuationInputs(**factors)))) == old_valuation_calc(OldValuationInputs(**factors))
 
     class FakeResponse:
         def __init__(self, data): self.data = data
@@ -3252,7 +3321,7 @@ def test_five_factor_valuation_parity_scenarios_and_pe_provenance(tmp_path: Path
         assert response.status_code == 200, response.text
         run = response.json()['data']
         assert run['result']['scenarios'][0]['theoretical_cap_yi'] == round(
-            old_valuation_calc(OldValuationInputs(**factors)).theoretical_cap_yi, 4)
+            old_valuation_calc(OldValuationInputs(**factors))['theoretical_cap_yi'], 4)
         assert run['result']['scenarios'][1]['theoretical_cap_yi'] is None
         assert run['result']['scenarios'][1]['status'] == 'not_applicable_nonpositive_earnings_or_growth'
         assert client.get('/api/v1/research/valuation-runs/' + run['id']).json()['data']['result'] == run['result']

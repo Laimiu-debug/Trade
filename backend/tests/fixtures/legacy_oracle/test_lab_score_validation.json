@@ -1,0 +1,12 @@
+{
+ "summarize_buckets": {
+  "avg_hold": 3.0,
+  "avg_pnl": 0.0833,
+  "hit_25pct": 1,
+  "hit_30pct": 1,
+  "n": 3,
+  "pf": 3.5,
+  "tp_rate": 0.3333,
+  "win_rate": 0.6667
+ }
+}

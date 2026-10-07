@@ -1,3 +1,4 @@
+import hashlib
 from datetime import date, timedelta
 from decimal import Decimal
 import json
@@ -5,8 +6,7 @@ import json
 import pytest
 from sqlalchemy import func, select, text
 
-from app.models import CandlePoint
-from app.store import InMemoryStore
+from legacy_oracle import oracle
 from trade_app.market.service import import_dataset
 from trade_app.platform.db import open_database
 from trade_app.platform.types import TradeError
@@ -78,6 +78,15 @@ def _evaluate(scenario, **overrides):
 
 
 def _legacy_detail(bars, holding_days=3, as_of_date='2025-01-16'):
+    """First constituent of the original signal-ETF runtime detail, as a field dict."""
+    key = json.dumps([bars, holding_days, as_of_date], sort_keys=True)
+    return oracle('detail:' + hashlib.sha256(key.encode()).hexdigest()[:24],
+                  lambda: _compute_legacy_detail(bars, holding_days, as_of_date).constituents[0].model_dump())
+
+
+def _compute_legacy_detail(bars, holding_days, as_of_date):
+    from app.models import CandlePoint
+    from app.store import InMemoryStore
     candles = [CandlePoint(time=bar['event_date'], open=float(bar['open']), high=float(bar['high']),
                           low=float(bar['low']), close=float(bar['close']), volume=bar['volume'], amount=0)
                for bar in bars]
@@ -96,17 +105,17 @@ def test_t1_t2_raw_prices_and_legacy_holding_return_match_original(scenario):
     _factory, _directory, signal, basket, _original, _forward = scenario
     report = _evaluate(scenario)
     row = report['result']['constituents'][0]
-    legacy = _legacy_detail(_bars() + _future()).constituents[0]
+    legacy = _legacy_detail(_bars() + _future())
     assert basket['constituents'][0]['signals'] == [signal]
     assert row['anchor_date'] == '2025-01-11'  # 18:00Z decision rolls into Shanghai's next day.
     for mode in ('t1', 't2'):
         case = row[mode]
         assert case['status'] == 'completed'
-        assert case['entry_date'] == getattr(legacy, 'buy_date_' + mode)
-        assert float(case['entry_price']) == getattr(legacy, 'buy_price_' + mode)
-        assert case['mark_to_market_return'] == getattr(legacy, 'return_pct_' + mode)
-    assert row['t1']['target_date'] == legacy.holding_target_date == '2025-01-15'
-    assert row['t1']['raw_return'] == legacy.return_pct_holding == 0.25
+        assert case['entry_date'] == legacy['buy_date_' + mode]
+        assert float(case['entry_price']) == legacy['buy_price_' + mode]
+        assert case['mark_to_market_return'] == legacy['return_pct_' + mode]
+    assert row['t1']['target_date'] == legacy['holding_target_date'] == '2025-01-15'
+    assert row['t1']['raw_return'] == legacy['return_pct_holding'] == 0.25
     rule = FeeRule(**{key: Decimal(value) for key, value in report['request']['basket_snapshot']['config']['fees'].items()})
     buy = calculate_fees(Decimal(20), 100, 'buy', rule).total
     sell = calculate_fees(Decimal(25), 100, 'sell', rule).total
@@ -128,7 +137,7 @@ def test_missing_future_and_asof_cutoff_are_pending_not_zero(scenario):
     assert row['t2']['status'] == 'pending_entry' and row['t2']['entry_price'] is None
     assert row['t2']['entry_date'] is None and row['t1']['target_date'] is None
     # The old runtime's holding calculation ignored valuation_cutoff here.
-    assert _legacy_detail(_bars() + _future(), as_of_date='2025-01-13').constituents[0].return_pct_holding == 0.25
+    assert _legacy_detail(_bars() + _future(), as_of_date='2025-01-13')['return_pct_holding'] == 0.25
     assert early['id'] != pending['id']
 
 

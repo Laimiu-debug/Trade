@@ -1,0 +1,68 @@
+{
+ "original_identities": {
+  "b1_mtf_v1": {
+   "name": "B1战法V1",
+   "version": "1.0.0"
+  },
+  "emotion_limit_up_v1": {
+   "name": "情绪涨停",
+   "version": "1.0.0"
+  },
+  "limit_up_arb_v1": {
+   "name": "涨停套利",
+   "version": "1.0.0"
+  },
+  "matrix_signal_v1": {
+   "name": "矩阵信号V1",
+   "version": "1.0.0-alpha"
+  },
+  "relative_strength_breakout_v1": {
+   "name": "相对强弱突破V1",
+   "version": "1.0.0-alpha"
+  },
+  "score_only_rank_v1": {
+   "name": "ScoreOnlyRank V1",
+   "version": "1.0.0-alpha"
+  },
+  "ths_force_rhythm_v1": {
+   "name": "主散节奏波V1",
+   "version": "1.0.0-alpha"
+  },
+  "ths_main_force_flip_v1": {
+   "name": "主力紫转黄V1",
+   "version": "1.0.0-alpha"
+  },
+  "ths_main_force_golden_cross_v1": {
+   "name": "主力金叉V1",
+   "version": "1.0.0-alpha"
+  },
+  "trend_king_limitup_v1": {
+   "name": "涨停板精选",
+   "version": "1.0.0"
+  },
+  "trend_king_pullback_v1": {
+   "name": "涨停跟踪池",
+   "version": "1.0.0"
+  },
+  "trend_king_rally_v1": {
+   "name": "涨势确认",
+   "version": "1.0.0"
+  },
+  "trend_king_v1": {
+   "name": "趋势为王",
+   "version": "1.0.0"
+  },
+  "wulong_cluster_v1": {
+   "name": "五龙聚首",
+   "version": "2.0.0-alpha"
+  },
+  "wyckoff_trend_v1": {
+   "name": "维科夫趋势V1",
+   "version": "1.0.0"
+  },
+  "wyckoff_trend_v2": {
+   "name": "维科夫趋势V2",
+   "version": "2.0.0-alpha"
+  }
+ }
+}

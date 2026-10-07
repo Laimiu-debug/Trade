@@ -10,6 +10,7 @@ from trade_app.platform.types import TradeError
 from trade_app.research import lab_cli
 from trade_app.research.lab_score_validation import build_score_validation, build_trade_summary, summarize, monotonic_check
 from test_strategy_lab import fixture,bars
+from legacy_oracle import oracle
 
 
 def evidence(scores):
@@ -41,11 +42,14 @@ def test_score_edges_partial_legs_and_open_cycles_do_not_fake_samples():
 
 
 def test_bucket_metrics_match_old_ratio_formula_with_explicit_undefined_pf_and_sample_gate():
-    source=Path(__file__).resolve().parents[1]/'scripts/backtest_chart_volume_swing.py'
-    node=next(row for row in ast.parse(source.read_text(encoding='utf-8')).body if isinstance(row,ast.FunctionDef) and row.name=='summarize')
-    scope={};exec(compile(ast.Module(body=[node],type_ignores=[]),str(source),'exec'),scope)
     rows=[{'pnl_net':'.30','hit_tp':True,'holding_days':2},{'pnl_net':'-.1','hit_tp':False,'holding_days':3},{'pnl_net':'.05','hit_tp':False,'holding_days':4}]
-    old=scope['summarize'](rows);new=summarize(rows)
+    def legacy():
+        # summarize() of the retired backend/scripts/backtest_chart_volume_swing.py.
+        source=Path(__file__).resolve().parents[1]/'scripts/backtest_chart_volume_swing.py'
+        node=next(row for row in ast.parse(source.read_text(encoding='utf-8')).body if isinstance(row,ast.FunctionDef) and row.name=='summarize')
+        scope={};exec(compile(ast.Module(body=[node],type_ignores=[]),str(source),'exec'),scope)
+        return scope['summarize'](rows)
+    old=oracle('summarize_buckets',legacy);new=summarize(rows)
     for key in ('win_rate','avg_pnl','pf','tp_rate'):assert round(float(new[key]),4)==old[key]
     assert new['hit_30pct']==old['hit_30pct'] and new['avg_hold']==old['avg_hold']
     sufficient=[{'score_range':'low','n':20,'pf':'1.5'},{'score_range':'high','n':20,'pf':'1.4'}]

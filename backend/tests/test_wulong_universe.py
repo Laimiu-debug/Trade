@@ -7,9 +7,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from app.core.strategy_plugins import WulongClusterPlugin
-from app.models import CandlePoint
-from app.store import InMemoryStore
+import hashlib
+
+from legacy_oracle import oracle
 from trade_app.platform.types import TradeError
 from trade_app.research.wulong_universe import (
     DEFAULT_UNIVERSE_PARAMS, MINIMUM_BARS, candidate_metrics_from_bars,
@@ -27,7 +27,9 @@ def _bars(count=90, flat=False):
     return result
 
 
-def _legacy_row(bars):
+def _legacy_model(bars):
+    from app.models import CandlePoint
+    from app.store import InMemoryStore
     candles = [CandlePoint(time=bar['event_date'], open=bar['open'], high=bar['high'],
                           low=bar['low'], close=bar['close'], volume=bar['volume'], amount=0)
                for bar in bars]
@@ -41,17 +43,29 @@ def _legacy_row(bars):
     return InMemoryStore._build_row_from_candles(stub, 'sh600000')
 
 
+def _bars_key(bars):
+    return hashlib.sha256(json.dumps(bars, sort_keys=True).encode()).hexdigest()[:24]
+
+
+def _legacy_row(bars):
+    """Original store candidate row (field dict) and whether the original plugin admitted it."""
+    def compute():
+        from app.core.strategy_plugins import WulongClusterPlugin
+        row = _legacy_model(bars)
+        admitted = WulongClusterPlugin().build_universe(candidates=[row], params=normalize_universe_params(), mode='strict')
+        return {'row': row.model_dump(), 'admitted': bool(admitted)}
+    return oracle('row:' + _bars_key(bars), compute)
+
+
 @pytest.mark.parametrize('count,flat', [(30, False), (40, False), (90, False), (90, True)])
 def test_metrics_match_legacy_store_path(count, flat):
     bars = _bars(count, flat)
     original = deepcopy(bars)
     metrics = candidate_metrics_from_bars(bars)
     old = _legacy_row(bars)
-    assert metrics == {key: getattr(old, key) for key in metrics}
+    assert metrics == {key: old['row'][key] for key in metrics}
     result = evaluate_wulong_universe(bars)
-    legacy = WulongClusterPlugin().build_universe(
-        candidates=[old], params=normalize_universe_params(), mode='strict')
-    assert result['passed'] is bool(legacy)
+    assert result['passed'] is old['admitted']
     assert len(result['checks']) == 8
     assert bars == original
     if flat:
@@ -87,16 +101,23 @@ def _boundary_metrics():
 def test_all_eight_gates_match_legacy_inclusive_boundaries(metric, value, failed_param):
     metrics = _boundary_metrics()
     assert evaluate_wulong_candidate(metrics)['passed'] is True
-    plugin = WulongClusterPlugin()
-    assert plugin.build_universe(candidates=[SimpleNamespace(**metrics)],
-                                 params=normalize_universe_params(), mode='strict')
+    boundary = dict(metrics)
     metrics[metric] = value
     result = evaluate_wulong_candidate(metrics)
+
+    def legacy_gates():
+        from app.core.strategy_plugins import WulongClusterPlugin
+        plugin = WulongClusterPlugin()
+        return {'boundary': bool(plugin.build_universe(candidates=[SimpleNamespace(**boundary)],
+                                                       params=normalize_universe_params(), mode='strict')),
+                'changed': bool(plugin.build_universe(candidates=[SimpleNamespace(**metrics)],
+                                                      params=result['params'], mode='strict'))}
+    legacy = oracle(f'gate:{metric}', legacy_gates)
+    assert legacy['boundary'] is True
     assert result['passed'] is False
     assert result['failed_conditions'] == [failed_param]
     assert len(result['reasons']) == 1
-    assert not plugin.build_universe(candidates=[SimpleNamespace(**metrics)],
-                                     params=result['params'], mode='strict')
+    assert legacy['changed'] is False
 
 
 @pytest.mark.parametrize('param,risk', [('allow_upper_shadow_risk', 'has_upper_shadow_risk'),
@@ -152,8 +173,8 @@ def test_risk_metrics_preserve_strict_thresholds_and_store_volume_reference():
     metrics = candidate_metrics_from_bars(bars)
     assert metrics['has_blowoff_top'] is True
     assert metrics['has_upper_shadow_risk'] is True
-    old = _legacy_row(bars)
-    assert metrics == {key: getattr(old, key) for key in metrics}
+    old = _legacy_row(bars)['row']
+    assert metrics == {key: old[key] for key in metrics}
 
 
 def test_zero_volume_remains_finite_and_matches_original():
@@ -161,6 +182,6 @@ def test_zero_volume_remains_finite_and_matches_original():
     for bar in bars:
         bar['volume'] = 0
     metrics = candidate_metrics_from_bars(bars)
-    old = _legacy_row(bars)
-    assert metrics == {key: getattr(old, key) for key in metrics}
+    old = _legacy_row(bars)['row']
+    assert metrics == {key: old[key] for key in metrics}
     json.dumps(evaluate_wulong_universe(bars), allow_nan=False)

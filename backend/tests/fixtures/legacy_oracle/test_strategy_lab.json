@@ -1,0 +1,882 @@
+{
+ "chart_hybrid_prefixes": {
+  "0": {
+   "chart": {
+    "has_data": false,
+    "signal": false,
+    "trigger_date": ""
+   },
+   "evaluation": {
+    "reject_reason": "no_signal",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": ""
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": ""
+    },
+    "101": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": ""
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": ""
+    },
+    "201": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": ""
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": ""
+    },
+    "501": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": ""
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": ""
+    },
+    "None": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": ""
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": ""
+    }
+   }
+  },
+  "101": {
+   "chart": {
+    "has_data": true,
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "trigger_date": "2025-04-11"
+   },
+   "evaluation": {
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-11"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 8.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 83.54,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-11",
+     "trough_turn": false
+    },
+    "101": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-11"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 5.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 83.54,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-11",
+     "trough_turn": false
+    },
+    "201": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-11"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 2.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 83.54,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-11",
+     "trough_turn": false
+    },
+    "501": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-11"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 83.54,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-11",
+     "trough_turn": false
+    },
+    "None": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-11"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 83.54,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-11",
+     "trough_turn": false
+    }
+   }
+  },
+  "104": {
+   "chart": {
+    "has_data": true,
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "trigger_date": "2025-04-14"
+   },
+   "evaluation": {
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-14"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 8.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.84,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-14",
+     "trough_turn": false
+    },
+    "101": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-14"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 5.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.84,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-14",
+     "trough_turn": false
+    },
+    "201": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-14"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 2.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.84,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-14",
+     "trough_turn": false
+    },
+    "501": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-14"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.84,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-14",
+     "trough_turn": false
+    },
+    "None": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-14"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.84,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-14",
+     "trough_turn": false
+    }
+   }
+  },
+  "110": {
+   "chart": {
+    "has_data": true,
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "trigger_date": "2025-04-20"
+   },
+   "evaluation": {
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-20"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 8.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 79.75,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-20",
+     "trough_turn": false
+    },
+    "101": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-20"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 5.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 79.75,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-20",
+     "trough_turn": false
+    },
+    "201": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-20"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 2.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 79.75,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-20",
+     "trough_turn": false
+    },
+    "501": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-20"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 79.75,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-20",
+     "trough_turn": false
+    },
+    "None": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-20"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 79.75,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-20",
+     "trough_turn": false
+    }
+   }
+  },
+  "130": {
+   "chart": {
+    "has_data": true,
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "trigger_date": "2025-05-10"
+   },
+   "evaluation": {
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-05-10"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 8.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 85.05,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-05-10",
+     "trough_turn": false
+    },
+    "101": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-05-10"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 5.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 85.05,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-05-10",
+     "trough_turn": false
+    },
+    "201": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-05-10"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 2.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 85.05,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-05-10",
+     "trough_turn": false
+    },
+    "501": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-05-10"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 85.05,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-05-10",
+     "trough_turn": false
+    },
+    "None": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-05-10"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 85.05,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-05-10",
+     "trough_turn": false
+    }
+   }
+  },
+  "60": {
+   "chart": {
+    "has_data": false,
+    "signal": false,
+    "trigger_date": "2025-03-01"
+   },
+   "evaluation": {
+    "reject_reason": "no_signal",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": "2025-03-01"
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": "2025-03-01"
+    },
+    "101": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": "2025-03-01"
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": "2025-03-01"
+    },
+    "201": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": "2025-03-01"
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": "2025-03-01"
+    },
+    "501": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": "2025-03-01"
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": "2025-03-01"
+    },
+    "None": {
+     "chart": {
+      "has_data": false,
+      "signal": false,
+      "trigger_date": "2025-03-01"
+     },
+     "has_data": false,
+     "signal": false,
+     "trigger_date": "2025-03-01"
+    }
+   }
+  },
+  "80": {
+   "chart": {
+    "has_data": true,
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "trigger_date": "2025-03-21"
+   },
+   "evaluation": {
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-03-21"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 8.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 76.62,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-03-21",
+     "trough_turn": false
+    },
+    "101": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-03-21"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 5.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 76.62,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-03-21",
+     "trough_turn": false
+    },
+    "201": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-03-21"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 2.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 76.62,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-03-21",
+     "trough_turn": false
+    },
+    "501": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-03-21"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 76.62,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-03-21",
+     "trough_turn": false
+    },
+    "None": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-03-21"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 76.62,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-03-21",
+     "trough_turn": false
+    }
+   }
+  },
+  "99": {
+   "chart": {
+    "has_data": true,
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "trigger_date": "2025-04-09"
+   },
+   "evaluation": {
+    "reject_reason": "no_chart_setup",
+    "signal": false,
+    "signal_score": 0.0
+   },
+   "hybrid": {
+    "100": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-09"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 8.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.04,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-09",
+     "trough_turn": false
+    },
+    "101": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-09"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 5.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.04,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-09",
+     "trough_turn": false
+    },
+    "201": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-09"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 2.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.04,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-09",
+     "trough_turn": false
+    },
+    "501": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-09"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.04,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-09",
+     "trough_turn": false
+    },
+    "None": {
+     "box_high": null,
+     "chart": {
+      "has_data": true,
+      "reject_reason": "no_chart_setup",
+      "signal": false,
+      "trigger_date": "2025-04-09"
+     },
+     "chart_score": 0.0,
+     "confirm_type": "",
+     "event_grade": null,
+     "golden_cross": false,
+     "has_data": true,
+     "hybrid_score": 0.0,
+     "purple_to_yellow": false,
+     "ret_40": null,
+     "rhythm_score": 86.04,
+     "signal": false,
+     "trend_ma10_pullback": false,
+     "trigger_date": "2025-04-09",
+     "trough_turn": false
+    }
+   }
+  }
+ }
+}

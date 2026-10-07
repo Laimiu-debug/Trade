@@ -6,8 +6,7 @@ from types import SimpleNamespace
 import pytest
 from sqlalchemy import select
 
-from app.core.strategy_plugins import (WulongClusterPlugin, TrendKingPlugin, LimitUpArbPlugin,
-    EmotionLimitUpPlugin, ForceRhythmPlugin, ScoreOnlyRankPlugin, ThsMainRetailSignalPlugin)
+from legacy_oracle import oracle
 from trade_app.market.service import import_dataset
 from trade_app.main import create_app
 from trade_app.platform.db import open_database
@@ -45,15 +44,22 @@ def prepare(scenario, **changes):
         return service.prepare_report(session, path, {'scan_id': scan['id'], 'as_of_date': '2025-03-29', **changes})
 
 
-@pytest.mark.parametrize('strategy,plugin', [
-    (WULONG, WulongClusterPlugin()), ('trend_king_v1', TrendKingPlugin()),
-    ('limit_up_arb_v1', LimitUpArbPlugin()), ('emotion_limit_up_v1', EmotionLimitUpPlugin()),
-    ('ths_force_rhythm_v1', ForceRhythmPlugin()), ('score_only_rank_v1', ScoreOnlyRankPlugin()),
-    ('ths_main_force_flip_v1', ThsMainRetailSignalPlugin('ths_main_force_flip_v1', trigger_key='purple_to_yellow'))])
-def test_rank_formula_matches_original_plugin(strategy, plugin):
+def _legacy_plugin(strategy):
+    from app.core import strategy_plugins as legacy
+    return {WULONG: legacy.WulongClusterPlugin, 'trend_king_v1': legacy.TrendKingPlugin,
+            'limit_up_arb_v1': legacy.LimitUpArbPlugin, 'emotion_limit_up_v1': legacy.EmotionLimitUpPlugin,
+            'ths_force_rhythm_v1': legacy.ForceRhythmPlugin, 'score_only_rank_v1': legacy.ScoreOnlyRankPlugin,
+            'ths_main_force_flip_v1': lambda: legacy.ThsMainRetailSignalPlugin('ths_main_force_flip_v1', trigger_key='purple_to_yellow'),
+            }[strategy]()
+
+
+@pytest.mark.parametrize('strategy', [WULONG, 'trend_king_v1', 'limit_up_arb_v1', 'emotion_limit_up_v1',
+                                      'ths_force_rhythm_v1', 'score_only_rank_v1', 'ths_main_force_flip_v1'])
+def test_rank_formula_matches_original_plugin(strategy):
     metrics = {'ret40': .13, 'up_down_volume_ratio': 1.36}
     result = {'indicator': {'entry_quality_score': 72, 'signal_score': 72}, 'evaluation': {'signal_score': 72}}
-    expected = plugin.rank_signals(signal=SimpleNamespace(entry_quality_score=72), row=SimpleNamespace(**metrics), params={}, fallback_score=50)
+    expected = oracle(f'rank:{strategy}', lambda: _legacy_plugin(strategy).rank_signals(
+        signal=SimpleNamespace(entry_quality_score=72), row=SimpleNamespace(**metrics), params={}, fallback_score=50))
     assert rank_score(strategy, result, metrics)['rank_score'] == pytest.approx(expected)
 
 

@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { buildEvidence, calculateForceSeries, movingAverage, seriesPath, type ChartResearchRun } from './chart-indicators'
 import { MarketChart, type ChartBar } from './market-chart'
+import legacySeries from './__fixtures__/legacy-ths-main-retail-series.json'
 
 const api = vi.hoisted(() => vi.fn())
 vi.mock('./api', () => ({ api }))
@@ -18,11 +19,9 @@ const run = (change: Partial<ChartResearchRun> = {}): ChartResearchRun => ({ id:
 }, ...change })
 
 describe('original chart indicator formulas', () => {
-  it('matches the actual legacy utility for every point, unit and marker', async () => {
-    // Variable import keeps the old application's @ type alias outside rebuild's type graph.
-    const source = '../shared/utils/thsVolumeSignal'
-    const legacy = await import(source)
-    const original = legacy.calculateThsMainRetailSeries(bars.map(row => ({ ...row, time: row.event_date, open: Number(row.open), high: Number(row.high), low: Number(row.low), close: Number(row.close) })))
+  it('matches the actual legacy utility for every point, unit and marker', () => {
+    // Output of the retired shared/utils/thsVolumeSignal.ts for these bars, recorded at tag legacy-final.
+    const original = legacySeries
     const actual = calculateForceSeries(bars)
     expect(actual).toHaveLength(original.length)
     actual.forEach((row, index) => {

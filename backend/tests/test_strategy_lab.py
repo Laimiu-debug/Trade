@@ -36,11 +36,7 @@ def fixture():
 
 
 def test_chart_hybrid_port_matches_original_formulas_across_prefixes():
-    from app.models import CandlePoint as OldCandle
-    from app.core.chart_volume_swing_strategy import calculate_chart_volume_swing_signal as old_chart
-    from app.core.chart_volume_swing_strategy import evaluate_chart_volume_swing_signal as old_evaluation
-    from app.core.hybrid_band_strategy import calculate_hybrid_band_signal as old_hybrid
-
+    from legacy_oracle import oracle, plain
     values = bars(130)
     # Flat-to-breakout-to-shrinking-volume shape also exercises setup scoring.
     for index, row in enumerate(values):
@@ -49,13 +45,28 @@ def test_chart_hybrid_port_matches_original_formulas_across_prefixes():
                    volume=1500 if index == 100 else 900 if index < 100 else 400)
     new = [CandlePoint(row['event_date'], float(row['open']), float(row['high']), float(row['low']),
         float(row['close']), row['volume'], float(row['amount'])) for row in values]
-    old = [OldCandle(**asdict(row)) for row in new]
-    for size in (0, 60, 80, 99, 101, 104, 110, 130):
-        actual, expected = calculate_chart_volume_swing_signal(new[:size]), old_chart(old[:size])
-        assert actual == expected
-        assert evaluate_chart_volume_swing_signal(actual) == old_evaluation(expected)
-        for rank in (None, 100, 101, 201, 501):
-            assert calculate_hybrid_band_signal(new[:size], ret40_rank=rank) == old_hybrid(old[:size], ret40_rank=rank)
+    sizes, ranks = (0, 60, 80, 99, 101, 104, 110, 130), (None, 100, 101, 201, 501)
+
+    def legacy():
+        from app.models import CandlePoint as OldCandle
+        from app.core.chart_volume_swing_strategy import calculate_chart_volume_swing_signal as old_chart
+        from app.core.chart_volume_swing_strategy import evaluate_chart_volume_swing_signal as old_evaluation
+        from app.core.hybrid_band_strategy import calculate_hybrid_band_signal as old_hybrid
+        old = [OldCandle(**asdict(row)) for row in new]
+        rows = {}
+        for size in sizes:
+            chart = old_chart(old[:size])
+            rows[str(size)] = {'chart': chart, 'evaluation': old_evaluation(chart),
+                               'hybrid': {str(rank): old_hybrid(old[:size], ret40_rank=rank) for rank in ranks}}
+        return rows
+    expected_rows = oracle('chart_hybrid_prefixes', legacy)
+    for size in sizes:
+        expected = expected_rows[str(size)]
+        actual = calculate_chart_volume_swing_signal(new[:size])
+        assert plain(actual) == expected['chart']
+        assert plain(evaluate_chart_volume_swing_signal(actual)) == expected['evaluation']
+        for rank in ranks:
+            assert plain(calculate_hybrid_band_signal(new[:size], ret40_rank=rank)) == expected['hybrid'][str(rank)]
 
 
 @pytest.mark.parametrize('change', [

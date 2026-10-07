@@ -60,7 +60,7 @@
 
 **修复：** 新展示层基于实际运行器名单构建 `execution_paths` 和 `current_capabilities`，给出 `family_id/family_name/variant_name/origin`、`availability` 与入场/出场/排名语义。当前 `limitations` 反映真实边界；`legacy_status/legacy_limitations` 保留早期转换层说明，原 `status` 保持客户端兼容。来源目录对象深复制，页面字段不能污染缓存计算参数。没有登记的执行路径返回 `unavailable`，不自动宣称可运行。
 
-旧 [STRATEGY_PORTING_NOTES.md](STRATEGY_PORTING_NOTES.md) 与 [STRATEGY_AUDIT.md](STRATEGY_AUDIT.md) 已明确标为历史阶段记录并指向本文。README 与设置验收文档已更新入口和默认行为。
+旧 [STRATEGY_PORTING_NOTES.md](archive/STRATEGY_PORTING_NOTES.md) 与 [STRATEGY_AUDIT.md](archive/STRATEGY_AUDIT.md) 已明确标为历史阶段记录并指向本文。README 与设置验收文档已更新入口和默认行为。
 
 ### 3.4 新增默认与预览确认不完整
 

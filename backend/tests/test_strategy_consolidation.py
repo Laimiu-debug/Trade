@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from app.core.strategy_registry import StrategyRegistry
+from legacy_oracle import oracle
 from trade_app.platform.db import open_database
 from trade_app.platform.types import TradeError, utc_now
 from trade_app.research import registry_service as registry
@@ -26,13 +26,16 @@ def database(tmp_path):
 
 
 def test_original_16_identities_and_related_variants_survive(database):
-    original = {row.strategy_id: row for row in StrategyRegistry().list()}
+    def legacy_identities():
+        from app.core.strategy_registry import StrategyRegistry
+        return {row.strategy_id: {'name': row.name, 'version': row.version} for row in StrategyRegistry().list()}
+    original = oracle('original_identities', legacy_identities)
     with database() as session:
         rows = {row['id']: row for row in registry.get_registry(session)['strategies']}
     legacy = {key: row for key, row in rows.items() if row['origin'] == 'final_trade'}
     assert len(original) == 16 and set(legacy) == set(original)
     for identity, before in original.items():
-        assert (legacy[identity]['name'], legacy[identity]['version']) == (before.name, before.version)
+        assert (legacy[identity]['name'], legacy[identity]['version']) == (before['name'], before['version'])
         assert legacy[identity]['availability'] == 'available'
         assert 'full_signal_context' in legacy[identity]['execution_paths']
     for prefix, count in [('trend_king', 4), ('wyckoff', 3), ('ths_volume', 2)]:

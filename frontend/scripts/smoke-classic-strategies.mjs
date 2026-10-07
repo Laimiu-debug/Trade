@@ -1,5 +1,5 @@
 // Real loopback API + browser controls + workers, with an isolated temporary store.
-// Run after build:rebuild; never opens external sources or writes a user account.
+// Run after npm run build; never opens external sources or writes a user account.
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import { mkdtemp, writeFile } from 'node:fs/promises'

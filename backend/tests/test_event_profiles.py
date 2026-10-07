@@ -3,7 +3,7 @@ from types import MethodType, SimpleNamespace
 
 import pytest
 
-from app.store import InMemoryStore
+from legacy_oracle import RECORDING, oracle, plain
 from trade_app.platform.types import TradeError
 from trade_app.research.event_profiles import (
     DEFAULT_PROFILE_ID, event_profile_catalog, get_system_profile, normalize_profile, profile_sha256,
@@ -11,6 +11,8 @@ from trade_app.research.event_profiles import (
 
 
 STAMP = '2026-09-26T00:00:00+00:00'
+if RECORDING:
+    from app.store import InMemoryStore
 
 
 def _legacy():
@@ -28,11 +30,10 @@ def _legacy():
 
 def test_frozen_system_profiles_and_schemas_match_original_pure_definitions():
     catalog = event_profile_catalog()
-    old = _legacy()
-    assert catalog['default_profile_id'] == InMemoryStore._default_event_judgment_profile_id() == DEFAULT_PROFILE_ID
-    assert catalog['metric_options'] == old._event_judgment_metric_options
-    assert catalog['rule_options'] == old._event_judgment_rule_options
-    assert catalog['profiles'] == list(InMemoryStore._build_event_judgment_system_profiles(old).values())
+    assert catalog['default_profile_id'] == oracle('default_profile_id', lambda: InMemoryStore._default_event_judgment_profile_id()) == DEFAULT_PROFILE_ID
+    assert plain(catalog['metric_options']) == oracle('metric_options', lambda: _legacy()._event_judgment_metric_options)
+    assert plain(catalog['rule_options']) == oracle('rule_options', lambda: _legacy()._event_judgment_rule_options)
+    assert plain(catalog['profiles']) == oracle('system_profiles', lambda: list(InMemoryStore._build_event_judgment_system_profiles(_legacy()).values()))
     for profile in catalog['profiles']:
         normalized = normalize_profile(profile, profile_id=profile['profile_id'], updated_at=STAMP, is_system=True)
         assert normalized == profile
@@ -50,10 +51,10 @@ def test_custom_profile_normalization_matches_original_for_valid_inputs():
                 {'rule_key': 'lookback_core_days', 'value': 50}]
     actual = normalize_profile(raw, profile_id='custom_1', updated_at=STAMP,
                                fallback_rule_values=fallback)
-    expected = InMemoryStore._normalize_event_judgment_profile(
+    expected = oracle('custom_profile', lambda: InMemoryStore._normalize_event_judgment_profile(
         _legacy(), raw, is_system=False, fallback_profile_id='custom_1',
-        fallback_name='事件判别模板', fallback_updated_at=STAMP, fallback_rule_values=fallback)
-    assert actual == expected
+        fallback_name='事件判别模板', fallback_updated_at=STAMP, fallback_rule_values=fallback))
+    assert plain(actual) == expected
     assert len(actual['rule_values']) == 82
     assert actual['dimensions'][0]['dimension_id'] == 'dim_1'
 

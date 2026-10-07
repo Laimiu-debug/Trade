@@ -1,0 +1,492 @@
+[
+ {
+  "mainForce": 0,
+  "retailForce": 0,
+  "mainForceState": "flat",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 254.3275,
+  "retailForce": 0,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": true
+ },
+ {
+  "mainForce": 296.715417,
+  "retailForce": 62.704242,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 317.909375,
+  "retailForce": 177.761047,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 158.954687,
+  "retailForce": 336.700856,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 79.477344,
+  "retailForce": 469.889792,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 39.738672,
+  "retailForce": 582.00983,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 19.869336,
+  "retailForce": 676.891679,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 9.934668,
+  "retailForce": 757.669555,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 197.599001,
+  "retailForce": 756.859939,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 291.431167,
+  "retailForce": 759.344799,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 338.34725,
+  "retailForce": 764.525138,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 169.173625,
+  "retailForce": 841.95875,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 84.586813,
+  "retailForce": 908.460795,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 42.293406,
+  "retailForce": 966.018832,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 21.146703,
+  "retailForce": 1016.259045,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 10.573352,
+  "retailForce": 1060.511946,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 220.998342,
+  "retailForce": 1021.425531,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 326.210838,
+  "retailForce": 992.59301,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 378.817086,
+  "retailForce": 972.150039,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 189.408543,
+  "retailForce": 1037.01185,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 94.704271,
+  "retailForce": 1093.227877,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 47.352136,
+  "retailForce": 1142.370081,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 23.676068,
+  "retailForce": 1185.724612,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 11.838034,
+  "retailForce": 1224.343773,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 244.710684,
+  "retailForce": 1172.255209,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 361.147008,
+  "retailForce": 1132.784565,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 419.365171,
+  "retailForce": 1103.637674,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 209.682585,
+  "retailForce": 1169.770824,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 104.841293,
+  "retailForce": 1227.027038,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 52.420646,
+  "retailForce": 1277.020304,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 26.210323,
+  "retailForce": 1321.071158,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 13.105162,
+  "retailForce": 1360.260038,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 268.424247,
+  "retailForce": 1300.24488,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 396.08379,
+  "retailForce": 1254.288841,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 459.913562,
+  "retailForce": 1219.835718,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 229.956781,
+  "retailForce": 1290.020133,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 114.97839,
+  "retailForce": 1350.591018,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 57.489195,
+  "retailForce": 1403.296288,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 28.744598,
+  "retailForce": 1449.566053,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 14.372299,
+  "retailForce": 1490.570407,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 292.137816,
+  "retailForce": 1423.647909,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 431.020575,
+  "retailForce": 1372.04041,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 500.461954,
+  "retailForce": 1332.963366,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 250.230977,
+  "retailForce": 1407.7573,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 125.115489,
+  "retailForce": 1472.099609,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 62.557744,
+  "retailForce": 1527.890589,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 31.278872,
+  "retailForce": 1576.685027,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 15.639436,
+  "retailForce": 1619.755022,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 315.851385,
+  "retailForce": 1546.129867,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 465.957359,
+  "retailForce": 1489.038376,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 541.010346,
+  "retailForce": 1445.474429,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 270.505173,
+  "retailForce": 1524.989987,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 135.252587,
+  "retailForce": 1593.195444,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 67.626293,
+  "retailForce": 1652.147181,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 33.813147,
+  "retailForce": 1703.527694,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 16.906573,
+  "retailForce": 1748.713568,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 339.564953,
+  "retailForce": 1668.426858,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 500.894143,
+  "retailForce": 1605.885005,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 581.558738,
+  "retailForce": 1557.861671,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 290.779369,
+  "retailForce": 1642.121367,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 145.389685,
+  "retailForce": 1714.208391,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 72.694842,
+  "retailForce": 1776.335957,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 36.347421,
+  "retailForce": 1830.314874,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 18.173711,
+  "retailForce": 1877.626715,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 363.278522,
+  "retailForce": 1790.686706,
+  "mainForceState": "rising",
+  "purpleToYellow": true,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 535.830928,
+  "retailForce": 1722.701244,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 622.10713,
+  "retailForce": 1670.224048,
+  "mainForceState": "rising",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 311.053565,
+  "retailForce": 1759.232403,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ },
+ {
+  "mainForce": 155.526783,
+  "retailForce": 1835.204694,
+  "mainForceState": "falling",
+  "purpleToYellow": false,
+  "goldenCross": false
+ }
+]

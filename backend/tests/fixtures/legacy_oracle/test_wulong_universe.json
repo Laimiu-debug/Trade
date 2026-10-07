@@ -1,0 +1,286 @@
+{
+ "gate:has_blowoff_top": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:has_upper_shadow_risk": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:ma10_above_ma20_days": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:ma5_above_ma10_days": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:ret40": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:retrace20": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:up_down_volume_ratio": {
+  "boundary": true,
+  "changed": false
+ },
+ "gate:vol_slope20": {
+  "boundary": true,
+  "changed": false
+ },
+ "row:0601931ea80c2f2fc2970fc3": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.95,
+   "amount20": 0.0,
+   "amplitude20": 0.048,
+   "day_change": 0.0,
+   "day_change_pct": 0.0,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": true,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": true,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 10.0,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.0,
+   "pullback_days": 19,
+   "pullback_volume_ratio": 1.079,
+   "reject_reasons": [],
+   "ret40": 0.0,
+   "retrace20": 0.0917,
+   "score": 100,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "Unknown",
+   "trend_class": "Unknown",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 1030.6327,
+   "vol_slope20": -0.1305
+  }
+ },
+ "row:17e38a67697135ab2921c2c5": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.56,
+   "amount20": 0.0,
+   "amplitude20": 0.0347,
+   "day_change": 0.38,
+   "day_change_pct": 0.0312,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": false,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": false,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 12.65,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.096,
+   "pullback_days": 0,
+   "pullback_volume_ratio": 0.85,
+   "reject_reasons": [],
+   "ret40": 0.2171,
+   "retrace20": 0.0156,
+   "score": 62,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "Unknown",
+   "trend_class": "A",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 1.0116,
+   "vol_slope20": 0.1364
+  }
+ },
+ "row:937c756748bfa6c56ee4da5a": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.47,
+   "amount20": 0.0,
+   "amplitude20": 0.0305,
+   "day_change": 0.41,
+   "day_change_pct": 0.0302,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": false,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": false,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 13.97,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.0626,
+   "pullback_days": 0,
+   "pullback_volume_ratio": 0.85,
+   "reject_reasons": [],
+   "ret40": 0.2738,
+   "retrace20": 0.0141,
+   "score": 62,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "Unknown",
+   "trend_class": "A",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 0.0,
+   "vol_slope20": 0.0
+  }
+ },
+ "row:b7206f736b48be9e56dbc0c4": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.49,
+   "amount20": 0.0,
+   "amplitude20": 0.013,
+   "day_change": -0.26,
+   "day_change_pct": -0.0081,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": false,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": false,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 31.44,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.0216,
+   "pullback_days": 2,
+   "pullback_volume_ratio": 1.0046,
+   "reject_reasons": [],
+   "ret40": 0.1124,
+   "retrace20": 0.0162,
+   "score": 60,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "Unknown",
+   "trend_class": "Unknown",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 0.9991,
+   "vol_slope20": 0.0319
+  }
+ },
+ "row:bd364a3fe79e0ea1a46de1b0": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.95,
+   "amount20": 0.0,
+   "amplitude20": 0.04,
+   "day_change": 0.0,
+   "day_change_pct": 0.0,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": false,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": false,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 10.0,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.0,
+   "pullback_days": 19,
+   "pullback_volume_ratio": 0.952,
+   "reject_reasons": [],
+   "ret40": 0.0,
+   "retrace20": 0.0196,
+   "score": 100,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "发酵中",
+   "trend_class": "Unknown",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 1765.0,
+   "vol_slope20": 0.075
+  }
+ },
+ "row:ccb32a9caf948c7ac8d34e8e": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.51,
+   "amount20": 0.0,
+   "amplitude20": 0.0245,
+   "day_change": -0.07,
+   "day_change_pct": -0.0044,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": false,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": false,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 16.72,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.0212,
+   "pullback_days": 3,
+   "pullback_volume_ratio": 1.0069,
+   "reject_reasons": [],
+   "ret40": 0.1659,
+   "retrace20": 0.0415,
+   "score": 65,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "Unknown",
+   "trend_class": "A",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 0.983,
+   "vol_slope20": 0.075
+  }
+ },
+ "row:cecf0ce8da6d338940ea5b5e": {
+  "admitted": false,
+  "row": {
+   "ai_confidence": 0.53,
+   "amount20": 0.0,
+   "amplitude20": 0.0324,
+   "day_change": -0.27,
+   "day_change_pct": -0.0202,
+   "degraded": false,
+   "degraded_reason": null,
+   "has_blowoff_top": false,
+   "has_divergence_5d": false,
+   "has_upper_shadow_risk": false,
+   "labels": [
+    "K线上下文补全"
+   ],
+   "latest_price": 12.91,
+   "ma10_above_ma20_days": 19,
+   "ma5_above_ma10_days": 19,
+   "name": "固定对照样本",
+   "price_vs_ma20": 0.0432,
+   "pullback_days": 2,
+   "pullback_volume_ratio": 1.0157,
+   "reject_reasons": [],
+   "ret40": 0.2425,
+   "retrace20": 0.0463,
+   "score": 68,
+   "stage": "Early",
+   "symbol": "sh600000",
+   "theme_stage": "Unknown",
+   "trend_class": "A",
+   "turnover20": 0.0,
+   "up_down_volume_ratio": 0.9908,
+   "vol_slope20": 0.12
+  }
+ }
+}

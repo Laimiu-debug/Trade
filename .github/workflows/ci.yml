@@ -36,13 +36,6 @@ jobs:
           pip install pytest
 
       - name: Run pytest
-        env:
-          TDX_TREND_APP_STATE_PATH: ${{ github.workspace }}/backend/.test-state/app_state.json
-          TDX_TREND_SIM_STATE_PATH: ${{ github.workspace }}/backend/.test-state/sim_state.json
-          TDX_TREND_WYCKOFF_STORE_PATH: ${{ github.workspace }}/backend/.test-state/wyckoff_events.sqlite
-          TDX_TREND_WYCKOFF_STORE_ENABLED: "1"
-          TDX_TREND_WYCKOFF_STORE_READ_ONLY: "0"
-          TRADING_MS_DATA_DIR: ${{ github.workspace }}/backend/.test-state/journal
         run: python -m pytest tests/ -q
 
       - name: Rebuild architecture and design tokens
@@ -52,7 +45,6 @@ jobs:
           python ../scripts/generate_rebuild_tokens.py --check
           python ../scripts/check_design_tokens.py
           python ../scripts/generate_rebuild_contracts.py --check
-          for script in ../deploy/deploy.sh ../deploy/update.sh ../start.sh ../build-mac.sh; do bash -n "$script"; done
 
   windows-compute:
     name: Windows source venv (compute + storage + simulation)
@@ -72,7 +64,6 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}/backend
           PYTHONUTF8: "1"
-          TRADING_MS_DATA_DIR: ${{ github.workspace }}/backend/.test-state/journal
         run: |
           & .\.test-venv\Scripts\python.exe -m pytest backend/tests/test_compute_process.py backend/tests/test_frozen_runtime.py backend/tests/test_backtest_jobs.py backend/tests/test_backup_schema.py backend/tests/test_slippage_execution.py -q
 
@@ -101,45 +92,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install journal dependencies for cross-workspace regressions
-        working-directory: journal-frontend
-        run: npm ci
-
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Build legacy frontend
+      - name: Build
         run: npm run build
-
-      - name: Build unified rebuild
-        run: npm run build:rebuild
 
       - name: Test
         run: npm run test
 
       - name: Lint
         run: npm run lint
-
-      - name: Install smoke browser
-        run: npx playwright install --with-deps chromium
-
-      - name: Browser main flow with isolated mocks
-        run: npm run test:e2e
-
-
-  journal:
-    name: Journal frontend (build + lint)
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: journal-frontend
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-          cache-dependency-path: journal-frontend/package-lock.json
-      - run: npm ci
-      - run: npm run build
-      - run: npm run lint

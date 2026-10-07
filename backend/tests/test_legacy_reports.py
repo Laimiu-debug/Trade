@@ -1,4 +1,5 @@
 import base64
+from copy import deepcopy
 import io
 import json
 import stat
@@ -8,6 +9,7 @@ import zipfile
 import pytest
 from sqlalchemy import func, select
 
+from legacy_oracle import oracle
 from trade_app.platform.backup import create_backup, restore_to_new_directory
 from trade_app.platform.db import open_database
 from trade_app.platform.types import TradeError
@@ -15,8 +17,7 @@ from trade_app.research import legacy_report_domain as domain, legacy_report_ser
 from trade_app.research.legacy_report_models import LegacyResearchReport
 
 
-@pytest.fixture
-def original_package():
+def _build_original_package():
     # Build through the actual legacy exporter, rather than inventing an input format.
     from app.models import (BacktestRunRequest, BacktestResponse, ReviewStats, ReviewRange,
         EquityPoint, BacktestPlateauParams, BacktestPlateauPoint, BacktestPlateauResponse,
@@ -39,7 +40,20 @@ def original_package():
         run_request=request, run_result=result, report_html='<html><script>fetch("https://invalid.example")</script></html>',
         report_xlsx_base64=base64.b64encode(b'opaque-old-excel').decode(), plateau_result=plateau,
         plateau_point_details=[detail], report_id='legacy_report_test'))
-    return base64.b64decode(built.file_base64), request.model_dump(exclude_none=True), result.model_dump(exclude_none=True), plateau.model_dump(exclude_none=True)
+    return {'package_base64': built.file_base64, 'request': request.model_dump(exclude_none=True),
+            'result': result.model_dump(exclude_none=True), 'plateau': plateau.model_dump(exclude_none=True)}
+
+
+_PACKAGE = []
+
+
+@pytest.fixture
+def original_package():
+    """A real package written by the original exporter (recorded once at tag legacy-final)."""
+    if not _PACKAGE:
+        _PACKAGE.append(oracle('original_package', _build_original_package))
+    built = _PACKAGE[0]
+    return base64.b64decode(built['package_base64']), deepcopy(built['request']), deepcopy(built['result']), deepcopy(built['plateau'])
 
 
 def modify(contents, file_name, change):

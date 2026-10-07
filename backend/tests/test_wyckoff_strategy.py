@@ -3,9 +3,7 @@ from copy import deepcopy
 
 import pytest
 
-from app.core.strategy_plugins import ScoreOnlyRankPlugin, WyckoffTrendPlugin
-from app.models import ScreenerResult
-from app.store import store
+from legacy_oracle import oracle
 from trade_app.platform.types import TradeError
 from trade_app.research.wyckoff_strategy import (
     WYCKOFF_STRATEGY_IDS, evaluate_wyckoff_strategy, normalize_wyckoff_params, wyckoff_param_schema,
@@ -21,8 +19,8 @@ def snapshot(**overrides):
             'phase_hint': '测试信号', 'structure_hhh': 'HH|HL|HC', **overrides}
 
 
-def row():
-    return ScreenerResult(
+def row_fields():
+    return dict(
         symbol='sh600000', name='测试标的', latest_price=10, day_change=0.1, day_change_pct=0.01,
         score=80, ret40=0.25, turnover20=0.08, amount20=8e8, amplitude20=0.05, retrace20=0.03,
         pullback_days=3, ma10_above_ma20_days=8, ma5_above_ma10_days=6, price_vs_ma20=0.06,
@@ -33,13 +31,17 @@ def row():
     )
 
 
+def row():
+    """The candidate row as the original ScreenerResult model dumped it."""
+    def dump():
+        from app.models import ScreenerResult
+        return ScreenerResult(**row_fields()).model_dump()
+    return oracle('candidate_row', dump)
+
+
 @pytest.mark.parametrize('strategy_id', WYCKOFF_STRATEGY_IDS)
 def test_frozen_gates_match_original_store_scan_for_valid_snapshots(strategy_id, monkeypatch):
     candidate = row()
-    monkeypatch.setattr(store, '_resolve_signal_candidates', lambda **_: ([candidate], None, None, '2025-05-20'))
-    monkeypatch.setattr(store, '_compute_signal_age_days', lambda **_: (0, '2025-05-20'))
-    monkeypatch.setattr(store, '_save_signals_runtime_cache', lambda *_, **__: None)
-    monkeypatch.setattr(store, '_is_signals_disk_cache_enabled', lambda: False)
     variations = [
         {}, {'entry_quality_score': 59.99}, {'entry_quality_score': 60},
         {'health_score': 54.99}, {'health_score': 55}, {'event_score': 54.99}, {'event_score': 55},
@@ -52,25 +54,42 @@ def test_frozen_gates_match_original_store_scan_for_valid_snapshots(strategy_id,
         {'sequence_ok': False}, {'event_score': 0}, {'event_score': None},
         {'health_score': None},
     ]
-    for variation in variations:
-        source = snapshot(**variation)
+
+    def legacy_scan(source):
+        from app.core.strategy_plugins import ScoreOnlyRankPlugin, WyckoffTrendPlugin
+        from app.models import ScreenerResult
+        from app.store import store
+        legacy_row = ScreenerResult(**row_fields())
+        monkeypatch.setattr(store, '_resolve_signal_candidates', lambda **_: ([legacy_row], None, None, '2025-05-20'))
+        monkeypatch.setattr(store, '_compute_signal_age_days', lambda **_: (0, '2025-05-20'))
+        monkeypatch.setattr(store, '_save_signals_runtime_cache', lambda *_, **__: None)
+        monkeypatch.setattr(store, '_is_signals_disk_cache_enabled', lambda: False)
         monkeypatch.setattr(store, '_calc_wyckoff_snapshot', lambda *_, **__: deepcopy(source))
-        old = store.get_signals(mode='full_market', strategy_id=strategy_id,
-                                as_of_date='2025-05-20', refresh=True)
+        old = store.get_signals(mode='full_market', strategy_id=strategy_id, as_of_date='2025-05-20', refresh=True)
+        if not old.items:
+            return None
+        item = old.items[0]
+        plugin = ScoreOnlyRankPlugin() if strategy_id == 'score_only_rank_v1' else WyckoffTrendPlugin(strategy_id)
+        return {'entry_quality_score': item.entry_quality_score, 'health_score': item.health_score,
+                'event_score': item.event_score, 'event_count': item.wy_event_count,
+                'event_chain': item.wy_event_chain,
+                'local_score': plugin.rank_signals(signal=item, row=legacy_row, params={},
+                                                   fallback_score=item.health_score * 0.45 + item.event_score * 0.55)}
+
+    for index, variation in enumerate(variations):
+        source = snapshot(**variation)
+        old = oracle(f'{strategy_id}:{index}', lambda: legacy_scan(source))
         original = deepcopy(source)
-        new = evaluate_wyckoff_strategy(strategy_id, source, {}, candidate.model_dump())
+        new = evaluate_wyckoff_strategy(strategy_id, source, {}, candidate)
         assert source == original
-        assert new['signal'] == bool(old.items), (strategy_id, variation, new)
-        if old.items:
-            item = old.items[0]
-            assert new['entry_quality_score'] == item.entry_quality_score
-            assert new['health_score'] == item.health_score
-            assert new['event_score'] == item.event_score
-            assert new['event_count'] == item.wy_event_count
-            assert new['event_chain'] == item.wy_event_chain
-            plugin = ScoreOnlyRankPlugin() if strategy_id == 'score_only_rank_v1' else WyckoffTrendPlugin(strategy_id)
-            assert new['local_score'] == plugin.rank_signals(signal=item, row=candidate, params={},
-                fallback_score=item.health_score * 0.45 + item.event_score * 0.55)
+        assert new['signal'] == (old is not None), (strategy_id, variation, new)
+        if old is not None:
+            assert new['entry_quality_score'] == old['entry_quality_score']
+            assert new['health_score'] == old['health_score']
+            assert new['event_score'] == old['event_score']
+            assert new['event_count'] == old['event_count']
+            assert new['event_chain'] == old['event_chain']
+            assert new['local_score'] == old['local_score']
 
 
 def test_strategy_effective_defaults_are_scan_defaults_not_backtest_or_bare_plugin_defaults():

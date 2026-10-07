@@ -91,9 +91,7 @@ def test_private_signal_provider_receives_only_causal_prefix_and_rejects_future_
 
 
 def test_raw_s1_s9_match_original_matrix_clean_windows_and_stable_ties():
-    import numpy as np
-    from app.core.backtest_matrix_engine import MatrixBundle
-    from app.core.backtest_signal_matrix import compute_backtest_signal_matrix
+    from legacy_oracle import oracle
     prefixes = {}
     for stock in range(3):
         bars = flat_bars(110)
@@ -104,15 +102,24 @@ def test_raw_s1_s9_match_original_matrix_clean_windows_and_stable_ties():
         prefixes[f'sh60000{stock}'] = bars
     dates = [row['event_date'] for row in bars]
     symbols = sorted(prefixes)
-    columns = {key: np.array([[float(prefixes[symbol][i][key]) for symbol in symbols] for i in range(110)]) for key in ('open', 'close', 'high', 'low', 'volume')}
-    original = compute_backtest_signal_matrix(MatrixBundle(dates, symbols, **columns, valid_mask=np.ones((110, 3), dtype=bool)), top_n=1)
+
+    def legacy():
+        import numpy as np
+        from app.core.backtest_matrix_engine import MatrixBundle
+        from app.core.backtest_signal_matrix import compute_backtest_signal_matrix
+        columns = {key: np.array([[float(prefixes[symbol][i][key]) for symbol in symbols] for i in range(110)]) for key in ('open', 'close', 'high', 'low', 'volume')}
+        matrix = compute_backtest_signal_matrix(MatrixBundle(dates, symbols, **columns, valid_mask=np.ones((110, 3), dtype=bool)), top_n=1)
+        return {**{f's{i}': getattr(matrix, f's{i}').astype(bool).tolist() for i in range(1, 10)},
+                'score': matrix.score.tolist(), 'buy': matrix.buy_signal.astype(bool).tolist(),
+                'sell': matrix.sell_signal.astype(bool).tolist()}
+    original = oracle('raw_s1_s9_matrix', legacy)
     for at in range(1, 110):
         actual = matrix_signals({symbol: rows[:at+1] for symbol, rows in prefixes.items()}, dates[:at+1], 1)
         for col, symbol in enumerate(symbols):
             row = actual[symbol]
-            assert row['components'] == {f'S{i}': bool(getattr(original, f's{i}')[at, col]) for i in range(1, 10)}
-            assert row['score'] == pytest.approx(original.score[at, col])
-            assert row['buy'] == original.buy_signal[at, col] and row['sell'] == original.sell_signal[at, col]
+            assert row['components'] == {f'S{i}': original[f's{i}'][at][col] for i in range(1, 10)}
+            assert row['score'] == pytest.approx(original['score'][at][col])
+            assert row['buy'] == original['buy'][at][col] and row['sell'] == original['sell'][at][col]
     tied = {'sh600002': bars, 'sh600000': bars, 'sh600001': bars}
     assert [symbol for symbol, row in matrix_signals(tied, dates, 1).items() if row['components']['S3']] == ['sh600000']
 

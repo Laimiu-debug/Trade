@@ -25,7 +25,7 @@ def main():
     if not (ROOT / 'frontend/public/data/stock-database.slim.json').is_file():
         parser.error('Missing checked-in offline stock library: frontend/public/data/stock-database.slim.json')
     if not args.skip_frontend:
-        subprocess.run(['npm.cmd' if sys.platform == 'win32' else 'npm', 'run', 'build:rebuild'], cwd=ROOT / 'frontend', check=True)
+        subprocess.run(['npm.cmd' if sys.platform == 'win32' else 'npm', 'run', 'build'], cwd=ROOT / 'frontend', check=True)
     if not (ROOT / 'frontend/dist-rebuild/rebuild.html').is_file():
         parser.error('Missing rebuilt frontend')
     if not (ROOT / 'frontend/dist-rebuild/data/stock-database.slim.json').is_file():

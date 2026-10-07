@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from app.core.strategy_plugins import MatrixSignalPlugin
+from legacy_oracle import oracle
 from trade_app.platform.types import TradeError
 from trade_app.research.matrix_domain import (
     MATRIX_PARAM_KEYS, evaluate_matrix_pool, matrix_param_schema, normalize_matrix_params,
@@ -40,28 +40,34 @@ def test_matrix_pool_and_ranks_match_legacy_plugin_for_frozen_pool(params):
         ma10_above_ma20_days=rng.randrange(0, 41),
     ) for index in range(120)]
     original = deepcopy(inputs)
-    legacy = MatrixSignalPlugin()
-    legacy_rows = [SimpleNamespace(**row) for row in inputs]
     normalized = normalize_matrix_params(params)
-    admitted = legacy.build_universe(candidates=legacy_rows, params=normalized, mode='strict')
-    admitted_ids = {row.dataset_id for row in admitted}
+
+    def legacy_pool():
+        from app.core.strategy_plugins import MatrixSignalPlugin
+        legacy = MatrixSignalPlugin()
+        rows = [SimpleNamespace(**row) for row in inputs]
+        admitted = {row.dataset_id for row in legacy.build_universe(candidates=rows, params=normalized, mode='strict')}
+        return {'admitted': sorted(admitted), 'rows': [
+            {'signal': bool(row.dataset_id in admitted and legacy.generate_signals(row=row, snapshot={}, params=normalized)),
+             'score': legacy.rank_signals(signal=None, row=row, params=normalized, fallback_score=37)} for row in rows]}
+    legacy = oracle(f'pool:{sorted(params.items())}', legacy_pool)
+    admitted_ids = set(legacy['admitted'])
     result = evaluate_matrix_pool(inputs, params)
     assert inputs == original
     expected_ranking = []
-    for result_row, old in zip(result['rows'], legacy_rows):
-        expected_signal = old.dataset_id in admitted_ids and legacy.generate_signals(row=old, snapshot={}, params=normalized)
-        expected_score = legacy.rank_signals(signal=None, row=old, params=normalized, fallback_score=37)
-        assert result_row['in_pool'] == (old.dataset_id in admitted_ids)
+    for result_row, row, old in zip(result['rows'], inputs, legacy['rows']):
+        expected_signal, expected_score = old['signal'], old['score']
+        assert result_row['in_pool'] == (row['dataset_id'] in admitted_ids)
         assert result_row['signal'] == expected_signal
         assert result_row['score'] == expected_score
         if expected_signal:
-            expected_ranking.append((old.dataset_id, expected_score))
+            expected_ranking.append((row['dataset_id'], expected_score))
         else:
             assert result_row['rank'] is None
             assert result_row['reasons']
     expected_ranking.sort(key=lambda row: row[1], reverse=True)
     assert result['ranking'] == [row[0] for row in expected_ranking]
-    assert result['summary'] == {'input_count': 120, 'pool_count': len(admitted), 'signal_count': len(expected_ranking)}
+    assert result['summary'] == {'input_count': 120, 'pool_count': len(admitted_ids), 'signal_count': len(expected_ranking)}
 
 
 def test_matrix_explains_distinct_pool_s3_and_ranking_s3_and_stable_ties():

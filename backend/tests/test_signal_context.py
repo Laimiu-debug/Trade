@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from app.core.strategy_plugins import RelativeStrengthBreakoutPlugin, MatrixSignalPlugin, B1MultiTimeframePlugin
+from legacy_oracle import oracle, plain
 from trade_app.platform.types import TradeError
 from trade_app.platform.db import open_database
 from trade_app.research.signal_context import (candidate, context_catalog, normalize_context,
@@ -46,17 +46,24 @@ def test_all_context_catalog_parameters_are_used_and_strict():
     with pytest.raises(TradeError): normalize_context({'window_days':True})
 
 
-@pytest.mark.parametrize('strategy,plugin',[
-    ('relative_strength_breakout_v1',RelativeStrengthBreakoutPlugin()),
-    ('matrix_signal_v1',MatrixSignalPlugin()),('b1_mtf_v1',B1MultiTimeframePlugin())])
+def _legacy_rank(key, strategy, signal, metrics, params, fallback_score):
+    def compute():
+        from app.core.strategy_plugins import RelativeStrengthBreakoutPlugin, MatrixSignalPlugin, B1MultiTimeframePlugin
+        plugin = {'relative_strength_breakout_v1': RelativeStrengthBreakoutPlugin, 'matrix_signal_v1': MatrixSignalPlugin,
+                  'b1_mtf_v1': B1MultiTimeframePlugin}[strategy]()
+        return plugin.rank_signals(signal=signal, row=SimpleNamespace(**metrics), params=params, fallback_score=fallback_score)
+    return oracle(key, compute)
+
+
+@pytest.mark.parametrize('strategy',['relative_strength_breakout_v1','matrix_signal_v1','b1_mtf_v1'])
 @pytest.mark.parametrize('weights', [{},{'rank_weight_health':0,'rank_weight_event':1,'rank_weight_strength':0,'rank_weight_volume':0,'rank_weight_structure':0}])
-def test_added_rank_formulas_match_original_plugins(strategy,plugin,weights):
+def test_added_rank_formulas_match_original_plugins(strategy,weights):
     metrics = {'ret40':.13,'retrace20':.08,'up_down_volume_ratio':1.36,'vol_slope20':.05,
         'pullback_volume_ratio':.7,'price_vs_ma20':.03,'pullback_days':2,'ma10_above_ma20_days':12}
     params = normalize_context_params(strategy,weights if strategy=='relative_strength_breakout_v1' else {})
     signal = SimpleNamespace(entry_quality_score=72,health_score=61,event_score=83)
     actual = rank_score(strategy,{'indicator':vars(signal)},metrics,params=params)
-    expected = plugin.rank_signals(signal=signal,row=SimpleNamespace(**metrics),params=params,fallback_score=50)
+    expected = _legacy_rank(f'rank:{strategy}:{bool(weights)}',strategy,signal,metrics,params,50)
     assert actual['rank_score']==pytest.approx(expected)
 
 
@@ -98,25 +105,26 @@ def test_full_store_candidate_matches_original_candidate(count):
     from test_wulong_universe import _bars as original_bars
     bars=original_bars(count)
     actual=candidate(bars,{'id':'a'*64,'symbol':'sh600000'},STORE,bars[-1]['event_date'])
-    old=_legacy_row(bars)
+    old=_legacy_row(bars)['row']
     for key,value in actual.items():
-        if hasattr(old,key): assert value==getattr(old,key),key
+        if key in old: assert plain(value)==old[key],key
 
 
 def test_context_formatters_exact_original_pure_method_results(context_scenario):
-    from app.store import InMemoryStore
     from trade_app.research.signal_context_formatters import SignalContextBuilder
     factory,path,first,_second,bars=context_scenario
     with factory() as session: profile=freeze_profile(session)
     metrics=candidate(bars,{'id':first,'symbol':'sh600000'},STORE,bars[-1]['event_date'])
-    # __new__ does not initialize the old data store or touch user files.
-    old=InMemoryStore.__new__(InMemoryStore)
     for row in context_catalog():
         if row['id']=='matrix_signal_v1': continue
         params=normalize_context_params(row['id'],{})
         result=evaluate_context(row['id'],symbol='sh600000',bars=bars,params=params,profile=profile,context=STORE,frozen_candidate=metrics)
         snapshot=result['indicator']
-        assert SignalContextBuilder()._build_strategy_signal_context(row['id'],snapshot,params)==old._build_strategy_signal_context(row['id'],snapshot,params)
+        def legacy():
+            from app.store import InMemoryStore
+            # __new__ does not initialize the old data store or touch user files.
+            return InMemoryStore.__new__(InMemoryStore)._build_strategy_signal_context(row['id'],snapshot,params)
+        assert plain(SignalContextBuilder()._build_strategy_signal_context(row['id'],snapshot,params))==oracle(f"formatter:{row['id']}",legacy)
 
 
 def test_insufficient_tdx_history_never_falls_back_to_store_ranking(context_scenario,monkeypatch):
@@ -198,22 +206,28 @@ def test_full_market_skips_only_candidate_filter_not_generate_predicates(context
 
 
 def test_tdx_original_candidate_values_and_wulong_filter_difference():
-    from app.tdx_loader import _build_row
-    from app.core.strategy_plugins import WulongClusterPlugin
     from test_wulong_universe import _bars as original_bars
     bars=original_bars(270,flat=True)
     for bar in bars: bar['available_at']=bar['event_date']+'T08:00:00+00:00';bar['amount']='1000000'
     actual=candidate(bars,{'id':'a'*64,'symbol':'sh600000'},TDX,bars[-1]['event_date'])
     series={'symbol':'sh600000','total_bars':len(bars),'dates':[bar['event_date'] for bar in bars],
         **{key:[float(bar[key]) for bar in bars] for key in ('open','high','low','close','volume','amount')}}
-    old=_build_row(series,return_window_days=40,float_shares=None,as_of_date=bars[-1]['event_date'])
-    for key in ('ret40','amplitude20','retrace20','pullback_days','ma10_above_ma20_days','ma5_above_ma10_days','price_vs_ma20','vol_slope20','up_down_volume_ratio','pullback_volume_ratio','has_blowoff_top','has_upper_shadow_risk','ai_confidence'):
-        assert actual[key]==getattr(old,key),key
+    keys=('ret40','amplitude20','retrace20','pullback_days','ma10_above_ma20_days','ma5_above_ma10_days','price_vs_ma20','vol_slope20','up_down_volume_ratio','pullback_volume_ratio','has_blowoff_top','has_upper_shadow_risk','ai_confidence')
     store=candidate(bars,{'id':'a'*64,'symbol':'sh600000'},STORE,bars[-1]['event_date'])
     params=normalize_context_params('wulong_cluster_v1',{'min_ret40':0})
-    plugin=WulongClusterPlugin()
-    assert plugin.build_universe(candidates=[SimpleNamespace(**store)],params=params,mode='signals')
-    assert not plugin.build_universe(candidates=[SimpleNamespace(**actual)],params=params,mode='signals')
+    def legacy():
+        from app.tdx_loader import _build_row
+        from app.core.strategy_plugins import WulongClusterPlugin
+        old=_build_row(series,return_window_days=40,float_shares=None,as_of_date=bars[-1]['event_date'])
+        plugin=WulongClusterPlugin()
+        return {'row':{key:getattr(old,key) for key in keys},
+                'store_admitted':bool(plugin.build_universe(candidates=[SimpleNamespace(**store)],params=params,mode='signals')),
+                'tdx_admitted':bool(plugin.build_universe(candidates=[SimpleNamespace(**actual)],params=params,mode='signals'))}
+    old=oracle('tdx_candidate',legacy)
+    for key in keys:
+        assert plain(actual[key])==old['row'][key],key
+    assert old['store_admitted']
+    assert not old['tdx_admitted']
 
 
 def test_b1_complete_context_positive_and_explicit_params_are_not_ignored(tmp_path):
@@ -237,7 +251,7 @@ def test_b1_complete_context_positive_and_explicit_params_are_not_ignored(tmp_pa
         result=calculate({})
         assert result['signal'] and result['draft_eligible']
         assert result['indicator']['events']==['B1多周期']
-        expected=B1MultiTimeframePlugin().rank_signals(signal=SimpleNamespace(entry_quality_score=result['indicator']['entry_quality_score']),row=SimpleNamespace(**metrics),params={},fallback_score=0)
+        expected=_legacy_rank('b1_complete_context','b1_mtf_v1',SimpleNamespace(entry_quality_score=result['indicator']['entry_quality_score']),metrics,{},0)
         assert result['ranking']['rank_score']==pytest.approx(expected)
         rejected=calculate({'vol_ratio':'.1'})
         assert not rejected['signal'] and not rejected['draft_eligible']

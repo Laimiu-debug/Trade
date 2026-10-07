@@ -57,7 +57,7 @@ python scripts/run_trade_rebuild.py
 4. 保存报告后查看排名、成交、资金曲线和高级诊断。报告导出使用已保存输入，未保存的表单改动不会改写历史。
 5. 将合格研究证据明确转为模拟委托草稿，选择模拟账户并核对数量/现金/费用后提交。模拟成交与实盘账本独立。
 
-固定样本不能代表已核验的历史全市场；未知数据不会补零。日线回测也不能证明分钟内的成交顺序。算法调整和旧版本差异见 [策略口径](STRATEGY_PORTING_NOTES.md)、[组合执行](PORTFOLIO_EXECUTION.md)。
+固定样本不能代表已核验的历史全市场；未知数据不会补零。日线回测也不能证明分钟内的成交顺序。算法调整和旧版本差异见 [策略口径](archive/STRATEGY_PORTING_NOTES.md)、[组合执行](PORTFOLIO_EXECUTION.md)。
 
 ## 3. 数据、设置与导出
 
@@ -250,8 +250,8 @@ npm run preview
 ## 获取帮助
 
 如果仍有问题:
-1. 查看 [ARCHITECTURE.md](./ARCHITECTURE.md) 了解架构
-2. 查看 [VERIFICATION.md](./VERIFICATION.md) 了解验证步骤
+1. 查看 [ARCHITECTURE.md](archive/ARCHITECTURE.md) 了解架构
+2. 查看 [VERIFICATION.md](archive/VERIFICATION.md) 了解验证步骤
 3. 检查浏览器控制台 (F12) 查看错误信息
 4. 检查后端终端日志查看API错误
 

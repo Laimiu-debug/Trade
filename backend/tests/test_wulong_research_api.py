@@ -8,12 +8,7 @@ from uuid import uuid4
 from fastapi.testclient import TestClient
 import pytest
 
-from app.core.strategy_plugins import (
-    WulongClusterPlugin,
-    calculate_wulong_cluster_signal as legacy_indicator,
-    evaluate_wulong_cluster_signal as legacy_evaluate,
-)
-from app.models import CandlePoint
+from legacy_oracle import oracle, plain
 from trade_app.main import create_app
 from trade_app.research.models import ResearchRun
 
@@ -73,19 +68,27 @@ def scenario(tmp_path):
 def _assert_real_shape_parity(client, bars, run):
     descriptor = next(row for row in _data(client.get('/api/v1/research/strategies'))
                       if row['id'] == 'wulong_cluster_v1')
-    points = [CandlePoint(time=bar['event_date'], open=float(bar['open']), high=float(bar['high']),
-                         low=float(bar['low']), close=float(bar['close']), volume=bar['volume'], amount=0)
-              for bar in bars]
-    expected = legacy_indicator(points)
-    expected_evaluation = legacy_evaluate(expected, descriptor['default_params'])
-    assert expected_evaluation['signal'] is True
-    assert run['result']['indicator'] == expected
-    assert run['result']['evaluation'] == expected_evaluation
+
+    def legacy():
+        from app.core.strategy_plugins import (
+            WulongClusterPlugin, calculate_wulong_cluster_signal, evaluate_wulong_cluster_signal,
+        )
+        from app.models import CandlePoint
+        points = [CandlePoint(time=bar['event_date'], open=float(bar['open']), high=float(bar['high']),
+                             low=float(bar['low']), close=float(bar['close']), volume=bar['volume'], amount=0)
+                  for bar in bars]
+        indicator = calculate_wulong_cluster_signal(points)
+        pool = WulongClusterPlugin().build_universe(
+            candidates=[SimpleNamespace(**run['result']['universe']['metrics'])], params=run['params'], mode='strict')
+        return {'indicator': indicator, 'evaluation': evaluate_wulong_cluster_signal(indicator, descriptor['default_params']),
+                'pool': bool(pool)}
+    case = json.dumps([run['result']['universe']['metrics'], run['params']], sort_keys=True)
+    expected = oracle(f'real_shape:{case}', legacy)
+    assert expected['evaluation']['signal'] is True
+    assert plain(run['result']['indicator']) == expected['indicator']
+    assert plain(run['result']['evaluation']) == expected['evaluation']
     assert run['result']['shape_signal'] is True
-    legacy_pool = WulongClusterPlugin().build_universe(
-        candidates=[SimpleNamespace(**run['result']['universe']['metrics'])],
-        params=run['params'], mode='strict')
-    assert bool(legacy_pool) is run['result']['universe']['passed']
+    assert expected['pool'] is run['result']['universe']['passed']
 
 
 def test_real_wulong_shape_and_candidate_create_draft_with_default_params(scenario):

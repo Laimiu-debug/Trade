@@ -1,6 +1,8 @@
 from copy import deepcopy
 from types import SimpleNamespace
 
+import json
+
 import pytest
 
 from trade_app.platform.types import TradeError
@@ -31,21 +33,28 @@ def snapshot(**values):
     ({'event_dates': {'UTAD': DAY}, 'risk_events': ['UTAD']}, {}),
     ({'health_score': None, 'event_score': None, 'event_grade': 'unknown'}, {})])
 def test_legacy_snapshot_policy_matches_original_backtest_predicates(patch, params):
-    from app.core.backtest_engine import BacktestEngine
-    from app.models import BacktestRunRequest
+    from legacy_oracle import oracle
+    case = json.dumps([patch, params], sort_keys=True)
     params = normalize_event_params({**params, 'confirmation_policy': 'legacy_snapshot'})
     snap = snapshot(**patch)
     result = evaluate_event_snapshot(snap, params, source_date=DAY)
-    payload = BacktestRunRequest(date_from=DAY, date_to=DAY,
-        **{key: value for key, value in params.items() if key != 'confirmation_policy'})
-    dates = BacktestEngine._normalize_event_dates(snap.get('event_dates'))
-    entries = [event for event in payload.entry_events if dates.get(event) == DAY]
-    exits = [event for event in payload.exit_events if dates.get(event) == DAY]
-    expected = bool(entries) and BacktestEngine._normalize_event_count(snap) >= payload.min_event_count
-    expected &= not payload.require_sequence or bool(snap.get('sequence_ok'))
-    expected &= snap['entry_quality_score'] >= payload.min_score
-    expected &= BacktestEngine._passes_semantic_score_gates(payload=payload, health_score=result['health_score'],
-        event_score=result['event_score'], event_grade=result['event_grade'], confirmation_status=snap.get('confirmation_status'))
+
+    def legacy():
+        from app.core.backtest_engine import BacktestEngine
+        from app.models import BacktestRunRequest
+        payload = BacktestRunRequest(date_from=DAY, date_to=DAY,
+            **{key: value for key, value in params.items() if key != 'confirmation_policy'})
+        dates = BacktestEngine._normalize_event_dates(snap.get('event_dates'))
+        entries = [event for event in payload.entry_events if dates.get(event) == DAY]
+        exits = [event for event in payload.exit_events if dates.get(event) == DAY]
+        expected = bool(entries) and BacktestEngine._normalize_event_count(snap) >= payload.min_event_count
+        expected &= not payload.require_sequence or bool(snap.get('sequence_ok'))
+        expected &= snap['entry_quality_score'] >= payload.min_score
+        expected &= BacktestEngine._passes_semantic_score_gates(payload=payload, health_score=result['health_score'],
+            event_score=result['event_score'], event_grade=result['event_grade'], confirmation_status=snap.get('confirmation_status'))
+        return {'expected': bool(expected), 'exits': bool(exits)}
+    legacy_result = oracle('snapshot_policy:' + case, legacy)
+    expected, exits = legacy_result['expected'], legacy_result['exits']
     assert result['buy'] == bool(expected and not exits)
     assert result['sell'] == bool(exits)
     assert result['score'] == (snap['entry_quality_score'] if expected else 0)
@@ -113,23 +122,30 @@ def test_real_snapshot_uses_frozen_prefix_and_profile_without_future_confirmatio
 
 
 def test_actual_legacy_aligned_matrix_builder_matches_legacy_policy():
-    import numpy as np
-    from app.store import InMemoryStore
-    from app.core.backtest_engine import BacktestEngine
-    from app.core.backtest_matrix_engine import MatrixBundle
-    from app.models import BacktestRunRequest
+    from legacy_oracle import oracle
     snap = snapshot()
-    store = SimpleNamespace(_build_backtest_engine=lambda: BacktestEngine,
-        _build_row_from_candles=lambda *_: object(), _calc_wyckoff_snapshot=lambda *_, **kw: snap)
-    values = np.ones((1, 1))
-    bundle = MatrixBundle(dates=[DAY], symbols=['sh600000'], open=values, high=values, low=values,
-                          close=values, volume=values, valid_mask=np.ones((1, 1), dtype=bool))
-    payload = BacktestRunRequest(date_from=DAY, date_to=DAY, require_key_event_confirmation=True)
-    original = InMemoryStore._build_aligned_backtest_signal_matrix(store, bundle=bundle, payload=payload)
+
+    def legacy():
+        import numpy as np
+        from app.store import InMemoryStore
+        from app.core.backtest_engine import BacktestEngine
+        from app.core.backtest_matrix_engine import MatrixBundle
+        from app.models import BacktestRunRequest
+        store = SimpleNamespace(_build_backtest_engine=lambda: BacktestEngine,
+            _build_row_from_candles=lambda *_: object(), _calc_wyckoff_snapshot=lambda *_, **kw: snap)
+        values = np.ones((1, 1))
+        bundle = MatrixBundle(dates=[DAY], symbols=['sh600000'], open=values, high=values, low=values,
+                              close=values, volume=values, valid_mask=np.ones((1, 1), dtype=bool))
+        payload = BacktestRunRequest(date_from=DAY, date_to=DAY, require_key_event_confirmation=True)
+        matrix = InMemoryStore._build_aligned_backtest_signal_matrix(store, bundle=bundle, payload=payload)
+        return {'buy': bool(matrix.buy_signal[0, 0]), 'sell': bool(matrix.sell_signal[0, 0]),
+                'in_pool': bool(matrix.in_pool[0, 0]), 'score': float(matrix.score[0, 0]),
+                'components': {f'S{i}': bool(getattr(matrix, f's{i}')[0, 0]) for i in range(1, 10)}}
+    original = oracle('aligned_matrix_builder', legacy)
     actual = evaluate_event_snapshot(snap, {'require_key_event_confirmation': True, 'confirmation_policy': 'legacy_snapshot'}, source_date=DAY)
-    assert actual['buy'] == original.buy_signal[0, 0] and actual['sell'] == original.sell_signal[0, 0]
-    assert actual['in_pool'] == original.in_pool[0, 0] and actual['score'] == original.score[0, 0]
-    assert actual['components'] == {f'S{i}': bool(getattr(original, f's{i}')[0, 0]) for i in range(1, 10)}
+    assert actual['buy'] == original['buy'] and actual['sell'] == original['sell']
+    assert actual['in_pool'] == original['in_pool'] and actual['score'] == original['score']
+    assert actual['components'] == original['components']
 
 
 def test_aligned_actual_job_freezes_profile_events_and_has_entry_exit_evidence(tmp_path):

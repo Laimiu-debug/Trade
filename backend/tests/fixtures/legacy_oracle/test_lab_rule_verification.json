@@ -1,0 +1,3594 @@
+{
+ "daily_prefixes": {
+  "2025-03-22": {
+   "indicator": {
+    "amplitude_cv": 0.0229,
+    "autocorr": 0.0404,
+    "autocorr_score": 4.04,
+    "available": true,
+    "cycle_count": 9,
+    "cycle_cv": 0.0442,
+    "cycle_mean_days": 7.11,
+    "deep_trough_streak": 0,
+    "event_score": 45.18,
+    "has_data": true,
+    "health_score": 62.79,
+    "main_force": 10.46664,
+    "main_force_power_score": 45.18,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.716562,
+    "prev_main_force": 10.473281,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.3375,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 62.79,
+    "signal_score": 46.15,
+    "trigger_date": "2025-03-22",
+    "trough_percentile": 0.2125,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0466
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.46664,
+    "main_force_explosion_ratio": 0.9879,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.716562,
+    "prev_main_force": 10.473281,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-03-22"
+   }
+  },
+  "2025-03-23": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.0893,
+    "autocorr_score": 8.93,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 66.41,
+    "has_data": true,
+    "health_score": 64.67,
+    "main_force": 10.57832,
+    "main_force_power_score": 66.41,
+    "main_force_state": "rising",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.473281,
+    "prev_main_force": 10.46664,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.2125,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 64.67,
+    "signal_score": 51.15,
+    "trigger_date": "2025-03-23",
+    "trough_percentile": 0.4625,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0462
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.57832,
+    "main_force_explosion_ratio": 1.0103,
+    "main_force_power_score": 0.43,
+    "main_force_state": "rising",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.473281,
+    "prev_main_force": 10.46664,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": true,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 66.21,
+    "trigger_date": "2025-03-23"
+   }
+  },
+  "2025-03-24": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.2068,
+    "autocorr_score": 20.68,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 50.58,
+    "has_data": true,
+    "health_score": 68.78,
+    "main_force": 10.74916,
+    "main_force_power_score": 50.58,
+    "main_force_state": "rising",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.46664,
+    "prev_main_force": 10.57832,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.4625,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 68.78,
+    "signal_score": 49.63,
+    "trigger_date": "2025-03-24",
+    "trough_percentile": 0.75,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0458
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.74916,
+    "main_force_explosion_ratio": 1.0215,
+    "main_force_power_score": 0.65,
+    "main_force_state": "rising",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.46664,
+    "prev_main_force": 10.57832,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 50.31,
+    "trigger_date": "2025-03-24"
+   }
+  },
+  "2025-03-25": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.4493,
+    "autocorr_score": 44.93,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 36.83,
+    "has_data": true,
+    "health_score": 77.27,
+    "main_force": 10.94958,
+    "main_force_power_score": 36.83,
+    "main_force_state": "rising",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.57832,
+    "prev_main_force": 10.74916,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.75,
+    "recent_flip_bars_ago": 2,
+    "recent_flip_trough_percentile": 0.4625,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 77.27,
+    "signal_score": 50.27,
+    "trigger_date": "2025-03-25",
+    "trough_percentile": 1.0,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0457
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.94958,
+    "main_force_explosion_ratio": 1.0268,
+    "main_force_power_score": 0.75,
+    "main_force_state": "rising",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.57832,
+    "prev_main_force": 10.74916,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 50.36,
+    "trigger_date": "2025-03-25"
+   }
+  },
+  "2025-03-26": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.7502,
+    "autocorr_score": 75.02,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 9.38,
+    "has_data": true,
+    "health_score": 87.8,
+    "main_force": 10.896457,
+    "main_force_power_score": 9.38,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": true,
+    "prev2_main_force": 10.74916,
+    "prev_main_force": 10.94958,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 1.0,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 87.8,
+    "signal_score": 49.0,
+    "trigger_date": "2025-03-26",
+    "trough_percentile": 0.8625,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0456
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.896457,
+    "main_force_explosion_ratio": 1.0043,
+    "main_force_power_score": 0.06,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.74916,
+    "prev_main_force": 10.94958,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.03,
+    "trigger_date": "2025-03-26"
+   }
+  },
+  "2025-03-27": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.8901,
+    "autocorr_score": 89.01,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 25.2,
+    "has_data": true,
+    "health_score": 92.7,
+    "main_force": 10.716562,
+    "main_force_power_score": 25.2,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.94958,
+    "prev_main_force": 10.896457,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.8625,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 92.7,
+    "signal_score": 54.12,
+    "trigger_date": "2025-03-27",
+    "trough_percentile": 0.575,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0455
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.716562,
+    "main_force_explosion_ratio": 0.9811,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.94958,
+    "prev_main_force": 10.896457,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-03-27"
+   }
+  },
+  "2025-03-28": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.9055,
+    "autocorr_score": 90.55,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 41.01,
+    "has_data": true,
+    "health_score": 93.23,
+    "main_force": 10.473281,
+    "main_force_power_score": 41.01,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.896457,
+    "prev_main_force": 10.716562,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.575,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 93.23,
+    "signal_score": 57.49,
+    "trigger_date": "2025-03-28",
+    "trough_percentile": 0.2875,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0455
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.473281,
+    "main_force_explosion_ratio": 0.9692,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.896457,
+    "prev_main_force": 10.716562,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-03-28"
+   }
+  },
+  "2025-03-29": {
+   "indicator": {
+    "amplitude_cv": 0.0218,
+    "autocorr": 0.9051,
+    "autocorr_score": 90.51,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0423,
+    "cycle_mean_days": 7.1,
+    "deep_trough_streak": 0,
+    "event_score": 47.88,
+    "has_data": true,
+    "health_score": 93.22,
+    "main_force": 10.46664,
+    "main_force_power_score": 47.88,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.716562,
+    "prev_main_force": 10.473281,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.2875,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 93.22,
+    "signal_score": 58.86,
+    "trigger_date": "2025-03-29",
+    "trough_percentile": 0.1625,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0455
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.46664,
+    "main_force_explosion_ratio": 0.9879,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.716562,
+    "prev_main_force": 10.473281,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-03-29"
+   }
+  },
+  "2025-03-30": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.9073,
+    "autocorr_score": 90.73,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 67.06,
+    "has_data": true,
+    "health_score": 96.75,
+    "main_force": 10.57832,
+    "main_force_power_score": 67.06,
+    "main_force_state": "rising",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.473281,
+    "prev_main_force": 10.46664,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.1625,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.75,
+    "signal_score": 64.11,
+    "trigger_date": "2025-03-30",
+    "trough_percentile": 0.45,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.57832,
+    "main_force_explosion_ratio": 1.0103,
+    "main_force_power_score": 0.43,
+    "main_force_state": "rising",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.473281,
+    "prev_main_force": 10.46664,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": true,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 66.21,
+    "trigger_date": "2025-03-30"
+   }
+  },
+  "2025-03-31": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.9096,
+    "autocorr_score": 90.96,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 51.93,
+    "has_data": true,
+    "health_score": 96.83,
+    "main_force": 10.74916,
+    "main_force_power_score": 51.93,
+    "main_force_state": "rising",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.46664,
+    "prev_main_force": 10.57832,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.45,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.83,
+    "signal_score": 61.12,
+    "trigger_date": "2025-03-31",
+    "trough_percentile": 0.725,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.74916,
+    "main_force_explosion_ratio": 1.0215,
+    "main_force_power_score": 0.65,
+    "main_force_state": "rising",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.46664,
+    "prev_main_force": 10.57832,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 50.31,
+    "trigger_date": "2025-03-31"
+   }
+  },
+  "2025-04-01": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.912,
+    "autocorr_score": 91.2,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 36.81,
+    "has_data": true,
+    "health_score": 96.92,
+    "main_force": 10.94958,
+    "main_force_power_score": 36.81,
+    "main_force_state": "rising",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.57832,
+    "prev_main_force": 10.74916,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.725,
+    "recent_flip_bars_ago": 2,
+    "recent_flip_trough_percentile": 0.45,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.92,
+    "signal_score": 58.13,
+    "trigger_date": "2025-04-01",
+    "trough_percentile": 1.0,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.94958,
+    "main_force_explosion_ratio": 1.0268,
+    "main_force_power_score": 0.75,
+    "main_force_state": "rising",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.57832,
+    "prev_main_force": 10.74916,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 50.36,
+    "trigger_date": "2025-04-01"
+   }
+  },
+  "2025-04-02": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.9132,
+    "autocorr_score": 91.32,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 10.06,
+    "has_data": true,
+    "health_score": 96.96,
+    "main_force": 10.896457,
+    "main_force_power_score": 10.06,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": true,
+    "prev2_main_force": 10.74916,
+    "prev_main_force": 10.94958,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 1.0,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.96,
+    "signal_score": 52.8,
+    "trigger_date": "2025-04-02",
+    "trough_percentile": 0.85,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.896457,
+    "main_force_explosion_ratio": 1.0043,
+    "main_force_power_score": 0.06,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.74916,
+    "prev_main_force": 10.94958,
+    "prev_main_force_state": "rising",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.03,
+    "trigger_date": "2025-04-02"
+   }
+  },
+  "2025-04-03": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.9131,
+    "autocorr_score": 91.31,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 25.87,
+    "has_data": true,
+    "health_score": 96.95,
+    "main_force": 10.716562,
+    "main_force_power_score": 25.87,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.94958,
+    "prev_main_force": 10.896457,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.85,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.95,
+    "signal_score": 55.96,
+    "trigger_date": "2025-04-03",
+    "trough_percentile": 0.5625,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.716562,
+    "main_force_explosion_ratio": 0.9811,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.94958,
+    "prev_main_force": 10.896457,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-04-03"
+   }
+  },
+  "2025-04-04": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.9124,
+    "autocorr_score": 91.24,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 40.99,
+    "has_data": true,
+    "health_score": 96.93,
+    "main_force": 10.473281,
+    "main_force_power_score": 40.99,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.896457,
+    "prev_main_force": 10.716562,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.5625,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.93,
+    "signal_score": 58.97,
+    "trigger_date": "2025-04-04",
+    "trough_percentile": 0.2875,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.473281,
+    "main_force_explosion_ratio": 0.9692,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.896457,
+    "prev_main_force": 10.716562,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-04-04"
+   }
+  },
+  "2025-04-05": {
+   "indicator": {
+    "amplitude_cv": 0.0001,
+    "autocorr": 0.9124,
+    "autocorr_score": 91.24,
+    "available": true,
+    "cycle_count": 10,
+    "cycle_cv": 0.0,
+    "cycle_mean_days": 7.0,
+    "deep_trough_streak": 0,
+    "event_score": 48.56,
+    "has_data": true,
+    "health_score": 96.93,
+    "main_force": 10.46664,
+    "main_force_power_score": 48.56,
+    "main_force_state": "falling",
+    "main_peak_sell_signal": false,
+    "prev2_main_force": 10.716562,
+    "prev_main_force": 10.473281,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "prev_trough_percentile": 0.2875,
+    "recent_flip_bars_ago": -1,
+    "recent_flip_trough_percentile": 0.5,
+    "retail_force": 0.0,
+    "retail_force_state": "flat",
+    "retail_percentile": 1.0,
+    "retail_sell_signal": false,
+    "rhythm_pattern_formed": false,
+    "rhythm_regularity_score": 96.93,
+    "signal_score": 60.48,
+    "trigger_date": "2025-04-05",
+    "trough_percentile": 0.15,
+    "trough_turn": false,
+    "wave_swing_ratio": 0.0452
+   },
+   "rule": [
+    false,
+    "no_pattern"
+   ],
+   "ths": {
+    "available": true,
+    "force_gap_score": 100.0,
+    "golden_cross": false,
+    "main_force": 10.46664,
+    "main_force_explosion_ratio": 0.9879,
+    "main_force_power_score": 0.0,
+    "main_force_state": "falling",
+    "main_vs_retail_ratio": 8.0,
+    "prev2_main_force": 10.716562,
+    "prev_main_force": 10.473281,
+    "prev_main_force_state": "falling",
+    "prev_retail_force": 0.0,
+    "purple_to_yellow": false,
+    "retail_force": 0.0,
+    "retail_pressure_score": 0.0,
+    "signal_score": 44.0,
+    "trigger_date": "2025-04-05"
+   }
+  }
+ },
+ "should_buy_grid": [
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "deep_trough"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "trough_turn_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "flip_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "flip_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "flip_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   true,
+   "flip_band"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "miss"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "retail_block"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ],
+  [
+   false,
+   "no_pattern"
+  ],
+  [
+   false,
+   "peak_zone"
+  ]
+ ]
+}

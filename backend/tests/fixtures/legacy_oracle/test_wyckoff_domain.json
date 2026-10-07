@@ -1,0 +1,977 @@
+{
+ "insufficient:0": {
+  "row_is_none": true,
+  "snapshot": {
+   "candle_quality_score": 0.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 0.0,
+   "entry_quality_score": 0.0,
+   "event_background_score": 0.0,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 0.0,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 0.0,
+   "event_recency_score": 0.0,
+   "event_score": 0.0,
+   "event_strength_score": 0.0,
+   "event_vol_price_score": 0.0,
+   "events": [],
+   "health_score": 0.0,
+   "phase": "阶段未明",
+   "phase_context_score": 0.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45.0,
+   "pullback_quality": 0.0,
+   "risk_events": [],
+   "risk_score": 0.0,
+   "sequence_ok": false,
+   "signal": "",
+   "slope_stability": 0.0,
+   "structure_hhh": "-",
+   "structure_score": 0.0,
+   "trend_score": 0.0,
+   "trigger_date": "",
+   "volatility_score": 0.0,
+   "volatility_stability": 0.0,
+   "weekly_context_multiplier": 1.0,
+   "weekly_context_score": 0.0
+  }
+ },
+ "insufficient:1": {
+  "row_is_none": true,
+  "snapshot": {
+   "candle_quality_score": 0.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 0.0,
+   "entry_quality_score": 0.0,
+   "event_background_score": 0.0,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 0.0,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 0.0,
+   "event_recency_score": 0.0,
+   "event_score": 0.0,
+   "event_strength_score": 0.0,
+   "event_vol_price_score": 0.0,
+   "events": [],
+   "health_score": 0.0,
+   "phase": "阶段未明",
+   "phase_context_score": 0.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45.0,
+   "pullback_quality": 0.0,
+   "risk_events": [],
+   "risk_score": 0.0,
+   "sequence_ok": false,
+   "signal": "",
+   "slope_stability": 0.0,
+   "structure_hhh": "-",
+   "structure_score": 0.0,
+   "trend_score": 0.0,
+   "trigger_date": "2025-01-01",
+   "volatility_score": 0.0,
+   "volatility_stability": 0.0,
+   "weekly_context_multiplier": 1.0,
+   "weekly_context_score": 0.0
+  }
+ },
+ "insufficient:24": {
+  "row_is_none": true,
+  "snapshot": {
+   "candle_quality_score": 0.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 0.0,
+   "entry_quality_score": 0.0,
+   "event_background_score": 0.0,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 0.0,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 0.0,
+   "event_recency_score": 0.0,
+   "event_score": 0.0,
+   "event_strength_score": 0.0,
+   "event_vol_price_score": 0.0,
+   "events": [],
+   "health_score": 0.0,
+   "phase": "阶段未明",
+   "phase_context_score": 0.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45.0,
+   "pullback_quality": 0.0,
+   "risk_events": [],
+   "risk_score": 0.0,
+   "sequence_ok": false,
+   "signal": "",
+   "slope_stability": 0.0,
+   "structure_hhh": "-",
+   "structure_score": 0.0,
+   "trend_score": 0.0,
+   "trigger_date": "2025-02-03",
+   "volatility_score": 0.0,
+   "volatility_stability": 0.0,
+   "weekly_context_multiplier": 1.0,
+   "weekly_context_score": 0.0
+  }
+ },
+ "insufficient:25": {
+  "row_is_none": true,
+  "snapshot": {
+   "candle_quality_score": 0.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 0.0,
+   "entry_quality_score": 0.0,
+   "event_background_score": 0.0,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 0.0,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 0.0,
+   "event_recency_score": 0.0,
+   "event_score": 0.0,
+   "event_strength_score": 0.0,
+   "event_vol_price_score": 0.0,
+   "events": [],
+   "health_score": 0.0,
+   "phase": "阶段未明",
+   "phase_context_score": 0.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45.0,
+   "pullback_quality": 0.0,
+   "risk_events": [],
+   "risk_score": 0.0,
+   "sequence_ok": false,
+   "signal": "",
+   "slope_stability": 0.0,
+   "structure_hhh": "-",
+   "structure_score": 0.0,
+   "trend_score": 0.0,
+   "trigger_date": "2025-02-04",
+   "volatility_score": 0.0,
+   "volatility_stability": 0.0,
+   "weekly_context_multiplier": 1.0,
+   "weekly_context_score": 0.0
+  }
+ },
+ "insufficient:29": {
+  "row_is_none": true,
+  "snapshot": {
+   "candle_quality_score": 0.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 0.0,
+   "entry_quality_score": 0.0,
+   "event_background_score": 0.0,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 0.0,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 0.0,
+   "event_recency_score": 0.0,
+   "event_score": 0.0,
+   "event_strength_score": 0.0,
+   "event_vol_price_score": 0.0,
+   "events": [],
+   "health_score": 0.0,
+   "phase": "阶段未明",
+   "phase_context_score": 0.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45.0,
+   "pullback_quality": 0.0,
+   "risk_events": [],
+   "risk_score": 0.0,
+   "sequence_ok": false,
+   "signal": "",
+   "slope_stability": 0.0,
+   "structure_hhh": "-",
+   "structure_score": 0.0,
+   "trend_score": 0.0,
+   "trigger_date": "2025-02-10",
+   "volatility_score": 0.0,
+   "volatility_stability": 0.0,
+   "weekly_context_multiplier": 1.0,
+   "weekly_context_score": 0.0
+  }
+ },
+ "parity:0cd93b39f1965c215659ad66": {
+  "candidate": {
+   "amplitude20": 0.0513,
+   "ret40": 0.116,
+   "retrace20": 0.0129
+  },
+  "event_age_days": {
+   "AR": 22,
+   "BC": 5,
+   "JOC": 5,
+   "LPS": 4,
+   "PS": 31,
+   "PSY": 7,
+   "SC": 29,
+   "SOS": 7,
+   "ST": 16,
+   "TSO": 9
+  },
+  "snapshot": {
+   "candle_quality_score": 73.07,
+   "confirmation_status": "confirmed",
+   "cost_center_shift_score": 38.19,
+   "entry_quality_score": 71.9,
+   "event_background_score": 77.44,
+   "event_chain": [
+    {
+     "category": "accumulation",
+     "date": "2025-03-24",
+     "event": "PS"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-03-26",
+     "event": "SC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-04",
+     "event": "AR"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-14",
+     "event": "ST"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-23",
+     "event": "TSO"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-25",
+     "event": "SOS"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-25",
+     "event": "PSY"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-29",
+     "event": "JOC"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-29",
+     "event": "BC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-30",
+     "event": "LPS"
+    }
+   ],
+   "event_confirmation_map": {
+    "JOC": "confirmed",
+    "LPS": "confirmed",
+    "SOS": "confirmed"
+   },
+   "event_confirmation_score": 100.0,
+   "event_dates": {
+    "AR": "2025-04-04",
+    "BC": "2025-04-29",
+    "JOC": "2025-04-29",
+    "LPS": "2025-04-30",
+    "PS": "2025-03-24",
+    "PSY": "2025-04-25",
+    "SC": "2025-03-26",
+    "SOS": "2025-04-25",
+    "ST": "2025-04-14",
+    "TSO": "2025-04-23"
+   },
+   "event_dimension_breakdown": [],
+   "event_grade": "A",
+   "event_grade_map": {
+    "AR": "C",
+    "BC": "B",
+    "JOC": "A",
+    "LPS": "A",
+    "PS": "C",
+    "PSY": "C",
+    "SC": "C",
+    "SOS": "A",
+    "ST": "C",
+    "TSO": "A"
+   },
+   "event_position_score": 64.32,
+   "event_recency_score": 45.22,
+   "event_score": 84.93,
+   "event_strength_score": 71.67,
+   "event_vol_price_score": 63.3,
+   "events": [
+    "PS",
+    "SC",
+    "AR",
+    "ST",
+    "TSO",
+    "SOS",
+    "JOC",
+    "LPS"
+   ],
+   "health_score": 65.5,
+   "phase": "吸筹E",
+   "phase_context_score": 91.5,
+   "phase_hint": "回踩确认，良机入场",
+   "phase_score": 91,
+   "pullback_quality": 51.06,
+   "risk_events": [
+    "PSY",
+    "BC"
+   ],
+   "risk_score": 26.98,
+   "sequence_ok": true,
+   "signal": "LPS",
+   "slope_stability": 75.78,
+   "structure_hhh": "HH|HL|HC",
+   "structure_score": 100.0,
+   "trend_score": 62.31,
+   "trigger_date": "2025-04-30",
+   "volatility_score": 68.19,
+   "volatility_stability": 64.07,
+   "weekly_context_multiplier": 1.12,
+   "weekly_context_score": 100.0
+  }
+ },
+ "parity:488365dd3153ec6ccc473282": {
+  "candidate": {
+   "amplitude20": 0.0513,
+   "ret40": 0.116,
+   "retrace20": 0.0129
+  },
+  "event_age_days": {
+   "AR": 22,
+   "BC": 5,
+   "JOC": 5,
+   "LPS": 4,
+   "PS": 31,
+   "PSY": 7,
+   "SC": 29,
+   "SOS": 7,
+   "ST": 16,
+   "TSO": 9
+  },
+  "snapshot": {
+   "candle_quality_score": 73.07,
+   "confirmation_status": "confirmed",
+   "cost_center_shift_score": 38.13,
+   "entry_quality_score": 72.13,
+   "event_background_score": 77.44,
+   "event_chain": [
+    {
+     "category": "accumulation",
+     "date": "2025-03-24",
+     "event": "PS"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-03-26",
+     "event": "SC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-04",
+     "event": "AR"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-14",
+     "event": "ST"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-23",
+     "event": "TSO"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-25",
+     "event": "SOS"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-25",
+     "event": "PSY"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-29",
+     "event": "JOC"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-29",
+     "event": "BC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-30",
+     "event": "LPS"
+    }
+   ],
+   "event_confirmation_map": {
+    "JOC": "confirmed",
+    "LPS": "confirmed",
+    "SOS": "confirmed"
+   },
+   "event_confirmation_score": 100.0,
+   "event_dates": {
+    "AR": "2025-04-04",
+    "BC": "2025-04-29",
+    "JOC": "2025-04-29",
+    "LPS": "2025-04-30",
+    "PS": "2025-03-24",
+    "PSY": "2025-04-25",
+    "SC": "2025-03-26",
+    "SOS": "2025-04-25",
+    "ST": "2025-04-14",
+    "TSO": "2025-04-23"
+   },
+   "event_dimension_breakdown": [],
+   "event_grade": "A",
+   "event_grade_map": {
+    "AR": "C",
+    "BC": "B",
+    "JOC": "A",
+    "LPS": "A",
+    "PS": "C",
+    "PSY": "C",
+    "SC": "C",
+    "SOS": "A",
+    "ST": "C",
+    "TSO": "A"
+   },
+   "event_position_score": 81.28,
+   "event_recency_score": 45.22,
+   "event_score": 87.96,
+   "event_strength_score": 71.67,
+   "event_vol_price_score": 63.28,
+   "events": [
+    "PS",
+    "SC",
+    "AR",
+    "ST",
+    "TSO",
+    "SOS",
+    "JOC",
+    "LPS"
+   ],
+   "health_score": 65.5,
+   "phase": "吸筹E",
+   "phase_context_score": 91.5,
+   "phase_hint": "回踩确认，良机入场",
+   "phase_score": 91,
+   "pullback_quality": 51.06,
+   "risk_events": [
+    "PSY",
+    "BC"
+   ],
+   "risk_score": 27.02,
+   "sequence_ok": true,
+   "signal": "LPS",
+   "slope_stability": 75.78,
+   "structure_hhh": "HH|HL|HC",
+   "structure_score": 100.0,
+   "trend_score": 62.31,
+   "trigger_date": "2025-04-30",
+   "volatility_score": 68.19,
+   "volatility_stability": 64.07,
+   "weekly_context_multiplier": 1.12,
+   "weekly_context_score": 100.0
+  }
+ },
+ "parity:89219582ca70682a98fd6f3e": {
+  "candidate": {
+   "amplitude20": 0.0513,
+   "ret40": 0.116,
+   "retrace20": 0.0129
+  },
+  "event_age_days": {
+   "AR": 22,
+   "BC": 5,
+   "LPS": 4,
+   "PS": 31,
+   "PSY": 7,
+   "SC": 29,
+   "ST": 16,
+   "TSO": 9
+  },
+  "snapshot": {
+   "candle_quality_score": 62.71,
+   "confirmation_status": "partial",
+   "cost_center_shift_score": 38.19,
+   "entry_quality_score": 66.59,
+   "event_background_score": 77.44,
+   "event_chain": [
+    {
+     "category": "accumulation",
+     "date": "2025-03-24",
+     "event": "PS"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-03-26",
+     "event": "SC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-04",
+     "event": "AR"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-14",
+     "event": "ST"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-23",
+     "event": "TSO"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-25",
+     "event": "PSY"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-29",
+     "event": "BC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-30",
+     "event": "LPS"
+    }
+   ],
+   "event_confirmation_map": {
+    "LPS": "confirmed"
+   },
+   "event_confirmation_score": 100.0,
+   "event_dates": {
+    "AR": "2025-04-04",
+    "BC": "2025-04-29",
+    "LPS": "2025-04-30",
+    "PS": "2025-03-24",
+    "PSY": "2025-04-25",
+    "SC": "2025-03-26",
+    "ST": "2025-04-14",
+    "TSO": "2025-04-23"
+   },
+   "event_dimension_breakdown": [
+    {
+     "dimension_id": "risk",
+     "effective_score": 73.02,
+     "invert": true,
+     "label": "低风险",
+     "metric_key": "risk_score",
+     "metric_score": 26.98,
+     "weight": 3.0
+    },
+    {
+     "dimension_id": "context",
+     "effective_score": 59.5,
+     "invert": false,
+     "label": "阶段",
+     "metric_key": "phase_context_score",
+     "metric_score": 59.5,
+     "weight": 1.0
+    }
+   ],
+   "event_grade": "A",
+   "event_grade_map": {
+    "AR": "C",
+    "BC": "C",
+    "LPS": "A",
+    "PS": "C",
+    "PSY": "C",
+    "SC": "C",
+    "ST": "C",
+    "TSO": "B"
+   },
+   "event_position_score": 64.32,
+   "event_recency_score": 39.56,
+   "event_score": 78.0,
+   "event_strength_score": 57.46,
+   "event_vol_price_score": 52.64,
+   "events": [
+    "PS",
+    "SC",
+    "AR",
+    "ST",
+    "TSO",
+    "LPS"
+   ],
+   "health_score": 65.5,
+   "phase": "吸筹E",
+   "phase_context_score": 59.5,
+   "phase_hint": "回踩确认，良机入场",
+   "phase_score": 91,
+   "pullback_quality": 51.06,
+   "risk_events": [
+    "PSY",
+    "BC"
+   ],
+   "risk_score": 26.98,
+   "sequence_ok": true,
+   "signal": "LPS",
+   "slope_stability": 75.78,
+   "structure_hhh": "HH|HL|HC",
+   "structure_score": 100.0,
+   "trend_score": 62.31,
+   "trigger_date": "2025-04-30",
+   "volatility_score": 68.19,
+   "volatility_stability": 64.07,
+   "weekly_context_multiplier": 1.12,
+   "weekly_context_score": 100.0
+  }
+ },
+ "parity:9d62d898795a98c1af0ddc7b": {
+  "candidate": {
+   "amplitude20": 0.0304,
+   "ret40": -0.1076,
+   "retrace20": 0.072
+  },
+  "event_age_days": {},
+  "snapshot": {
+   "candle_quality_score": 45.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 49.81,
+   "entry_quality_score": 51.06,
+   "event_background_score": 22.25,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 75.14,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 33.1,
+   "event_recency_score": 40.0,
+   "event_score": 40.47,
+   "event_strength_score": 48.0,
+   "event_vol_price_score": 48.45,
+   "events": [],
+   "health_score": 82.54,
+   "phase": "阶段未明",
+   "phase_context_score": 45.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45,
+   "pullback_quality": 60.0,
+   "risk_events": [],
+   "risk_score": 1.44,
+   "sequence_ok": true,
+   "signal": "",
+   "slope_stability": 99.95,
+   "structure_hhh": "-|-|-",
+   "structure_score": 35,
+   "trend_score": 35.64,
+   "trigger_date": "2025-02-25",
+   "volatility_score": 81.15,
+   "volatility_stability": 78.75,
+   "weekly_context_multiplier": 0.888,
+   "weekly_context_score": 3.33
+  }
+ },
+ "parity:e05bce6ff818dd4a072c2bfd": {
+  "candidate": {
+   "amplitude20": 0.0324,
+   "ret40": -0.1168,
+   "retrace20": 0.0765
+  },
+  "event_age_days": {},
+  "snapshot": {
+   "candle_quality_score": 45.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 50.14,
+   "entry_quality_score": 51.25,
+   "event_background_score": 22.5,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 75.55,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 40.4,
+   "event_recency_score": 40.0,
+   "event_score": 42.26,
+   "event_strength_score": 48.0,
+   "event_vol_price_score": 48.53,
+   "events": [],
+   "health_score": 82.75,
+   "phase": "阶段未明",
+   "phase_context_score": 45.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45,
+   "pullback_quality": 62.81,
+   "risk_events": [],
+   "risk_score": 1.23,
+   "sequence_ok": true,
+   "signal": "",
+   "slope_stability": 99.95,
+   "structure_hhh": "-|-|-",
+   "structure_score": 35,
+   "trend_score": 34.47,
+   "trigger_date": "2025-03-25",
+   "volatility_score": 79.91,
+   "volatility_stability": 77.35,
+   "weekly_context_multiplier": 0.8973,
+   "weekly_context_score": 7.2
+  }
+ },
+ "parity:e20033ecd2a73a83c381ea68": {
+  "candidate": {
+   "amplitude20": 0.0295,
+   "ret40": -0.0793,
+   "retrace20": 0.0699
+  },
+  "event_age_days": {},
+  "snapshot": {
+   "candle_quality_score": 45.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 50.23,
+   "entry_quality_score": 51.64,
+   "event_background_score": 25.32,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 75.41,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 36.03,
+   "event_recency_score": 40.0,
+   "event_score": 41.89,
+   "event_strength_score": 48.0,
+   "event_vol_price_score": 48.56,
+   "events": [],
+   "health_score": 82.44,
+   "phase": "阶段未明",
+   "phase_context_score": 45.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45,
+   "pullback_quality": 58.69,
+   "risk_events": [],
+   "risk_score": 1.17,
+   "sequence_ok": true,
+   "signal": "",
+   "slope_stability": 99.95,
+   "structure_hhh": "-|-|-",
+   "structure_score": 35,
+   "trend_score": 38.83,
+   "trigger_date": "2025-02-11",
+   "volatility_score": 81.71,
+   "volatility_stability": 79.38,
+   "weekly_context_multiplier": 0.8925,
+   "weekly_context_score": 5.22
+  }
+ },
+ "parity:f185aa1242fa5a4ec745fae6": {
+  "candidate": {
+   "amplitude20": 0.0544,
+   "ret40": 0.0693,
+   "retrace20": 0.0132
+  },
+  "event_age_days": {
+   "AR": 17,
+   "BC": 0,
+   "JOC": 0,
+   "PS": 26,
+   "PSY": 2,
+   "SC": 24,
+   "SOS": 2,
+   "ST": 11,
+   "TSO": 4
+  },
+  "snapshot": {
+   "candle_quality_score": 74.87,
+   "confirmation_status": "partial",
+   "cost_center_shift_score": 22.91,
+   "entry_quality_score": 58.97,
+   "event_background_score": 68.67,
+   "event_chain": [
+    {
+     "category": "accumulation",
+     "date": "2025-03-24",
+     "event": "PS"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-03-26",
+     "event": "SC"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-04",
+     "event": "AR"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-14",
+     "event": "ST"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-23",
+     "event": "TSO"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-25",
+     "event": "SOS"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-25",
+     "event": "PSY"
+    },
+    {
+     "category": "accumulation",
+     "date": "2025-04-29",
+     "event": "JOC"
+    },
+    {
+     "category": "distributionRisk",
+     "date": "2025-04-29",
+     "event": "BC"
+    }
+   ],
+   "event_confirmation_map": {
+    "JOC": "pending",
+    "SOS": "confirmed"
+   },
+   "event_confirmation_score": 99.3,
+   "event_dates": {
+    "AR": "2025-04-04",
+    "BC": "2025-04-29",
+    "JOC": "2025-04-29",
+    "PS": "2025-03-24",
+    "PSY": "2025-04-25",
+    "SC": "2025-03-26",
+    "SOS": "2025-04-25",
+    "ST": "2025-04-14",
+    "TSO": "2025-04-23"
+   },
+   "event_dimension_breakdown": [],
+   "event_grade": "B",
+   "event_grade_map": {
+    "AR": "C",
+    "BC": "C",
+    "JOC": "B",
+    "PS": "C",
+    "PSY": "C",
+    "SC": "C",
+    "SOS": "B",
+    "ST": "C",
+    "TSO": "B"
+   },
+   "event_position_score": 65.06,
+   "event_recency_score": 60.65,
+   "event_score": 71.41,
+   "event_strength_score": 69.24,
+   "event_vol_price_score": 57.65,
+   "events": [
+    "PS",
+    "SC",
+    "AR",
+    "ST",
+    "TSO",
+    "SOS",
+    "JOC"
+   ],
+   "health_score": 64.3,
+   "phase": "吸筹D",
+   "phase_context_score": 86.0,
+   "phase_hint": "强势突破，量价齐升",
+   "phase_score": 86,
+   "pullback_quality": 51.25,
+   "risk_events": [
+    "PSY",
+    "BC"
+   ],
+   "risk_score": 47.22,
+   "sequence_ok": true,
+   "signal": "JOC",
+   "slope_stability": 74.55,
+   "structure_hhh": "HH|-|-",
+   "structure_score": 57,
+   "trend_score": 57.16,
+   "trigger_date": "2025-04-29",
+   "volatility_score": 66.27,
+   "volatility_stability": 61.9,
+   "weekly_context_multiplier": 1.098,
+   "weekly_context_score": 90.84
+  }
+ },
+ "parity:ffd367943f43c684c4585bf1": {
+  "candidate": {
+   "amplitude20": 0.0,
+   "ret40": 0.0,
+   "retrace20": 0.0
+  },
+  "event_age_days": {},
+  "snapshot": {
+   "candle_quality_score": 45.0,
+   "confirmation_status": "unconfirmed",
+   "cost_center_shift_score": 56.0,
+   "entry_quality_score": 54.7,
+   "event_background_score": 31.84,
+   "event_chain": [],
+   "event_confirmation_map": {},
+   "event_confirmation_score": 76.14,
+   "event_dates": {},
+   "event_dimension_breakdown": [],
+   "event_grade": "C",
+   "event_grade_map": {},
+   "event_position_score": 22.0,
+   "event_recency_score": 40.0,
+   "event_score": 41.6,
+   "event_strength_score": 48.0,
+   "event_vol_price_score": 50.0,
+   "events": [],
+   "health_score": 85.75,
+   "phase": "阶段未明",
+   "phase_context_score": 45.0,
+   "phase_hint": "信号不足，继续观察",
+   "phase_score": 45,
+   "pullback_quality": 43.0,
+   "risk_events": [],
+   "risk_score": 0.0,
+   "sequence_ok": true,
+   "signal": "",
+   "slope_stability": 100.0,
+   "structure_hhh": "-|-|-",
+   "structure_score": 35,
+   "trend_score": 50.0,
+   "trigger_date": "2025-02-25",
+   "volatility_score": 100.0,
+   "volatility_stability": 100.0,
+   "weekly_context_multiplier": 0.8872,
+   "weekly_context_score": 3.0
+  }
+ }
+}

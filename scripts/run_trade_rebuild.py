@@ -62,7 +62,7 @@ def main() -> int:
         return launcher.run(data_dir)
     try:
         if not FRONTEND.is_file():
-            raise RuntimeError('缺少应用页面，请重新构建或下载完整程序。源码构建命令：npm run build:rebuild')
+            raise RuntimeError('缺少应用页面，请重新构建或下载完整程序。源码构建命令：npm run build')
         data_dir.mkdir(parents=True, exist_ok=True)
         result = launch_or_reopen(data_dir, no_browser=args.no_browser, start=start, preferred_port=args.port)
         if result:

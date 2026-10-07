@@ -15,16 +15,20 @@ from trade_app.research.lab_presets import preset_catalog, adopt_preset
 from trade_app.research.lab_target_fit import evaluate_custom, normalize_params, fit_targets, normalize_fit
 from trade_app.research.portfolio_domain import canonical
 from test_strategy_lab import fixture, bars
+from legacy_oracle import oracle
 
 
 def test_four_presets_match_original_constants_and_require_explicit_adaptation():
-    old_path = Path(__file__).resolve().parents[1] / 'scripts/morning_band_report.py'
-    module = ast.parse(old_path.read_text(encoding='utf-8'))
-    declaration = next(row for row in module.body if isinstance(row, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'CANDIDATES' for target in row.targets))
-    scope = {'dict': dict}
-    exec(compile(ast.Module(body=[declaration], type_ignores=[]), str(old_path), 'exec'), scope)
+    def legacy_candidates():
+        # CANDIDATES constant of the retired backend/scripts/morning_band_report.py.
+        old_path = Path(__file__).resolve().parents[1] / 'scripts/morning_band_report.py'
+        module = ast.parse(old_path.read_text(encoding='utf-8'))
+        declaration = next(row for row in module.body if isinstance(row, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'CANDIDATES' for target in row.targets))
+        scope = {'dict': dict}
+        exec(compile(ast.Module(body=[declaration], type_ignores=[]), str(old_path), 'exec'), scope)
+        return scope['CANDIDATES']
     catalog = preset_catalog()['presets']
-    assert [row['original'] for row in catalog] == scope['CANDIDATES']
+    assert [row['original'] for row in catalog] == oracle('morning_candidates', legacy_candidates)
     raw = fixture(); before = deepcopy(raw)
     for preset in catalog:
         with pytest.raises(TradeError) as error: adopt_preset(raw, preset['id'])
@@ -42,6 +46,7 @@ def test_four_presets_match_original_constants_and_require_explicit_adaptation()
 
 
 def old_custom():
+    """``_eval_custom`` from the retired backend/scripts/tune_weike_rhythm.py (recording only)."""
     path = Path(__file__).resolve().parents[1] / 'scripts/tune_weike_rhythm.py'
     module = ast.parse(path.read_text(encoding='utf-8'))
     node = next(row for row in module.body if isinstance(row, ast.FunctionDef) and row.name == '_eval_custom')
@@ -58,7 +63,7 @@ def indicator(**changes):
 
 
 def test_legacy_fit_predicate_parity_including_boundaries_and_nonproduction_trigger():
-    original = old_custom()
+    cases = []
     for mode in ('combined', 'flip_only', 'turn_only'):
         params = normalize_params({'buy_trigger_mode': mode})
         for trough in (.04, .08, .25, .30, .40, .55, .72, .80):
@@ -66,8 +71,15 @@ def test_legacy_fit_predicate_parity_including_boundaries_and_nonproduction_trig
                 for retail in (10, 30):
                     row = indicator(trough_percentile=trough, main_force_state=state, retail_force=retail,
                         retail_force_state='rising', trough_turn=trough <= .4)
-                    ths = {'prev_main_force_state': 'falling'}
-                    assert evaluate_custom(row, ths, params)['signal'] == original(row, ths, params)
+                    cases.append((row, {'prev_main_force_state': 'falling'}, params))
+
+    def legacy():
+        original = old_custom()
+        return [original(row, ths, params) for row, ths, params in cases]
+    expected = oracle('custom_predicate_grid', legacy)
+    assert len(expected) == len(cases)
+    for (row, ths, params), signal in zip(cases, expected):
+        assert evaluate_custom(row, ths, params)['signal'] == signal
     # The legacy custom deep trough admits flat state without production streak.
     assert evaluate_custom(indicator(), {}, normalize_params({}))['signal']
     with pytest.raises(TradeError): normalize_params({'deep_trough_streak_target': 2})

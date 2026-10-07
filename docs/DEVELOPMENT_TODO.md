@@ -13,13 +13,13 @@
 目标：让“包含原来全部功能”可逐项核对。
 
 - [ ] R001 冻结两个原仓库的提交与依赖锁文件；保存 173 接口、28 业务路由、16 策略、独立脚本与前端持久化清单。核对原始清单中的工作区改动标记。
-  - 进度 / 未验部分：提交、接口、路由、策略和持久化清单已见 [来源基线](source-inventory.json) / [基线核查](DOCUMENTATION_CHECK.md)。待补两个原仓依赖文件的独立归档摘要，不能把提交号清单当作依赖锁定完成。
+  - 进度 / 未验部分：提交、接口、路由、策略和持久化清单已见 [来源基线](source-inventory.json) / [基线核查](archive/DOCUMENTATION_CHECK.md)。待补两个原仓依赖文件的独立归档摘要，不能把提交号清单当作依赖锁定完成。
 - [ ] R002 为 F01–F78 建可追踪验收条目；逐项补原请求 / 响应、UI 行为与导出字段样例。
   - 进度 / 未验部分：[F01–F78 核对](FEATURE_COMPLETION_AUDIT.md) 已有新代码、测试与边界映射；仍需将每项原请求/响应、UI 和导出样例索引收齐，并按最终版本复核，不能仅按“已接入”全勾。
 - [x] R003 建最小固定行情、交易、快照、复盘、OCR 假响应与报告包样本；不包含用户真实密钥。
   - 已验：固定行情/账本/快照/复盘、模型假响应及真实旧导出器报告夹具已落地；见 [功能核对的测试列](FEATURE_COMPLETION_AUDIT.md)、[旧报告验收](LEGACY_REPORT_ACCEPTANCE.md)。
 - [x] R004 固定精度、费率、T+1、回合、NAV、日期轴和统计版本规则，建立新旧差异表。
-  - 已验：规则和原版差异见 [策略审查](STRATEGY_AUDIT.md)、[组合执行](PORTFOLIO_EXECUTION.md)、[模拟估值](SIM_EQUITY_ACCEPTANCE.md)；账本 NAV/零份额/费用边界由 [新应用测试](../backend/tests/test_trade_rebuild.py) 覆盖。
+  - 已验：规则和原版差异见 [策略审查](archive/STRATEGY_AUDIT.md)、[组合执行](PORTFOLIO_EXECUTION.md)、[模拟估值](SIM_EQUITY_ACCEPTANCE.md)；账本 NAV/零份额/费用边界由 [新应用测试](../backend/tests/test_trade_rebuild.py) 覆盖。
 - [ ] R005 创建新架构目录、类型 / 格式工具、前后端锁文件、测试与构建工作流；确认 Node / Python 范围。
   - 进度 / 未验部分：新目录、前端 package-lock、CI、构建及运行时范围已有；见 [打包说明](REBUILD_PACKAGING.md)。后端 requirements 仍含范围/未固定的传递依赖，完整后端锁文件和同版本复建门禁尚未闭合。
 - [x] R006 记录 API 契约与数据库初版迁移；建立 OpenAPI → TS 生成流程。
@@ -141,13 +141,13 @@
 - [x] R407 情绪估值所有因子 / 预设 / 报价边界，新闻窗口与过期态（F18/F61）。
   - 已验：见 [功能核对 F18/F61](FEATURE_COMPLETION_AUDIT.md)；原因子/预设/亏损不适用、新闻时间窗口/失败缓存均有实现和测试。
 - [x] R408 16 个策略注册、schema / 默认参数 / 能力标记 / Top N，事件判定配置（F19/F21）。
-  - 已验：见 [策略注册验收](STRATEGY_REGISTRY_ACCEPTANCE.md)、[策略审查](STRATEGY_AUDIT.md)；新提交门禁与已冻结任务执行分开。
+  - 已验：见 [策略注册验收](STRATEGY_REGISTRY_ACCEPTANCE.md)、[策略审查](archive/STRATEGY_AUDIT.md)；新提交门禁与已冻结任务执行分开。
 - [x] R409 信号年龄、Active / Expiring、上下文，转模拟委托草稿与数量换算（F23/F24）。
   - 已验：[信号工作区](SIGNAL_WORKSPACE_ACCEPTANCE.md) 新增21项完整候选/门槛/排名原版对照；build797真实浏览器通过完整上下文双策略、事件模板修订、权重、冻结CSV和375px展开参数。最后全后端1366项与新UI104项通过。
 - [x] R410 从账本 + 行情估算资产，明确估算质量；给计划与复盘补价格上下文（F48/F54）。
   - 已验：见 [功能核对 F48](FEATURE_COMPLETION_AUDIT.md)、[持仓预演验收](REVIEW_PLANNING_ACCEPTANCE.md)。估算不改确认快照，缺价不补零。
 - [ ] R411 每个 provider 的固定响应适配测试与真实连通性分别记录；策略做第一轮基线对照。
-  - 进度 / 未验部分：固定响应、显式探测和策略对照已有；见 [功能核对 F03/F05/F61](FEATURE_COMPLETION_AUDIT.md)、[策略审查](STRATEGY_AUDIT.md)。仍需汇总每个提供方在最终环境的实测日期/成功或失败证据，不能用 mock 代替真实连通性。
+  - 进度 / 未验部分：固定响应、显式探测和策略对照已有；见 [功能核对 F03/F05/F61](FEATURE_COMPLETION_AUDIT.md)、[策略审查](archive/STRATEGY_AUDIT.md)。仍需汇总每个提供方在最终环境的实测日期/成功或失败证据，不能用 mock 代替真实连通性。
 - [ ] R412 行情 manifest、证券集合 / 日历 / 复权版本、不可变数据引用与缺失预检（TR-013）。
   - 进度 / 未验部分：内容寻址行情、来源/复权声明、冻结证券与缺失预检已实现；见 [扫描任务](SCAN_JOB_ACCEPTANCE.md)、[持仓预演本地日历](REVIEW_PLANNING_ACCEPTANCE.md)。全任务统一 manifest 中的日历/证券集合版本仍需专项核对；未知历史成分只标无法核验，不列为待补造数据。
 - [x] R413 事件 / 可得 / 采集时间及修订的区分，严格模式与未知数据质量标记；构造未来资料验证隔离（TR-014）。
@@ -168,7 +168,7 @@
 - [x] R504 回测矩阵 / 传统路径、数据与参数冻结、滚动 / 持仓触发构池（F28/F29）。
   - 已验：原 S1–S9/传统/对齐事件三路径和冻结滚动池已完成；见 [组合执行验收](PORTFOLIO_EXECUTION.md)。
 - [x] R505 入场 / 延迟 / 交易单位 / 费用 / 滑点 / 止损止盈 / 持有期 / 双层回撤完整对照（F30）。
-  - 已验：完整执行参数、延迟/共享费用与双层回撤及有意修正见 [组合执行](PORTFOLIO_EXECUTION.md)、[策略迁移差异](STRATEGY_PORTING_NOTES.md)。日线执行不宣称复原分钟顺序。
+  - 已验：完整执行参数、延迟/共享费用与双层回撤及有意修正见 [组合执行](PORTFOLIO_EXECUTION.md)、[策略迁移差异](archive/STRATEGY_PORTING_NOTES.md)。日线执行不宣称复原分钟顺序。
 - [ ] R506 回测 / 平原暂停继续、检查点、重启恢复、取消竞态与结果发布（F32）。
   - 进度 / 未验部分：平原/组合实验的检查点暂停恢复、重启、取消/迟到结果围栏已通过；见 [功能核对 F31/F32](FEATURE_COMPLETION_AUDIT.md)。普通单次回测明确 pause/resume=false，仍不满足本条未限定范围的“回测暂停继续”，保留能力差异待收口。
 - [x] R507 收益平原 grid / LHS 扫描、热图、失败点、点详情、区域中心、邻域 / 敏感性 / 相关性与候选参数（F31/F35）。
@@ -178,7 +178,7 @@
 - [x] R509 原报告包构建 / 导入 / 查询 / 删除、Excel 全参数交易 / 资金曲线、报告验证（F33）。
   - 已验：新 v1/v2 冻结包与旧 FTBT/平原只读转换、校验、历史/删除及结构导出已验；见 [旧报告验收](LEGACY_REPORT_ACCEPTANCE.md)、[研究表格导出](RESEARCH_TABLE_EXPORT_ACCEPTANCE.md)、[组合报告](PORTFOLIO_EXECUTION.md)。旧 HTML 仅安全存档。
 - [ ] R510 16 策略 × 代表数据边界的差异报告；检查未来数据引用、停牌 / 无行情和最后交易日。
-  - 进度 / 未验部分：策略纯函数/候选/时点及矩阵多条对照已有 [策略审查](STRATEGY_AUDIT.md) 与测试；仍缺覆盖16策略×全部列出代表边界的统一差异报告，不能把部分夹具逐字段相等推广为完整矩阵。
+  - 进度 / 未验部分：策略纯函数/候选/时点及矩阵多条对照已有 [策略审查](archive/STRATEGY_AUDIT.md) 与测试；仍缺覆盖16策略×全部列出代表边界的统一差异报告，不能把部分夹具逐字段相等推广为完整矩阵。
 - [x] R511 风险指标、稳定性、市况分组、蒙特卡洛、Walk-forward、资金曲线当日持仓 / 次日计划；保留高级分析开关与不足样本状态（F28/F33）。
   - 已验：风险/稳定性/市况代理/MonteCarlo、单股及组合 WF、当日持仓/次日条件计划已完成；见 [组合执行验收](PORTFOLIO_EXECUTION.md)。不足样本与未来未知价保留空值。
 - [ ] R512 规范化输入与完整缓存标识，随机种子 / 依赖版本固定、数据更新后的旧实验重放（TR-013–TR-015）。

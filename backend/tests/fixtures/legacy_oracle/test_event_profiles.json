@@ -1,0 +1,2736 @@
+{
+ "custom_profile": {
+  "description": "固定样本",
+  "dimensions": [
+   {
+    "dimension_id": "dim_1",
+    "enabled": true,
+    "invert": false,
+    "label": "event_background_score",
+    "metric_key": "event_background_score",
+    "weight": 1.234568
+   },
+   {
+    "dimension_id": "risk",
+    "enabled": true,
+    "invert": true,
+    "label": "风险",
+    "metric_key": "risk_score",
+    "weight": 2.0
+   }
+  ],
+  "is_system": false,
+  "name": "自定义事件",
+  "profile_id": "custom_1",
+  "rule_values": [
+   {
+    "rule_key": "lookback_core_days",
+    "value": 60
+   },
+   {
+    "rule_key": "sc_scan_lookback_days",
+    "value": 40
+   },
+   {
+    "rule_key": "bc_scan_lookback_days",
+    "value": 35
+   },
+   {
+    "rule_key": "pattern_window_days",
+    "value": 28
+   },
+   {
+    "rule_key": "pattern_extra_spring_days",
+    "value": 8
+   },
+   {
+    "rule_key": "enable_ps",
+    "value": true
+   },
+   {
+    "rule_key": "enable_sc",
+    "value": true
+   },
+   {
+    "rule_key": "enable_ar",
+    "value": true
+   },
+   {
+    "rule_key": "enable_st",
+    "value": true
+   },
+   {
+    "rule_key": "enable_tso",
+    "value": true
+   },
+   {
+    "rule_key": "enable_spring",
+    "value": false
+   },
+   {
+    "rule_key": "enable_sos",
+    "value": true
+   },
+   {
+    "rule_key": "enable_joc",
+    "value": true
+   },
+   {
+    "rule_key": "enable_lps",
+    "value": true
+   },
+   {
+    "rule_key": "enable_psy",
+    "value": true
+   },
+   {
+    "rule_key": "enable_bc",
+    "value": true
+   },
+   {
+    "rule_key": "enable_ar_d",
+    "value": true
+   },
+   {
+    "rule_key": "enable_st_d",
+    "value": true
+   },
+   {
+    "rule_key": "enable_utad",
+    "value": true
+   },
+   {
+    "rule_key": "enable_sow",
+    "value": true
+   },
+   {
+    "rule_key": "enable_lpsy",
+    "value": true
+   },
+   {
+    "rule_key": "sc_anchor_tr_pos_max",
+    "value": 0.45
+   },
+   {
+    "rule_key": "sc_anchor_close_open_max",
+    "value": 1.02
+   },
+   {
+    "rule_key": "sc_anchor_vol_ratio_min",
+    "value": 1.2
+   },
+   {
+    "rule_key": "sc_close_near_low_ratio_max",
+    "value": 0.38
+   },
+   {
+    "rule_key": "sc_tr_pos_max",
+    "value": 0.55
+   },
+   {
+    "rule_key": "sc_vol_ratio_min",
+    "value": 1.05
+   },
+   {
+    "rule_key": "ps_window_before_sc_days",
+    "value": 25
+   },
+   {
+    "rule_key": "ps_tr_pos_max",
+    "value": 0.42
+   },
+   {
+    "rule_key": "ps_vol_ratio_min",
+    "value": 1.08
+   },
+   {
+    "rule_key": "ps_close_ma20_max",
+    "value": 1.02
+   },
+   {
+    "rule_key": "ar_window_after_sc_days",
+    "value": 18
+   },
+   {
+    "rule_key": "ar_rebound_min",
+    "value": 1.05
+   },
+   {
+    "rule_key": "st_window_after_ar_days",
+    "value": 12
+   },
+   {
+    "rule_key": "st_window_after_sc_days",
+    "value": 18
+   },
+   {
+    "rule_key": "st_low_near_sc_tol",
+    "value": 0.04
+   },
+   {
+    "rule_key": "st_vol_vs_sc_max",
+    "value": 0.85
+   },
+   {
+    "rule_key": "tso_break_prior_low_max",
+    "value": 0.99
+   },
+   {
+    "rule_key": "tso_close_reclaim_min",
+    "value": 1.0
+   },
+   {
+    "rule_key": "tso_vol_ratio_min",
+    "value": 1.0
+   },
+   {
+    "rule_key": "spring_break_prior_low_max",
+    "value": 0.985
+   },
+   {
+    "rule_key": "spring_close_reclaim_min",
+    "value": 1.0
+   },
+   {
+    "rule_key": "spring_vol_ratio_min",
+    "value": 1.15
+   },
+   {
+    "rule_key": "sos_close_ma20_min",
+    "value": 1.01
+   },
+   {
+    "rule_key": "sos_ret10_min",
+    "value": 0.05
+   },
+   {
+    "rule_key": "sos_vol_ratio_min",
+    "value": 1.25
+   },
+   {
+    "rule_key": "joc_close_break_prior_high_min",
+    "value": 1.005
+   },
+   {
+    "rule_key": "joc_vol_ratio_min",
+    "value": 1.2
+   },
+   {
+    "rule_key": "lps_window_after_anchor_days",
+    "value": 12
+   },
+   {
+    "rule_key": "lps_anchor_max_gap_days",
+    "value": 6
+   },
+   {
+    "rule_key": "lps_close_ma20_min",
+    "value": 0.995
+   },
+   {
+    "rule_key": "lps_vol_vs_prev5_max",
+    "value": 0.95
+   },
+   {
+    "rule_key": "bc_anchor_tr_pos_min",
+    "value": 0.62
+   },
+   {
+    "rule_key": "bc_anchor_close_open_min",
+    "value": 0.98
+   },
+   {
+    "rule_key": "bc_anchor_vol_ratio_min",
+    "value": 1.2
+   },
+   {
+    "rule_key": "bc_anchor_high_prior_high_min",
+    "value": 0.995
+   },
+   {
+    "rule_key": "bc_close_near_high_ratio_max",
+    "value": 0.32
+   },
+   {
+    "rule_key": "bc_tr_pos_min",
+    "value": 0.58
+   },
+   {
+    "rule_key": "bc_vol_ratio_min",
+    "value": 1.05
+   },
+   {
+    "rule_key": "bc_high_recent_high_min",
+    "value": 0.995
+   },
+   {
+    "rule_key": "psy_window_before_bc_days",
+    "value": 20
+   },
+   {
+    "rule_key": "psy_tr_pos_min",
+    "value": 0.62
+   },
+   {
+    "rule_key": "psy_vol_ratio_min",
+    "value": 1.05
+   },
+   {
+    "rule_key": "psy_close_ma20_min",
+    "value": 0.98
+   },
+   {
+    "rule_key": "ard_window_after_bc_days",
+    "value": 18
+   },
+   {
+    "rule_key": "ard_decline_close_bc_max",
+    "value": 0.94
+   },
+   {
+    "rule_key": "std_window_after_bc_days",
+    "value": 24
+   },
+   {
+    "rule_key": "std_high_near_bc_tol",
+    "value": 0.04
+   },
+   {
+    "rule_key": "std_vol_vs_bc_max",
+    "value": 0.9
+   },
+   {
+    "rule_key": "std_close_high_max",
+    "value": 0.985
+   },
+   {
+    "rule_key": "utad_high_break_prior_high_min",
+    "value": 1.01
+   },
+   {
+    "rule_key": "utad_close_back_below_prior_high_max",
+    "value": 1.0
+   },
+   {
+    "rule_key": "utad_upper_shadow_min",
+    "value": 0.5
+   },
+   {
+    "rule_key": "utad_vol_ratio_min",
+    "value": 1.2
+   },
+   {
+    "rule_key": "sow_ret10_max",
+    "value": -0.05
+   },
+   {
+    "rule_key": "sow_close_ma20_max",
+    "value": 0.995
+   },
+   {
+    "rule_key": "sow_vol_ratio_min",
+    "value": 1.1
+   },
+   {
+    "rule_key": "lpsy_window_after_anchor_days",
+    "value": 16
+   },
+   {
+    "rule_key": "lpsy_close_ma20_max",
+    "value": 1.0
+   },
+   {
+    "rule_key": "lpsy_short_window_days",
+    "value": 5
+   },
+   {
+    "rule_key": "lpsy_long_window_days",
+    "value": 10
+   },
+   {
+    "rule_key": "lpsy_lower_high_max",
+    "value": 0.99
+   }
+  ],
+  "score_mode": "dimension_weighted",
+  "updated_at": "2026-09-26T00:00:00+00:00"
+ },
+ "default_profile_id": "system_legacy_formula_v1",
+ "metric_options": [
+  {
+   "description": "趋势背景与风险环境（高分更优）",
+   "label": "背景分",
+   "metric_key": "event_background_score"
+  },
+  {
+   "description": "事件发生位置是否处于理想区间（高分更优）",
+   "label": "位置分",
+   "metric_key": "event_position_score"
+  },
+  {
+   "description": "量价协同与主导方向（高分更优）",
+   "label": "量价分",
+   "metric_key": "event_vol_price_score"
+  },
+  {
+   "description": "序列与关键确认状态（高分更优）",
+   "label": "确认分",
+   "metric_key": "event_confirmation_score"
+  },
+  {
+   "description": "前置事件完整度与阶段一致性（高分更优）",
+   "label": "阶段语境分",
+   "metric_key": "phase_context_score"
+  },
+  {
+   "description": "事件时间衰减后的有效性（高分更优）",
+   "label": "新鲜度分",
+   "metric_key": "event_recency_score"
+  },
+  {
+   "description": "事件K线形态质量（高分更优）",
+   "label": "K线质量分",
+   "metric_key": "candle_quality_score"
+  },
+  {
+   "description": "筹码重心迁移质量（高分更优）",
+   "label": "筹码迁移分",
+   "metric_key": "cost_center_shift_score"
+  },
+  {
+   "description": "周线环境对日线事件的放大质量（高分更优）",
+   "label": "周线语境分",
+   "metric_key": "weekly_context_score"
+  },
+  {
+   "description": "风险越高分越高，通常建议勾选反向（invert）",
+   "label": "风险分",
+   "metric_key": "risk_score"
+  }
+ ],
+ "rule_options": [
+  {
+   "category": "基础窗口",
+   "default_value": 40,
+   "description": "事件搜索起始窗口（天）",
+   "label": "核心回看天数",
+   "max_value": 120,
+   "min_value": 20,
+   "recommended_max": 70.0,
+   "recommended_min": 20.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lookback_core_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "基础窗口",
+   "default_value": 35,
+   "description": "近期SC锚点搜索窗口（天）",
+   "label": "SC搜索窗口",
+   "max_value": 120,
+   "min_value": 15,
+   "recommended_max": 66.5,
+   "recommended_min": 15.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_scan_lookback_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "基础窗口",
+   "default_value": 35,
+   "description": "近期BC锚点搜索窗口（天）",
+   "label": "BC搜索窗口",
+   "max_value": 120,
+   "min_value": 15,
+   "recommended_max": 66.5,
+   "recommended_min": 15.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_scan_lookback_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "基础窗口",
+   "default_value": 28,
+   "description": "TSO/Spring基础窗口（天）",
+   "label": "中后期模式窗口",
+   "max_value": 80,
+   "min_value": 10,
+   "recommended_max": 49.0,
+   "recommended_min": 10.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "pattern_window_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "基础窗口",
+   "default_value": 8,
+   "description": "Spring额外搜索扩展窗口（天）",
+   "label": "Spring额外窗口",
+   "max_value": 30,
+   "min_value": 0,
+   "recommended_max": 17.0,
+   "recommended_min": 0.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "pattern_extra_spring_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "PS",
+   "default_value": true,
+   "description": "是否启用PS事件",
+   "label": "启用PS",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_ps",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "SC",
+   "default_value": true,
+   "description": "是否启用SC事件",
+   "label": "启用SC",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_sc",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "AR",
+   "default_value": true,
+   "description": "是否启用AR事件",
+   "label": "启用AR",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_ar",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "ST",
+   "default_value": true,
+   "description": "是否启用ST事件",
+   "label": "启用ST",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_st",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "TSO",
+   "default_value": true,
+   "description": "是否启用TSO事件",
+   "label": "启用TSO",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_tso",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "Spring",
+   "default_value": true,
+   "description": "是否启用Spring事件",
+   "label": "启用Spring",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_spring",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "SOS",
+   "default_value": true,
+   "description": "是否启用SOS事件",
+   "label": "启用SOS",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_sos",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "JOC",
+   "default_value": true,
+   "description": "是否启用JOC事件",
+   "label": "启用JOC",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_joc",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "LPS",
+   "default_value": true,
+   "description": "是否启用LPS事件",
+   "label": "启用LPS",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_lps",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "PSY",
+   "default_value": true,
+   "description": "是否启用PSY风险事件",
+   "label": "启用PSY",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_psy",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "BC",
+   "default_value": true,
+   "description": "是否启用BC风险事件",
+   "label": "启用BC",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_bc",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "AR(d)",
+   "default_value": true,
+   "description": "是否启用AR(d)风险事件",
+   "label": "启用AR(d)",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_ar_d",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "ST(d)",
+   "default_value": true,
+   "description": "是否启用ST(d)风险事件",
+   "label": "启用ST(d)",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_st_d",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "UTAD",
+   "default_value": true,
+   "description": "是否启用UTAD风险事件",
+   "label": "启用UTAD",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_utad",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "SOW",
+   "default_value": true,
+   "description": "是否启用SOW风险事件",
+   "label": "启用SOW",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_sow",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "LPSY",
+   "default_value": true,
+   "description": "是否启用LPSY风险事件",
+   "label": "启用LPSY",
+   "max_value": null,
+   "min_value": null,
+   "recommended_max": null,
+   "recommended_min": null,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "enable_lpsy",
+   "step": null,
+   "value_type": "boolean"
+  },
+  {
+   "category": "SC",
+   "default_value": 0.45,
+   "description": "SC锚点TR位置最大值",
+   "label": "SC锚点位置上限",
+   "max_value": 0.9,
+   "min_value": 0.1,
+   "recommended_max": 0.69,
+   "recommended_min": 0.21000000000000002,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_anchor_tr_pos_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "SC",
+   "default_value": 1.02,
+   "description": "SC锚点 close <= open * 阈值",
+   "label": "SC锚点收开比上限",
+   "max_value": 1.15,
+   "min_value": 0.9,
+   "recommended_max": 1.095,
+   "recommended_min": 0.9450000000000001,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_anchor_close_open_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "SC",
+   "default_value": 1.2,
+   "description": "SC锚点成交量相对阈值",
+   "label": "SC锚点量比下限",
+   "max_value": 3.0,
+   "min_value": 0.5,
+   "recommended_max": 1.95,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_anchor_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "SC",
+   "default_value": 0.38,
+   "description": "SC收盘到低点距离占K线范围上限",
+   "label": "SC收盘贴近低点上限",
+   "max_value": 0.9,
+   "min_value": 0.05,
+   "recommended_max": 0.635,
+   "recommended_min": 0.125,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_close_near_low_ratio_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "SC",
+   "default_value": 0.55,
+   "description": "SC最终判定TR位置上限",
+   "label": "SC位置上限",
+   "max_value": 0.95,
+   "min_value": 0.15,
+   "recommended_max": 0.79,
+   "recommended_min": 0.31000000000000005,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_tr_pos_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "SC",
+   "default_value": 1.05,
+   "description": "SC最终判定量比下限",
+   "label": "SC量比下限",
+   "max_value": 3.0,
+   "min_value": 0.5,
+   "recommended_max": 1.8,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sc_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "PS",
+   "default_value": 25,
+   "description": "PS在SC前搜索天数",
+   "label": "PS向前搜索窗口",
+   "max_value": 80,
+   "min_value": 5,
+   "recommended_max": 47.5,
+   "recommended_min": 5.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ps_window_before_sc_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "PS",
+   "default_value": 0.42,
+   "description": "PS的TR位置上限",
+   "label": "PS位置上限",
+   "max_value": 0.9,
+   "min_value": 0.1,
+   "recommended_max": 0.6599999999999999,
+   "recommended_min": 0.18,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ps_tr_pos_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "PS",
+   "default_value": 1.08,
+   "description": "PS量比下限",
+   "label": "PS量比下限",
+   "max_value": 3.0,
+   "min_value": 0.5,
+   "recommended_max": 1.83,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ps_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "PS",
+   "default_value": 1.02,
+   "description": "PS条件 close <= MA20 * 阈值",
+   "label": "PS收盘相对MA20上限",
+   "max_value": 1.2,
+   "min_value": 0.85,
+   "recommended_max": 1.125,
+   "recommended_min": 0.915,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ps_close_ma20_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "AR",
+   "default_value": 18,
+   "description": "AR在SC后搜索天数",
+   "label": "AR向后搜索窗口",
+   "max_value": 60,
+   "min_value": 3,
+   "recommended_max": 35.099999999999994,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ar_window_after_sc_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "AR",
+   "default_value": 1.05,
+   "description": "AR反弹阈值：反弹高点 >= SC收盘 * 阈值",
+   "label": "AR反弹下限",
+   "max_value": 1.5,
+   "min_value": 1.0,
+   "recommended_max": 1.2,
+   "recommended_min": 1.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ar_rebound_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "ST",
+   "default_value": 12,
+   "description": "AR存在时ST搜索窗口",
+   "label": "ST在AR后窗口",
+   "max_value": 50,
+   "min_value": 3,
+   "recommended_max": 26.1,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "st_window_after_ar_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "ST",
+   "default_value": 18,
+   "description": "AR缺失时ST搜索窗口",
+   "label": "ST在SC后窗口",
+   "max_value": 60,
+   "min_value": 3,
+   "recommended_max": 35.099999999999994,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "st_window_after_sc_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "ST",
+   "default_value": 0.04,
+   "description": "ST低点接近SC低点的最大偏离",
+   "label": "ST贴近SC低点容差",
+   "max_value": 0.25,
+   "min_value": 0.0,
+   "recommended_max": 0.11499999999999999,
+   "recommended_min": 0.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "st_low_near_sc_tol",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "ST",
+   "default_value": 0.85,
+   "description": "ST成交量 <= SC成交量 * 阈值",
+   "label": "ST相对SC量比上限",
+   "max_value": 1.5,
+   "min_value": 0.1,
+   "recommended_max": 1.27,
+   "recommended_min": 0.43,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "st_vol_vs_sc_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "TSO",
+   "default_value": 0.99,
+   "description": "TSO条件 low < prior_low * 阈值",
+   "label": "TSO下破比例上限",
+   "max_value": 1.05,
+   "min_value": 0.85,
+   "recommended_max": 1.05,
+   "recommended_min": 0.9299999999999999,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "tso_break_prior_low_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "TSO",
+   "default_value": 1.0,
+   "description": "TSO条件 close > prior_low * 阈值",
+   "label": "TSO收盘收复下限",
+   "max_value": 1.1,
+   "min_value": 0.9,
+   "recommended_max": 1.06,
+   "recommended_min": 0.94,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "tso_close_reclaim_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "TSO",
+   "default_value": 1.0,
+   "description": "TSO量比下限",
+   "label": "TSO量比下限",
+   "max_value": 3.0,
+   "min_value": 0.5,
+   "recommended_max": 1.75,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "tso_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "Spring",
+   "default_value": 0.985,
+   "description": "Spring条件 low < prior_low * 阈值",
+   "label": "Spring下破比例上限",
+   "max_value": 1.05,
+   "min_value": 0.8,
+   "recommended_max": 1.05,
+   "recommended_min": 0.91,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "spring_break_prior_low_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "Spring",
+   "default_value": 1.0,
+   "description": "Spring条件 close > prior_low * 阈值",
+   "label": "Spring收盘收复下限",
+   "max_value": 1.1,
+   "min_value": 0.9,
+   "recommended_max": 1.06,
+   "recommended_min": 0.94,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "spring_close_reclaim_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "Spring",
+   "default_value": 1.15,
+   "description": "Spring量比下限",
+   "label": "Spring量比下限",
+   "max_value": 3.5,
+   "min_value": 0.5,
+   "recommended_max": 2.05,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "spring_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "SOS",
+   "default_value": 1.01,
+   "description": "SOS条件 close > MA20 * 阈值",
+   "label": "SOS收盘相对MA20下限",
+   "max_value": 1.3,
+   "min_value": 0.9,
+   "recommended_max": 1.13,
+   "recommended_min": 0.9,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sos_close_ma20_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "SOS",
+   "default_value": 0.05,
+   "description": "SOS条件 ret10 > 阈值",
+   "label": "SOS十日涨幅下限",
+   "max_value": 0.5,
+   "min_value": -0.1,
+   "recommended_max": 0.22999999999999998,
+   "recommended_min": -0.1,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sos_ret10_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "SOS",
+   "default_value": 1.05,
+   "description": "SOS量比下限",
+   "label": "SOS量比下限",
+   "max_value": 3.5,
+   "min_value": 0.5,
+   "recommended_max": 1.95,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sos_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "JOC",
+   "default_value": 1.005,
+   "description": "JOC条件 close >= prior_high * 阈值",
+   "label": "JOC突破比例下限",
+   "max_value": 1.2,
+   "min_value": 0.95,
+   "recommended_max": 1.0799999999999998,
+   "recommended_min": 0.95,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "joc_close_break_prior_high_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "JOC",
+   "default_value": 1.2,
+   "description": "JOC量比下限",
+   "label": "JOC量比下限",
+   "max_value": 4.0,
+   "min_value": 0.5,
+   "recommended_max": 2.25,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "joc_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "LPS",
+   "default_value": 12,
+   "description": "LPS在SOS/JOC后搜索窗口",
+   "label": "LPS搜索窗口",
+   "max_value": 40,
+   "min_value": 3,
+   "recommended_max": 23.1,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lps_window_after_anchor_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "LPS",
+   "default_value": 6,
+   "description": "LPS距SOS/JOC锚点的最大间隔",
+   "label": "LPS距锚点最大天数",
+   "max_value": 30,
+   "min_value": 1,
+   "recommended_max": 14.7,
+   "recommended_min": 1.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lps_anchor_max_gap_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "LPS",
+   "default_value": 0.995,
+   "description": "LPS条件 close > MA20 * 阈值",
+   "label": "LPS收盘相对MA20下限",
+   "max_value": 1.2,
+   "min_value": 0.85,
+   "recommended_max": 1.1,
+   "recommended_min": 0.89,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lps_close_ma20_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "LPS",
+   "default_value": 0.95,
+   "description": "LPS成交量 <= 前5日均量 * 阈值",
+   "label": "LPS相对前5日均量上限",
+   "max_value": 1.5,
+   "min_value": 0.1,
+   "recommended_max": 1.3699999999999999,
+   "recommended_min": 0.53,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lps_vol_vs_prev5_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 0.62,
+   "description": "BC锚点TR位置最小值",
+   "label": "BC锚点位置下限",
+   "max_value": 0.98,
+   "min_value": 0.1,
+   "recommended_max": 0.884,
+   "recommended_min": 0.356,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_anchor_tr_pos_min",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 0.98,
+   "description": "BC锚点 close >= open * 阈值",
+   "label": "BC锚点收开比下限",
+   "max_value": 1.2,
+   "min_value": 0.8,
+   "recommended_max": 1.0999999999999999,
+   "recommended_min": 0.86,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_anchor_close_open_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 1.2,
+   "description": "BC锚点量比下限",
+   "label": "BC锚点量比下限",
+   "max_value": 4.0,
+   "min_value": 0.5,
+   "recommended_max": 2.25,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_anchor_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 0.995,
+   "description": "BC锚点 high >= prior_high * 阈值",
+   "label": "BC锚点突破比例下限",
+   "max_value": 1.2,
+   "min_value": 0.9,
+   "recommended_max": 1.085,
+   "recommended_min": 0.905,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_anchor_high_prior_high_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 0.32,
+   "description": "BC收盘到高点距离占K线范围上限",
+   "label": "BC收盘贴近高点上限",
+   "max_value": 0.9,
+   "min_value": 0.05,
+   "recommended_max": 0.575,
+   "recommended_min": 0.065,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_close_near_high_ratio_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 0.58,
+   "description": "BC最终判定TR位置下限",
+   "label": "BC位置下限",
+   "max_value": 0.98,
+   "min_value": 0.05,
+   "recommended_max": 0.859,
+   "recommended_min": 0.301,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_tr_pos_min",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 1.05,
+   "description": "BC最终判定量比下限",
+   "label": "BC量比下限",
+   "max_value": 4.0,
+   "min_value": 0.5,
+   "recommended_max": 2.1,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "BC",
+   "default_value": 0.995,
+   "description": "BC条件 high >= 最近高点 * 阈值",
+   "label": "BC近期新高比例下限",
+   "max_value": 1.2,
+   "min_value": 0.9,
+   "recommended_max": 1.085,
+   "recommended_min": 0.905,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "bc_high_recent_high_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "PSY",
+   "default_value": 20,
+   "description": "PSY在BC前搜索天数",
+   "label": "PSY向前搜索窗口",
+   "max_value": 60,
+   "min_value": 5,
+   "recommended_max": 36.5,
+   "recommended_min": 5.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "psy_window_before_bc_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "PSY",
+   "default_value": 0.62,
+   "description": "PSY TR位置下限",
+   "label": "PSY位置下限",
+   "max_value": 0.98,
+   "min_value": 0.1,
+   "recommended_max": 0.884,
+   "recommended_min": 0.356,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "psy_tr_pos_min",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "PSY",
+   "default_value": 1.05,
+   "description": "PSY量比下限",
+   "label": "PSY量比下限",
+   "max_value": 4.0,
+   "min_value": 0.5,
+   "recommended_max": 2.1,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "psy_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "PSY",
+   "default_value": 0.98,
+   "description": "PSY条件 close >= MA20 * 阈值",
+   "label": "PSY收盘相对MA20下限",
+   "max_value": 1.2,
+   "min_value": 0.8,
+   "recommended_max": 1.0999999999999999,
+   "recommended_min": 0.86,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "psy_close_ma20_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "AR(d)",
+   "default_value": 18,
+   "description": "AR(d)在BC后搜索天数",
+   "label": "AR(d)向后搜索窗口",
+   "max_value": 60,
+   "min_value": 3,
+   "recommended_max": 35.099999999999994,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ard_window_after_bc_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "AR(d)",
+   "default_value": 0.94,
+   "description": "AR(d)条件 最低收盘 <= BC收盘 * 阈值",
+   "label": "AR(d)回落比例上限",
+   "max_value": 1.0,
+   "min_value": 0.5,
+   "recommended_max": 1.0,
+   "recommended_min": 0.7899999999999999,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "ard_decline_close_bc_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "ST(d)",
+   "default_value": 24,
+   "description": "ST(d)在BC后搜索窗口",
+   "label": "ST(d)搜索窗口",
+   "max_value": 80,
+   "min_value": 3,
+   "recommended_max": 47.099999999999994,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "std_window_after_bc_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "ST(d)",
+   "default_value": 0.04,
+   "description": "ST(d)高点接近BC高点的最大偏离",
+   "label": "ST(d)贴近BC高点容差",
+   "max_value": 0.3,
+   "min_value": 0.0,
+   "recommended_max": 0.13,
+   "recommended_min": 0.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "std_high_near_bc_tol",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "ST(d)",
+   "default_value": 0.9,
+   "description": "ST(d)成交量 <= BC成交量 * 阈值",
+   "label": "ST(d)相对BC量比上限",
+   "max_value": 2.0,
+   "min_value": 0.1,
+   "recommended_max": 1.47,
+   "recommended_min": 0.33000000000000007,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "std_vol_vs_bc_max",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "ST(d)",
+   "default_value": 0.985,
+   "description": "ST(d)条件 close <= high * 阈值",
+   "label": "ST(d)收盘贴高上限",
+   "max_value": 1.1,
+   "min_value": 0.7,
+   "recommended_max": 1.1,
+   "recommended_min": 0.865,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "std_close_high_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "UTAD",
+   "default_value": 1.01,
+   "description": "UTAD条件 high >= prior_high * 阈值",
+   "label": "UTAD假突破比例下限",
+   "max_value": 1.3,
+   "min_value": 0.95,
+   "recommended_max": 1.115,
+   "recommended_min": 0.95,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "utad_high_break_prior_high_min",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "UTAD",
+   "default_value": 1.0,
+   "description": "UTAD条件 close < prior_high * 阈值",
+   "label": "UTAD回落比例上限",
+   "max_value": 1.2,
+   "min_value": 0.8,
+   "recommended_max": 1.1199999999999999,
+   "recommended_min": 0.88,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "utad_close_back_below_prior_high_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "UTAD",
+   "default_value": 0.5,
+   "description": "UTAD上影线占K线范围最小值",
+   "label": "UTAD上影占比下限",
+   "max_value": 1.0,
+   "min_value": 0.0,
+   "recommended_max": 0.8,
+   "recommended_min": 0.2,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "utad_upper_shadow_min",
+   "step": 0.005,
+   "value_type": "number"
+  },
+  {
+   "category": "UTAD",
+   "default_value": 1.2,
+   "description": "UTAD量比下限",
+   "label": "UTAD量比下限",
+   "max_value": 4.0,
+   "min_value": 0.5,
+   "recommended_max": 2.25,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "utad_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "SOW",
+   "default_value": -0.05,
+   "description": "SOW条件 ret10 <= 阈值",
+   "label": "SOW十日涨幅上限",
+   "max_value": 0.1,
+   "min_value": -0.6,
+   "recommended_max": 0.1,
+   "recommended_min": -0.26,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sow_ret10_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "SOW",
+   "default_value": 0.995,
+   "description": "SOW条件 close < MA20 * 阈值",
+   "label": "SOW收盘相对MA20上限",
+   "max_value": 1.2,
+   "min_value": 0.7,
+   "recommended_max": 1.145,
+   "recommended_min": 0.845,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sow_close_ma20_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "SOW",
+   "default_value": 1.1,
+   "description": "SOW量比下限",
+   "label": "SOW量比下限",
+   "max_value": 4.0,
+   "min_value": 0.5,
+   "recommended_max": 2.1500000000000004,
+   "recommended_min": 0.5,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "sow_vol_ratio_min",
+   "step": 0.01,
+   "value_type": "number"
+  },
+  {
+   "category": "LPSY",
+   "default_value": 16,
+   "description": "LPSY在SOW/UTAD后搜索窗口",
+   "label": "LPSY搜索窗口",
+   "max_value": 80,
+   "min_value": 3,
+   "recommended_max": 39.099999999999994,
+   "recommended_min": 3.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lpsy_window_after_anchor_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "LPSY",
+   "default_value": 1.0,
+   "description": "LPSY条件 close < MA20 * 阈值",
+   "label": "LPSY收盘相对MA20上限",
+   "max_value": 1.2,
+   "min_value": 0.7,
+   "recommended_max": 1.15,
+   "recommended_min": 0.85,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lpsy_close_ma20_max",
+   "step": 0.001,
+   "value_type": "number"
+  },
+  {
+   "category": "LPSY",
+   "default_value": 5,
+   "description": "LPSY最近高点窗口（短）",
+   "label": "LPSY短高点窗口",
+   "max_value": 20,
+   "min_value": 2,
+   "recommended_max": 10.399999999999999,
+   "recommended_min": 2.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lpsy_short_window_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "LPSY",
+   "default_value": 10,
+   "description": "LPSY历史高点窗口（长）",
+   "label": "LPSY长高点窗口",
+   "max_value": 40,
+   "min_value": 4,
+   "recommended_max": 20.799999999999997,
+   "recommended_min": 4.0,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lpsy_long_window_days",
+   "step": 1,
+   "value_type": "integer"
+  },
+  {
+   "category": "LPSY",
+   "default_value": 0.99,
+   "description": "LPSY条件 近期高点 <= 更早高点 * 阈值",
+   "label": "LPSY次高点比例上限",
+   "max_value": 1.1,
+   "min_value": 0.7,
+   "recommended_max": 1.1,
+   "recommended_min": 0.87,
+   "risk_hint_high": "高于推荐区间，可能导致条件过严或漏判，请结合胜率与覆盖率权衡。",
+   "risk_hint_low": "低于推荐区间，可能放宽或扭曲判别灵敏度，请结合信号数量与回测稳定性评估。",
+   "rule_key": "lpsy_lower_high_max",
+   "step": 0.001,
+   "value_type": "number"
+  }
+ ],
+ "system_profiles": [
+  {
+   "description": "保持当前版本历史公式，兼容旧结果。",
+   "dimensions": [],
+   "is_system": true,
+   "name": "系统预设：经典综合判别",
+   "profile_id": "system_legacy_formula_v1",
+   "rule_values": [
+    {
+     "rule_key": "lookback_core_days",
+     "value": 40
+    },
+    {
+     "rule_key": "sc_scan_lookback_days",
+     "value": 35
+    },
+    {
+     "rule_key": "bc_scan_lookback_days",
+     "value": 35
+    },
+    {
+     "rule_key": "pattern_window_days",
+     "value": 28
+    },
+    {
+     "rule_key": "pattern_extra_spring_days",
+     "value": 8
+    },
+    {
+     "rule_key": "enable_ps",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_ar",
+     "value": true
+    },
+    {
+     "rule_key": "enable_st",
+     "value": true
+    },
+    {
+     "rule_key": "enable_tso",
+     "value": true
+    },
+    {
+     "rule_key": "enable_spring",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sos",
+     "value": true
+    },
+    {
+     "rule_key": "enable_joc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_lps",
+     "value": true
+    },
+    {
+     "rule_key": "enable_psy",
+     "value": true
+    },
+    {
+     "rule_key": "enable_bc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_ar_d",
+     "value": true
+    },
+    {
+     "rule_key": "enable_st_d",
+     "value": true
+    },
+    {
+     "rule_key": "enable_utad",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sow",
+     "value": true
+    },
+    {
+     "rule_key": "enable_lpsy",
+     "value": true
+    },
+    {
+     "rule_key": "sc_anchor_tr_pos_max",
+     "value": 0.45
+    },
+    {
+     "rule_key": "sc_anchor_close_open_max",
+     "value": 1.02
+    },
+    {
+     "rule_key": "sc_anchor_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "sc_close_near_low_ratio_max",
+     "value": 0.38
+    },
+    {
+     "rule_key": "sc_tr_pos_max",
+     "value": 0.55
+    },
+    {
+     "rule_key": "sc_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "ps_window_before_sc_days",
+     "value": 25
+    },
+    {
+     "rule_key": "ps_tr_pos_max",
+     "value": 0.42
+    },
+    {
+     "rule_key": "ps_vol_ratio_min",
+     "value": 1.08
+    },
+    {
+     "rule_key": "ps_close_ma20_max",
+     "value": 1.02
+    },
+    {
+     "rule_key": "ar_window_after_sc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "ar_rebound_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "st_window_after_ar_days",
+     "value": 12
+    },
+    {
+     "rule_key": "st_window_after_sc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "st_low_near_sc_tol",
+     "value": 0.04
+    },
+    {
+     "rule_key": "st_vol_vs_sc_max",
+     "value": 0.85
+    },
+    {
+     "rule_key": "tso_break_prior_low_max",
+     "value": 0.99
+    },
+    {
+     "rule_key": "tso_close_reclaim_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "tso_vol_ratio_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "spring_break_prior_low_max",
+     "value": 0.985
+    },
+    {
+     "rule_key": "spring_close_reclaim_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "spring_vol_ratio_min",
+     "value": 1.15
+    },
+    {
+     "rule_key": "sos_close_ma20_min",
+     "value": 1.01
+    },
+    {
+     "rule_key": "sos_ret10_min",
+     "value": 0.05
+    },
+    {
+     "rule_key": "sos_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "joc_close_break_prior_high_min",
+     "value": 1.005
+    },
+    {
+     "rule_key": "joc_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "lps_window_after_anchor_days",
+     "value": 12
+    },
+    {
+     "rule_key": "lps_anchor_max_gap_days",
+     "value": 6
+    },
+    {
+     "rule_key": "lps_close_ma20_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "lps_vol_vs_prev5_max",
+     "value": 0.95
+    },
+    {
+     "rule_key": "bc_anchor_tr_pos_min",
+     "value": 0.62
+    },
+    {
+     "rule_key": "bc_anchor_close_open_min",
+     "value": 0.98
+    },
+    {
+     "rule_key": "bc_anchor_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "bc_anchor_high_prior_high_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "bc_close_near_high_ratio_max",
+     "value": 0.32
+    },
+    {
+     "rule_key": "bc_tr_pos_min",
+     "value": 0.58
+    },
+    {
+     "rule_key": "bc_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "bc_high_recent_high_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "psy_window_before_bc_days",
+     "value": 20
+    },
+    {
+     "rule_key": "psy_tr_pos_min",
+     "value": 0.62
+    },
+    {
+     "rule_key": "psy_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "psy_close_ma20_min",
+     "value": 0.98
+    },
+    {
+     "rule_key": "ard_window_after_bc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "ard_decline_close_bc_max",
+     "value": 0.94
+    },
+    {
+     "rule_key": "std_window_after_bc_days",
+     "value": 24
+    },
+    {
+     "rule_key": "std_high_near_bc_tol",
+     "value": 0.04
+    },
+    {
+     "rule_key": "std_vol_vs_bc_max",
+     "value": 0.9
+    },
+    {
+     "rule_key": "std_close_high_max",
+     "value": 0.985
+    },
+    {
+     "rule_key": "utad_high_break_prior_high_min",
+     "value": 1.01
+    },
+    {
+     "rule_key": "utad_close_back_below_prior_high_max",
+     "value": 1.0
+    },
+    {
+     "rule_key": "utad_upper_shadow_min",
+     "value": 0.5
+    },
+    {
+     "rule_key": "utad_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "sow_ret10_max",
+     "value": -0.05
+    },
+    {
+     "rule_key": "sow_close_ma20_max",
+     "value": 0.995
+    },
+    {
+     "rule_key": "sow_vol_ratio_min",
+     "value": 1.1
+    },
+    {
+     "rule_key": "lpsy_window_after_anchor_days",
+     "value": 16
+    },
+    {
+     "rule_key": "lpsy_close_ma20_max",
+     "value": 1.0
+    },
+    {
+     "rule_key": "lpsy_short_window_days",
+     "value": 5
+    },
+    {
+     "rule_key": "lpsy_long_window_days",
+     "value": 10
+    },
+    {
+     "rule_key": "lpsy_lower_high_max",
+     "value": 0.99
+    }
+   ],
+   "score_mode": "legacy_formula",
+   "updated_at": "2026-09-26T00:00:00+00:00"
+  },
+  {
+   "description": "背景 + 位置 + 量价 三维判别。",
+   "dimensions": [
+    {
+     "dimension_id": "dim_background",
+     "enabled": true,
+     "invert": false,
+     "label": "背景分",
+     "metric_key": "event_background_score",
+     "weight": 0.34
+    },
+    {
+     "dimension_id": "dim_position",
+     "enabled": true,
+     "invert": false,
+     "label": "位置分",
+     "metric_key": "event_position_score",
+     "weight": 0.33
+    },
+    {
+     "dimension_id": "dim_vol_price",
+     "enabled": true,
+     "invert": false,
+     "label": "量价分",
+     "metric_key": "event_vol_price_score",
+     "weight": 0.33
+    }
+   ],
+   "is_system": true,
+   "name": "系统预设：三维核心",
+   "profile_id": "system_3d_core_v1",
+   "rule_values": [
+    {
+     "rule_key": "lookback_core_days",
+     "value": 40
+    },
+    {
+     "rule_key": "sc_scan_lookback_days",
+     "value": 35
+    },
+    {
+     "rule_key": "bc_scan_lookback_days",
+     "value": 35
+    },
+    {
+     "rule_key": "pattern_window_days",
+     "value": 28
+    },
+    {
+     "rule_key": "pattern_extra_spring_days",
+     "value": 8
+    },
+    {
+     "rule_key": "enable_ps",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_ar",
+     "value": true
+    },
+    {
+     "rule_key": "enable_st",
+     "value": true
+    },
+    {
+     "rule_key": "enable_tso",
+     "value": true
+    },
+    {
+     "rule_key": "enable_spring",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sos",
+     "value": true
+    },
+    {
+     "rule_key": "enable_joc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_lps",
+     "value": true
+    },
+    {
+     "rule_key": "enable_psy",
+     "value": true
+    },
+    {
+     "rule_key": "enable_bc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_ar_d",
+     "value": true
+    },
+    {
+     "rule_key": "enable_st_d",
+     "value": true
+    },
+    {
+     "rule_key": "enable_utad",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sow",
+     "value": true
+    },
+    {
+     "rule_key": "enable_lpsy",
+     "value": true
+    },
+    {
+     "rule_key": "sc_anchor_tr_pos_max",
+     "value": 0.45
+    },
+    {
+     "rule_key": "sc_anchor_close_open_max",
+     "value": 1.02
+    },
+    {
+     "rule_key": "sc_anchor_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "sc_close_near_low_ratio_max",
+     "value": 0.38
+    },
+    {
+     "rule_key": "sc_tr_pos_max",
+     "value": 0.55
+    },
+    {
+     "rule_key": "sc_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "ps_window_before_sc_days",
+     "value": 25
+    },
+    {
+     "rule_key": "ps_tr_pos_max",
+     "value": 0.42
+    },
+    {
+     "rule_key": "ps_vol_ratio_min",
+     "value": 1.08
+    },
+    {
+     "rule_key": "ps_close_ma20_max",
+     "value": 1.02
+    },
+    {
+     "rule_key": "ar_window_after_sc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "ar_rebound_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "st_window_after_ar_days",
+     "value": 12
+    },
+    {
+     "rule_key": "st_window_after_sc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "st_low_near_sc_tol",
+     "value": 0.04
+    },
+    {
+     "rule_key": "st_vol_vs_sc_max",
+     "value": 0.85
+    },
+    {
+     "rule_key": "tso_break_prior_low_max",
+     "value": 0.99
+    },
+    {
+     "rule_key": "tso_close_reclaim_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "tso_vol_ratio_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "spring_break_prior_low_max",
+     "value": 0.985
+    },
+    {
+     "rule_key": "spring_close_reclaim_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "spring_vol_ratio_min",
+     "value": 1.15
+    },
+    {
+     "rule_key": "sos_close_ma20_min",
+     "value": 1.01
+    },
+    {
+     "rule_key": "sos_ret10_min",
+     "value": 0.05
+    },
+    {
+     "rule_key": "sos_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "joc_close_break_prior_high_min",
+     "value": 1.005
+    },
+    {
+     "rule_key": "joc_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "lps_window_after_anchor_days",
+     "value": 12
+    },
+    {
+     "rule_key": "lps_anchor_max_gap_days",
+     "value": 6
+    },
+    {
+     "rule_key": "lps_close_ma20_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "lps_vol_vs_prev5_max",
+     "value": 0.95
+    },
+    {
+     "rule_key": "bc_anchor_tr_pos_min",
+     "value": 0.62
+    },
+    {
+     "rule_key": "bc_anchor_close_open_min",
+     "value": 0.98
+    },
+    {
+     "rule_key": "bc_anchor_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "bc_anchor_high_prior_high_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "bc_close_near_high_ratio_max",
+     "value": 0.32
+    },
+    {
+     "rule_key": "bc_tr_pos_min",
+     "value": 0.58
+    },
+    {
+     "rule_key": "bc_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "bc_high_recent_high_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "psy_window_before_bc_days",
+     "value": 20
+    },
+    {
+     "rule_key": "psy_tr_pos_min",
+     "value": 0.62
+    },
+    {
+     "rule_key": "psy_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "psy_close_ma20_min",
+     "value": 0.98
+    },
+    {
+     "rule_key": "ard_window_after_bc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "ard_decline_close_bc_max",
+     "value": 0.94
+    },
+    {
+     "rule_key": "std_window_after_bc_days",
+     "value": 24
+    },
+    {
+     "rule_key": "std_high_near_bc_tol",
+     "value": 0.04
+    },
+    {
+     "rule_key": "std_vol_vs_bc_max",
+     "value": 0.9
+    },
+    {
+     "rule_key": "std_close_high_max",
+     "value": 0.985
+    },
+    {
+     "rule_key": "utad_high_break_prior_high_min",
+     "value": 1.01
+    },
+    {
+     "rule_key": "utad_close_back_below_prior_high_max",
+     "value": 1.0
+    },
+    {
+     "rule_key": "utad_upper_shadow_min",
+     "value": 0.5
+    },
+    {
+     "rule_key": "utad_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "sow_ret10_max",
+     "value": -0.05
+    },
+    {
+     "rule_key": "sow_close_ma20_max",
+     "value": 0.995
+    },
+    {
+     "rule_key": "sow_vol_ratio_min",
+     "value": 1.1
+    },
+    {
+     "rule_key": "lpsy_window_after_anchor_days",
+     "value": 16
+    },
+    {
+     "rule_key": "lpsy_close_ma20_max",
+     "value": 1.0
+    },
+    {
+     "rule_key": "lpsy_short_window_days",
+     "value": 5
+    },
+    {
+     "rule_key": "lpsy_long_window_days",
+     "value": 10
+    },
+    {
+     "rule_key": "lpsy_lower_high_max",
+     "value": 0.99
+    }
+   ],
+   "score_mode": "dimension_weighted",
+   "updated_at": "2026-09-26T00:00:00+00:00"
+  },
+  {
+   "description": "背景/位置/量价/确认/语境/新鲜度 六维综合。",
+   "dimensions": [
+    {
+     "dimension_id": "dim_background",
+     "enabled": true,
+     "invert": false,
+     "label": "背景分",
+     "metric_key": "event_background_score",
+     "weight": 0.22
+    },
+    {
+     "dimension_id": "dim_position",
+     "enabled": true,
+     "invert": false,
+     "label": "位置分",
+     "metric_key": "event_position_score",
+     "weight": 0.14
+    },
+    {
+     "dimension_id": "dim_vol_price",
+     "enabled": true,
+     "invert": false,
+     "label": "量价分",
+     "metric_key": "event_vol_price_score",
+     "weight": 0.2
+    },
+    {
+     "dimension_id": "dim_confirmation",
+     "enabled": true,
+     "invert": false,
+     "label": "确认分",
+     "metric_key": "event_confirmation_score",
+     "weight": 0.18
+    },
+    {
+     "dimension_id": "dim_context",
+     "enabled": true,
+     "invert": false,
+     "label": "阶段语境分",
+     "metric_key": "phase_context_score",
+     "weight": 0.14
+    },
+    {
+     "dimension_id": "dim_recency",
+     "enabled": true,
+     "invert": false,
+     "label": "新鲜度分",
+     "metric_key": "event_recency_score",
+     "weight": 0.12
+    }
+   ],
+   "is_system": true,
+   "name": "系统预设：六维确认增强",
+   "profile_id": "system_6d_confirmation_v1",
+   "rule_values": [
+    {
+     "rule_key": "lookback_core_days",
+     "value": 40
+    },
+    {
+     "rule_key": "sc_scan_lookback_days",
+     "value": 35
+    },
+    {
+     "rule_key": "bc_scan_lookback_days",
+     "value": 35
+    },
+    {
+     "rule_key": "pattern_window_days",
+     "value": 28
+    },
+    {
+     "rule_key": "pattern_extra_spring_days",
+     "value": 8
+    },
+    {
+     "rule_key": "enable_ps",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_ar",
+     "value": true
+    },
+    {
+     "rule_key": "enable_st",
+     "value": true
+    },
+    {
+     "rule_key": "enable_tso",
+     "value": true
+    },
+    {
+     "rule_key": "enable_spring",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sos",
+     "value": true
+    },
+    {
+     "rule_key": "enable_joc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_lps",
+     "value": true
+    },
+    {
+     "rule_key": "enable_psy",
+     "value": true
+    },
+    {
+     "rule_key": "enable_bc",
+     "value": true
+    },
+    {
+     "rule_key": "enable_ar_d",
+     "value": true
+    },
+    {
+     "rule_key": "enable_st_d",
+     "value": true
+    },
+    {
+     "rule_key": "enable_utad",
+     "value": true
+    },
+    {
+     "rule_key": "enable_sow",
+     "value": true
+    },
+    {
+     "rule_key": "enable_lpsy",
+     "value": true
+    },
+    {
+     "rule_key": "sc_anchor_tr_pos_max",
+     "value": 0.45
+    },
+    {
+     "rule_key": "sc_anchor_close_open_max",
+     "value": 1.02
+    },
+    {
+     "rule_key": "sc_anchor_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "sc_close_near_low_ratio_max",
+     "value": 0.38
+    },
+    {
+     "rule_key": "sc_tr_pos_max",
+     "value": 0.55
+    },
+    {
+     "rule_key": "sc_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "ps_window_before_sc_days",
+     "value": 25
+    },
+    {
+     "rule_key": "ps_tr_pos_max",
+     "value": 0.42
+    },
+    {
+     "rule_key": "ps_vol_ratio_min",
+     "value": 1.08
+    },
+    {
+     "rule_key": "ps_close_ma20_max",
+     "value": 1.02
+    },
+    {
+     "rule_key": "ar_window_after_sc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "ar_rebound_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "st_window_after_ar_days",
+     "value": 12
+    },
+    {
+     "rule_key": "st_window_after_sc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "st_low_near_sc_tol",
+     "value": 0.04
+    },
+    {
+     "rule_key": "st_vol_vs_sc_max",
+     "value": 0.85
+    },
+    {
+     "rule_key": "tso_break_prior_low_max",
+     "value": 0.99
+    },
+    {
+     "rule_key": "tso_close_reclaim_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "tso_vol_ratio_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "spring_break_prior_low_max",
+     "value": 0.985
+    },
+    {
+     "rule_key": "spring_close_reclaim_min",
+     "value": 1.0
+    },
+    {
+     "rule_key": "spring_vol_ratio_min",
+     "value": 1.15
+    },
+    {
+     "rule_key": "sos_close_ma20_min",
+     "value": 1.01
+    },
+    {
+     "rule_key": "sos_ret10_min",
+     "value": 0.05
+    },
+    {
+     "rule_key": "sos_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "joc_close_break_prior_high_min",
+     "value": 1.005
+    },
+    {
+     "rule_key": "joc_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "lps_window_after_anchor_days",
+     "value": 12
+    },
+    {
+     "rule_key": "lps_anchor_max_gap_days",
+     "value": 6
+    },
+    {
+     "rule_key": "lps_close_ma20_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "lps_vol_vs_prev5_max",
+     "value": 0.95
+    },
+    {
+     "rule_key": "bc_anchor_tr_pos_min",
+     "value": 0.62
+    },
+    {
+     "rule_key": "bc_anchor_close_open_min",
+     "value": 0.98
+    },
+    {
+     "rule_key": "bc_anchor_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "bc_anchor_high_prior_high_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "bc_close_near_high_ratio_max",
+     "value": 0.32
+    },
+    {
+     "rule_key": "bc_tr_pos_min",
+     "value": 0.58
+    },
+    {
+     "rule_key": "bc_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "bc_high_recent_high_min",
+     "value": 0.995
+    },
+    {
+     "rule_key": "psy_window_before_bc_days",
+     "value": 20
+    },
+    {
+     "rule_key": "psy_tr_pos_min",
+     "value": 0.62
+    },
+    {
+     "rule_key": "psy_vol_ratio_min",
+     "value": 1.05
+    },
+    {
+     "rule_key": "psy_close_ma20_min",
+     "value": 0.98
+    },
+    {
+     "rule_key": "ard_window_after_bc_days",
+     "value": 18
+    },
+    {
+     "rule_key": "ard_decline_close_bc_max",
+     "value": 0.94
+    },
+    {
+     "rule_key": "std_window_after_bc_days",
+     "value": 24
+    },
+    {
+     "rule_key": "std_high_near_bc_tol",
+     "value": 0.04
+    },
+    {
+     "rule_key": "std_vol_vs_bc_max",
+     "value": 0.9
+    },
+    {
+     "rule_key": "std_close_high_max",
+     "value": 0.985
+    },
+    {
+     "rule_key": "utad_high_break_prior_high_min",
+     "value": 1.01
+    },
+    {
+     "rule_key": "utad_close_back_below_prior_high_max",
+     "value": 1.0
+    },
+    {
+     "rule_key": "utad_upper_shadow_min",
+     "value": 0.5
+    },
+    {
+     "rule_key": "utad_vol_ratio_min",
+     "value": 1.2
+    },
+    {
+     "rule_key": "sow_ret10_max",
+     "value": -0.05
+    },
+    {
+     "rule_key": "sow_close_ma20_max",
+     "value": 0.995
+    },
+    {
+     "rule_key": "sow_vol_ratio_min",
+     "value": 1.1
+    },
+    {
+     "rule_key": "lpsy_window_after_anchor_days",
+     "value": 16
+    },
+    {
+     "rule_key": "lpsy_close_ma20_max",
+     "value": 1.0
+    },
+    {
+     "rule_key": "lpsy_short_window_days",
+     "value": 5
+    },
+    {
+     "rule_key": "lpsy_long_window_days",
+     "value": 10
+    },
+    {
+     "rule_key": "lpsy_lower_high_max",
+     "value": 0.99
+    }
+   ],
+   "score_mode": "dimension_weighted",
+   "updated_at": "2026-09-26T00:00:00+00:00"
+  }
+ ]
+}

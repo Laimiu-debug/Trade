@@ -38,8 +38,8 @@
 | [设计令牌 JSON](design-tokens.json) | 浅色 / 深色 / 打印、色彩、字体、尺寸、间距、动效的单一数值源 |
 | [开发 TODO](DEVELOPMENT_TODO.md) | 依赖顺序、里程碑、交付物、逐项完成条件 |
 | [原始能力清单](source-inventory.json) | 原接口逐条映射到功能 ID，保留策略参数 schema / 默认值 / 能力标记 |
-| [已有代码审查 TODO](CODE_REVIEW_TODO.md) | 当前过渡版本的问题证据；用于新系统的防回归条件 |
-| [文档检查记录](DOCUMENTATION_CHECK.md) | 本轮静态检查结果与尚未进行的实现验收 |
+| [已有代码审查 TODO](archive/CODE_REVIEW_TODO.md) | 当前过渡版本的问题证据；用于新系统的防回归条件 |
+| [文档检查记录](archive/DOCUMENTATION_CHECK.md) | 本轮静态检查结果与尚未进行的实现验收 |
 
 ## 4. 核对基线
 

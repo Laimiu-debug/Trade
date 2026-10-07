@@ -14,9 +14,11 @@ from trade_app.research.lab_rule_verify import verify_rule, verify_dates, normal
 from trade_app.research.portfolio_domain import canonical
 from trade_app.research.trend_king_domain import CandlePoint
 from test_strategy_lab import fixture
+from legacy_oracle import oracle, plain
 
 
 def original_rule():
+    """``should_buy`` from the retired backend/scripts/verify_weike_rules.py (recording only)."""
     source = Path(__file__).resolve().parents[1] / 'scripts/verify_weike_rules.py'
     tree = ast.parse(source.read_text(encoding='utf-8'))
     function = next(row for row in tree.body if isinstance(row, ast.FunctionDef) and row.name == 'should_buy')
@@ -32,33 +34,47 @@ def request_for(value):
 
 
 def test_verify_profile_matches_original_branches_and_all_threshold_boundaries():
-    old = original_rule()
+    cases = []
     for trough, state, previous, retail, turn, formed in product(
             [.0499,.05,.0501,.1699,.17,.22,.2201,.30,.3001,.3499,.35,.52,.5201,.72],
             ['falling','flat','rising'], ['falling','flat'], [False,True], [False,True], [False,True]):
         indicator = {'trough_percentile':trough,'main_force_state':state,'retail_sell_signal':retail,'trough_turn':turn}
-        ths, pattern = {'prev_main_force_state':previous}, {'rhythm_pattern_formed':formed}
-        expected = old(ths,indicator,pattern=pattern)
+        cases.append(({'prev_main_force_state':previous}, indicator, {'rhythm_pattern_formed':formed}))
+
+    def legacy():
+        old = original_rule()
+        return [list(old(ths, indicator, pattern=pattern)) for ths, indicator, pattern in cases]
+    expected_rows = oracle('should_buy_grid', legacy)
+    assert len(expected_rows) == len(cases)
+    for (ths, indicator, pattern), expected in zip(cases, expected_rows):
         actual = verify_rule(ths,indicator,pattern=pattern)
-        assert (actual['signal'],actual['reason']) == expected
+        assert [actual['signal'],actual['reason']] == expected
     # This fixed diagnostic differs from tune_custom's flat-state deep trough.
     assert not verify_rule({}, {'trough_percentile':.04,'main_force_state':'flat'}, pattern={'rhythm_pattern_formed':True})['signal']
 
 
 def test_actual_each_prefix_matches_original_formulas_and_labels_cannot_change_signals():
-    from app.core.force_rhythm_strategy import calculate_force_rhythm_signal as old_rhythm, detect_rhythm_wave_pattern as old_pattern
-    from app.core.ths_volume_signal import calculate_ths_main_retail_signal as old_ths
     value = normalize_input(fixture()); context = portfolio_context(value)
     request = normalize_verification(request_for(value), value['datasets'])
-    result = verify_dates(context,request); old = original_rule()
+    result = verify_dates(context,request)
     assert result['scope'] == 'fixed_research_rule_verification_only'
+
+    def legacy():
+        from app.core.force_rhythm_strategy import calculate_force_rhythm_signal as old_rhythm, detect_rhythm_wave_pattern as old_pattern
+        from app.core.ths_volume_signal import calculate_ths_main_retail_signal as old_ths
+        old = original_rule(); rows = {}
+        for row in result['daily_evaluations']:
+            candles = [CandlePoint(time=bar['event_date'], **{key: float(bar[key]) for key in ('open','high','low','close')},volume=bar['volume'],amount=float(bar.get('amount') or 0))
+                       for bar in context['datasets'][0]['bars'] if bar['event_date'] <= row['date']]
+            indicator, ths = old_rhythm(candles), old_ths(candles)
+            rows[row['date']] = {'indicator': indicator, 'ths': ths, 'rule': list(old(ths,indicator,pattern=old_pattern(indicator)))}
+        return rows
+    expected = oracle('daily_prefixes', legacy)
+    assert set(expected) == {row['date'] for row in result['daily_evaluations']}
     for row in result['daily_evaluations']:
-        candles = [CandlePoint(time=bar['event_date'], **{key: float(bar[key]) for key in ('open','high','low','close')},volume=bar['volume'],amount=float(bar.get('amount') or 0))
-                   for bar in context['datasets'][0]['bars'] if bar['event_date'] <= row['date']]
-        indicator, ths = old_rhythm(candles), old_ths(candles)
-        assert row['indicator'] == indicator
-        assert row['ths'] == ths
-        assert (row['signal'],row['reason']) == old(ths,indicator,pattern=old_pattern(indicator))
+        assert plain(row['indicator']) == expected[row['date']]['indicator']
+        assert plain(row['ths']) == expected[row['date']]['ths']
+        assert [row['signal'],row['reason']] == expected[row['date']]['rule']
     changed = verify_dates(context,{**request,'want_dates':request['reject_dates'],'reject_dates':request['want_dates']})
     assert [(r['date'],r['signal'],r['reason'],r['indicator']) for r in changed['daily_evaluations']] == [(r['date'],r['signal'],r['reason'],r['indicator']) for r in result['daily_evaluations']]
     future = deepcopy(context)

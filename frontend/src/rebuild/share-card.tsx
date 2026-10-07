@@ -1,4 +1,4 @@
-import { designTokens } from '../shared/theme/design-tokens.generated'
+import { designTokens } from './design-tokens.generated'
 import { sameMarketSymbol } from './market-symbols'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api } from './api'

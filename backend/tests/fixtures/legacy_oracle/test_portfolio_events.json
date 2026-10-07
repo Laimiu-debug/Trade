@@ -1,0 +1,63 @@
+{
+ "aligned_matrix_builder": {
+  "buy": true,
+  "components": {
+   "S1": false,
+   "S2": false,
+   "S3": false,
+   "S4": false,
+   "S5": true,
+   "S6": false,
+   "S7": true,
+   "S8": false,
+   "S9": false
+  },
+  "in_pool": true,
+  "score": 65.0,
+  "sell": false
+ },
+ "snapshot_policy:[{\"confirmation_status\": \"partial\"}, {\"require_key_event_confirmation\": true}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"entry_quality_score\": 54.99}, {}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"event_chain\": [{\"event\": \"SC\"}]}, {\"min_event_count\": 2}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"event_dates\": {\"Spring\": \"2025-03-11\"}}, {}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"event_dates\": {\"UTAD\": \"2025-03-12\"}, \"risk_events\": [\"UTAD\"]}, {}]": {
+  "exits": true,
+  "expected": false
+ },
+ "snapshot_policy:[{\"event_grade\": \"C\"}, {\"event_grade_min\": \"B\"}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"event_grade\": \"unknown\", \"event_score\": null, \"health_score\": null}, {}]": {
+  "exits": false,
+  "expected": true
+ },
+ "snapshot_policy:[{\"event_score\": 10}, {\"event_score_min\": 20}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"health_score\": 0}, {\"health_score_min\": 1}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{\"sequence_ok\": false}, {\"require_sequence\": true}]": {
+  "exits": false,
+  "expected": false
+ },
+ "snapshot_policy:[{}, {}]": {
+  "exits": false,
+  "expected": true
+ }
+}

@@ -35,7 +35,6 @@ frontend/dist-rebuild/
 .release-build/
 .tmp-rebuild-smoke/
 .tmp-rebuild-*/
-journal-frontend/dist/
 data/
 # Checked-in public reference data required by offline stock search.
 !frontend/public/data/
